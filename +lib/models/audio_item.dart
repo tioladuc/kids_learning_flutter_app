@@ -2,13 +2,13 @@ class AudioItem {
   final String id;
   final String title;
   final String audioUrl;
-  final String description;
+  final DateTime createdAt;
 
   AudioItem({
     required this.id,
     required this.title,
     required this.audioUrl,
-    required this.description
+    required this.createdAt,
   });
 
   factory AudioItem.fromJson(Map<String, dynamic> json) {
@@ -16,7 +16,7 @@ class AudioItem {
       id: json['id'],
       title: json['title'],
       audioUrl: json['audio_url'],
-      description: json['description'],
+      createdAt: DateTime.parse(json['created_at']),
     );
   }
 }

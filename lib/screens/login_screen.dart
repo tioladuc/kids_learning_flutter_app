@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:kids_learning_flutter_app/core/notify_data.dart';
 import 'package:provider/provider.dart';
-
-import '../services/auth_service.dart';
-import '../state/session_provider.dart';
+import '../core/constance_session.dart';
+import '../core/constances.dart';
+import '../providers/session_provider.dart';
+import '../widgets/app_header.dart';
+import '../widgets/app_footer.dart';
+import '../widgets/app_scaffold.dart';
 import 'audio_list_screen.dart';
 
-
-////////////////////////////////////////////////////////////////////////
 class LoginScreen extends StatefulWidget {
   
   const LoginScreen({super.key});
@@ -15,67 +17,95 @@ class LoginScreen extends StatefulWidget {
   State<LoginScreen> createState() => _LoginScreen();
 }
 
-////////////////////////////////////////////////////////////////////////
 class _LoginScreen  extends State<LoginScreen> {
-  //const LoginScreen({super.key});
+  
+  final controllerLogin = TextEditingController();
+  final controllerPwd = TextEditingController();
+  //final ChoiceChild = 'child';
+  //final ChoiceParent = 'parent';
+  String selectedProfile = "";
+
+  void chooseLoginChoice(String choice) {
+    setState(() {
+      //_isVisible = !_isVisible;
+      selectedProfile = choice;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    final controllerLogin = TextEditingController();
-    final controllerPwd = TextEditingController();
-    String selectedProfile = "USA";
- List<DropdownMenuItem<String>> menuItems = [
-    DropdownMenuItem(value: "USA", child: Text("USA")),
-    DropdownMenuItem(value: "Canada", child: Text("Canada")),
-    DropdownMenuItem(value: "Brazil", child: Text("Brazil")),
-    DropdownMenuItem(value: "England", child: Text("England")),
-  ];
-
-
-  print('ssdsdsds');
-
-    return Scaffold(
-      appBar: AppBar(title: const Text('Login')),
-      body: Padding(
-        padding: const EdgeInsets.all(24),
+    final notifyData = context.watch<NotifyData>();
+    
+    return AppScaffold(
+      //appBar: const AppHeader(),
+      //bottomNavigationBar: const AppFooter(),
+      body: Center(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            if(selectedProfile !='')
+            ElevatedButton(
+              onPressed: () =>
+                  chooseLoginChoice(''), //context.read<SessionProvider>().login('child'),
+                  style: Constant.getTitle1ButtonStyle(),
+              child: notifyData.currentLanguage == Constant.languageEN ? Text(ConstantSession.ReturnLoginChoicesEN) : Text(ConstantSession.ReturnLoginChoicesFR),
+            ),
+            if(selectedProfile !='')
+            const SizedBox(height: 24),
 
-            DropdownButton(
-              value: selectedProfile,
-              onChanged: (String? newValue){
-                setState(() {
-                  selectedProfile = newValue!;
-                });
-              },
-              items: menuItems
-              ),
+
+            if(selectedProfile =='' || selectedProfile == ConstantSession.ChoiceChild)
+            ElevatedButton(
+              onPressed: () =>
+                  chooseLoginChoice(ConstantSession.ChoiceChild), //context.read<SessionProvider>().login('child'),
+                  style: selectedProfile == ConstantSession.ChoiceChild ? Constant.getTitle1ButtonStyleWhite(): Constant.getTitle1ButtonStyleBlack(),
+              child: notifyData.currentLanguage == Constant.languageEN ? Text(ConstantSession.LoginAsChildEN) : Text(ConstantSession.LoginAsChildFR),
+            ),
+            if(selectedProfile =='' || selectedProfile == ConstantSession.ChoiceChild)
+            const SizedBox(height: 24),
+
+            if(selectedProfile =='' || selectedProfile == ConstantSession.ChoiceParent)
+            ElevatedButton(
+              onPressed: () =>
+                  chooseLoginChoice(ConstantSession.ChoiceParent), 
+                  style: selectedProfile == ConstantSession.ChoiceParent?Constant.getTitle1ButtonStyleWhite():Constant.getTitle1ButtonStyleBlack(),//context.read<SessionProvider>().login('parent'),
+              child: notifyData.currentLanguage == Constant.languageEN ? Text(ConstantSession.LoginAsParentEN) : Text(ConstantSession.LoginAsParentFR),
+            ),
+            if(selectedProfile =='' || selectedProfile == ConstantSession.ChoiceParent)
+            const SizedBox(height: 24),
 
 
+
+            if(selectedProfile ==ConstantSession.ChoiceParent || selectedProfile == ConstantSession.ChoiceChild)
             TextField(
               controller: controllerLogin,
-              decoration: const InputDecoration(labelText: 'Login'),
+              decoration: notifyData.currentLanguage == Constant.languageEN ? InputDecoration(labelText: ConstantSession.LoginTextEN) : InputDecoration(labelText: ConstantSession.LoginTextFR),
             ),
+            if(selectedProfile ==ConstantSession.ChoiceParent || selectedProfile == ConstantSession.ChoiceChild)
             const SizedBox(height: 24),
 
+            if(selectedProfile ==ConstantSession.ChoiceParent || selectedProfile == ConstantSession.ChoiceChild)
             TextField(
               controller: controllerPwd,
-              decoration: const InputDecoration(labelText: 'Password'),
+              decoration: notifyData.currentLanguage == Constant.languageEN ? InputDecoration(labelText:ConstantSession.PasswordTextEN): InputDecoration(labelText: ConstantSession.PasswordTextFR),
             ),
+            if(selectedProfile ==ConstantSession.ChoiceParent || selectedProfile == ConstantSession.ChoiceChild)
             const SizedBox(height: 24),
 
+            if(selectedProfile ==ConstantSession.ChoiceParent || selectedProfile == ConstantSession.ChoiceChild)
             ElevatedButton(
+              style: Constant.getTitle3ButtonStyle(),
               onPressed: () async {
                 print('asddsdd');
-                final user = await AuthService.login(selectedProfile, controllerLogin.text, controllerPwd.text);
-                context.read<SessionProvider>().setUser(user);
+                //final user = await AuthService.login(selectedProfile, controllerLogin.text, controllerPwd.text);
+                //context.read<SessionProvider>().login(selectedRole).setUser(user);
 
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (_) => const AudioListScreen()),
                 );
               },
-              child: const Text('Login'),
+              child: notifyData.currentLanguage == Constant.languageEN ? Text(ConstantSession.LoginButtonEN) : Text(ConstantSession.LoginButtonFR),
             ),
           ],
         ),

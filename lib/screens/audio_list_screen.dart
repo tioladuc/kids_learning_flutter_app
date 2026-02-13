@@ -1,28 +1,75 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../core/constances.dart';
+import '../core/notify_data.dart';
+import '../providers/audio_provider.dart';
+import '../widgets/app_scaffold.dart';
+import '../widgets/audio_tile.dart';
 
-import '../state/audio_provider.dart';
-import '../widgets/audio_card.dart';
-
-class AudioListScreen extends StatelessWidget {
+class AudioListScreen extends StatefulWidget {
   const AudioListScreen({super.key});
 
   @override
+  State<AudioListScreen> createState() => _AudioListScreenState();
+}
+
+class _AudioListScreenState extends State<AudioListScreen> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<AudioProvider>().loadAudios();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final provider = context.watch<AudioProvider>();
+    final notifyData = context.watch<NotifyData>();    
+    final audios = context.watch<AudioProvider>().audios;
 
-    if (provider.audios.isEmpty && !provider.loading) {
-      provider.loadAudios();
-    }
-
-    return Scaffold(
-      appBar: AppBar(title: const Text('Audio List')),
-      body: provider.loading
-          ? const Center(child: CircularProgressIndicator())
-          : ListView.builder(
-        itemCount: provider.audios.length,
-        itemBuilder: (_, i) => AudioCard(item: provider.audios[i]),
-      ),
+    return AppScaffold(
+      body:Column(
+        //mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const SizedBox(height: 24),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ElevatedButton(
+              onPressed: () {}, //context.read<SessionProvider>().login('child'),
+                  style: Constant.getTitle1ButtonStyle(),
+              child: notifyData.currentLanguage == Constant.languageEN ? Text(Constant.listingAudioTitleEN) : Text(Constant.listingAudioTitleFR),
+            ),    
+            const SizedBox(width: 24),        
+            IconButton(
+              style: Constant.getButtonSimpleSelectedStyle(),
+                icon: const Icon(Icons.mic),//keyboard_double_arrow_left
+                onPressed: () {}, 
+              ),
+            ],
+          ),
+          /*ElevatedButton(
+              onPressed: () {}, //context.read<SessionProvider>().login('child'),
+                  style: Constant.getTitle1ButtonStyle(),
+              child: notifyData.currentLanguage == Constant.languageEN ? Text(Constant.listingAudioTitleEN) : Text(Constant.listingAudioTitleFR),
+            ),            
+          const SizedBox(height: 24),*/
+          
+          Expanded(
+            child: ListView.builder(
+              itemCount: audios.length,
+              itemBuilder: (_, i) => AudioTile(audio: audios[i]),
+            ),
+          ),
+          /*ListView.builder(
+            itemCount: audios.length,
+            itemBuilder: (_, i) => AudioTile(audio: audios[i]),
+          ),*/
+        ]
+      ), 
+      
+      /*ListView.builder(
+        itemCount: audios.length,
+        itemBuilder: (_, i) => AudioTile(audio: audios[i]),
+      ),*/
     );
   }
 }
