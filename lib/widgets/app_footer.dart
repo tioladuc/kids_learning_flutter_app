@@ -20,18 +20,20 @@ class _AppFooter  extends State<AppFooter>  {//class AppFooter extends Stateless
             onTap: (index) => setState(() => _currentIndex = index),
 
             type: BottomNavigationBarType.fixed,
+            backgroundColor: Colors.transparent, // IMPORTANT
             elevation: 0,
-            backgroundColor: Colors.white,
 
-            selectedItemColor: Colors.blue,
-            unselectedItemColor: Colors.grey,
+            selectedItemColor: Colors.white,
+            unselectedItemColor: Colors.black,
+
+            
 
             selectedFontSize: 12,
             unselectedFontSize: 11,
       items: const [
         BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
         BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Settings'),
-        BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
+        BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile', ),
         BottomNavigationBarItem(icon: Icon(Icons.bar_chart), label: 'Report'),
       ],
     );

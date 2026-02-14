@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -130,12 +131,16 @@ Uint8List? _audioBytes;
     setState(() => _isUploading = true);
 
     try {
-      /*await Provider.of<AudioProvider>(context, listen: false)
+      String data = "Hello, world!";
+  List<int> encodedData = utf8.encode(data);
+  Uint8List bytes = Uint8List.fromList(encodedData);
+
+      await Provider.of<AudioProvider>(context, listen: false)
           .uploadBytesAudio(
         title: _titleController.text,
         description: _descriptionController.text,
-        audioBytes: _audioBytes!,
-      );*/
+        audioBytes: bytes,//_audioBytes!,
+      );
 
       Navigator.pop(context);
     } catch (e) {

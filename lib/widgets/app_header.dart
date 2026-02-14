@@ -4,8 +4,7 @@ import '../core/constances.dart';
 import '../core/notify_data.dart';
 import '../providers/session_provider.dart';
 
-class AppHeader extends StatefulWidget implements PreferredSizeWidget{
-  
+class AppHeader extends StatefulWidget implements PreferredSizeWidget {
   const AppHeader({super.key});
 
   @override
@@ -15,8 +14,7 @@ class AppHeader extends StatefulWidget implements PreferredSizeWidget{
   Size get preferredSize => const Size.fromHeight(56);
 }
 
-class _AppHeader  extends State<AppHeader>  with ChangeNotifier {
-  
+class _AppHeader extends State<AppHeader> with ChangeNotifier {
   String currentLanguage = Constant.currentLanguage;
 
   @override
@@ -30,27 +28,38 @@ class _AppHeader  extends State<AppHeader>  with ChangeNotifier {
       flexibleSpace: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
-            colors: [Color.fromARGB(255, 3, 54, 241), Color.fromARGB(255, 235, 243, 236)],
+            colors: [
+              Color.fromARGB(255, 3, 54, 241),
+              Color.fromARGB(255, 235, 243, 236),
+            ],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
         ),
       ),
-      title:  Text(currentLanguage==Constant.languageEN ? Constant.AppNameEN : Constant.AppNameFR,
-      style: TextStyle(fontWeight: FontWeight.bold),) ,
+      title: Text(
+        currentLanguage == Constant.languageEN
+            ? Constant.AppNameEN
+            : Constant.AppNameFR,
+        style: TextStyle(fontWeight: FontWeight.bold),
+      ),
       actions: [
-        
         ElevatedButton(
           style: Constant.getTitle3ButtonStyle(),
-          child: currentLanguage!=Constant.languageEN ? Text(Constant.languageEN) : Text(Constant.languageFR),
+          child: currentLanguage != Constant.languageEN
+              ? Text(Constant.languageEN)
+              : Text(Constant.languageFR),
           onPressed: () => {
             setState(() {
-              currentLanguage = currentLanguage==Constant.languageEN ? Constant.languageFR : Constant.languageEN;
+              currentLanguage = currentLanguage == Constant.languageEN
+                  ? Constant.languageFR
+                  : Constant.languageEN;
               Constant.currentLanguage = currentLanguage;
               notifyData.changeLanguage(currentLanguage);
-            })},
+            }),
+          },
         ),
-        
+
         IconButton(
           icon: Icon(session.isLoggedIn ? Icons.logout : Icons.login),
           onPressed: () {
@@ -58,7 +67,7 @@ class _AppHeader  extends State<AppHeader>  with ChangeNotifier {
               session.logout();
             }
           },
-        )
+        ),
       ],
     );
   }
