@@ -19,12 +19,23 @@ class Constant {
 
   static final String areYouSureAudioFR = 'Êtes vous sûr ?';
   static final String areYouSureAudioEN = 'Are you sure ?';
-
   static final String cancelFR = 'Annuler';
   static final String cancelEN = 'Cancel';
-
   static final String deleteFR = 'Supprimer';
   static final String deleteEN = 'Delete';
+
+  static final String recordMainTitleFR = 'Enregistrer un audio';
+  static final String recordMainTitleEN = 'Record an audio';
+  static final String recordTitleFR = 'Titre audio';
+  static final String recordTitleEN = 'Audio title';
+  static final String recordDescriptionFR = 'Description audio';
+  static final String recordDescriptionEN = 'Audio description';
+  static final String recordRecordFR = 'Enregistrer';
+  static final String recordRecordEN = 'Record';
+  static final String recordStopFR = 'Arrêter';
+  static final String recordStopEN = 'Stop';
+  static final String recordSaveAndUploadFR = 'Enregistrer & Téléverser';
+  static final String recordSaveAndUploadEN = 'Save & Upload';
 
   static String currentLanguage = 'EN';
 

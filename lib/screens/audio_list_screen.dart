@@ -5,6 +5,7 @@ import '../core/notify_data.dart';
 import '../providers/audio_provider.dart';
 import '../widgets/app_scaffold.dart';
 import '../widgets/audio_tile.dart';
+import 'audio_record_screen.dart';
 
 class AudioListScreen extends StatefulWidget {
   const AudioListScreen({super.key});
@@ -22,11 +23,11 @@ class _AudioListScreenState extends State<AudioListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final notifyData = context.watch<NotifyData>();    
+    final notifyData = context.watch<NotifyData>();
     final audios = context.watch<AudioProvider>().audios;
 
     return AppScaffold(
-      body:Column(
+      body: Column(
         //mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const SizedBox(height: 24),
@@ -34,25 +35,35 @@ class _AudioListScreenState extends State<AudioListScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               ElevatedButton(
-              onPressed: () {}, //context.read<SessionProvider>().login('child'),
-                  style: Constant.getTitle1ButtonStyle(),
-              child: notifyData.currentLanguage == Constant.languageEN ? Text(Constant.listingAudioTitleEN) : Text(Constant.listingAudioTitleFR),
-            ),    
-            const SizedBox(width: 24),        
-            IconButton(
-              style: Constant.getButtonSimpleSelectedStyle(),
-                icon: const Icon(Icons.mic),//keyboard_double_arrow_left
-                onPressed: () {}, 
+                onPressed:
+                    () {}, //context.read<SessionProvider>().login('child'),
+                style: Constant.getTitle1ButtonStyle(),
+                child: notifyData.currentLanguage == Constant.languageEN
+                    ? Text(Constant.listingAudioTitleEN)
+                    : Text(Constant.listingAudioTitleFR),
+              ),
+              const SizedBox(width: 24),
+              IconButton(
+                style: Constant.getButtonSimpleSelectedStyle(),
+                icon: const Icon(Icons.mic), //keyboard_double_arrow_left
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const RecordAudioScreen(),
+                    ),
+                  );
+                },
               ),
             ],
           ),
+
           /*ElevatedButton(
               onPressed: () {}, //context.read<SessionProvider>().login('child'),
                   style: Constant.getTitle1ButtonStyle(),
               child: notifyData.currentLanguage == Constant.languageEN ? Text(Constant.listingAudioTitleEN) : Text(Constant.listingAudioTitleFR),
             ),            
           const SizedBox(height: 24),*/
-          
           Expanded(
             child: ListView.builder(
               itemCount: audios.length,
@@ -63,9 +74,9 @@ class _AudioListScreenState extends State<AudioListScreen> {
             itemCount: audios.length,
             itemBuilder: (_, i) => AudioTile(audio: audios[i]),
           ),*/
-        ]
-      ), 
-      
+        ],
+      ),
+
       /*ListView.builder(
         itemCount: audios.length,
         itemBuilder: (_, i) => AudioTile(audio: audios[i]),

@@ -25,7 +25,19 @@ class _AppHeader  extends State<AppHeader>  with ChangeNotifier {
     final notifyData = context.watch<NotifyData>();
 
     return AppBar(
-      title: currentLanguage==Constant.languageEN ? Text(Constant.AppNameEN) : Text(Constant.AppNameFR),
+      centerTitle: true,
+      elevation: 0,
+      flexibleSpace: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Color.fromARGB(255, 3, 54, 241), Color.fromARGB(255, 235, 243, 236)],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
+      ),
+      title:  Text(currentLanguage==Constant.languageEN ? Constant.AppNameEN : Constant.AppNameFR,
+      style: TextStyle(fontWeight: FontWeight.bold),) ,
       actions: [
         
         ElevatedButton(
