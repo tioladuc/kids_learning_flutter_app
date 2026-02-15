@@ -15,5 +15,7 @@ class ConstantChild {
 
   static final String menuLogoutFR = 'Se Déconnecter';
   static final String menuLogoutEN = 'Logout';
+  static final String menuLogoutChildParentFR = 'Revenir Menu Parent';
+  static final String menuLogoutChildParentEN = 'Go Back To Parent Menu';
 
 }

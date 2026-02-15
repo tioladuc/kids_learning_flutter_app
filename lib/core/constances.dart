@@ -75,7 +75,15 @@ class Constant {
     foregroundColor: Colors.white, 
     textStyle:  TextStyle(height: 1, fontSize: 15),// Text/Icon color
     
-  );
+  );  
+  } 
+  static ButtonStyle getTitle3ButtonRedStyle() {
+    return ElevatedButton.styleFrom(
+    backgroundColor: Colors.red, // Background color of the button
+    foregroundColor: Colors.white, 
+    textStyle:  TextStyle(height: 1, fontSize: 15),// Text/Icon color
+    
+  );  
   } 
   /***********************************************************/
   static TextStyle getTitleStyle() {

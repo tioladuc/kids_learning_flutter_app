@@ -1,33 +1,50 @@
 import 'package:flutter/material.dart';
+import 'package:kids_learning_flutter_app/screens/introscreen/main_intro_screen_child.dart';
 import 'package:provider/provider.dart';
+import '../../core/constances.dart';
+import '../../models/child.dart';
 import '../../providers/session_provider.dart';
 import '../../widgets/app_scaffold.dart';
+import '../audio/audio_list_screen.dart';
 
-class MainIntroScreenParent extends StatelessWidget {
+class MainIntroScreenParent extends StatefulWidget {
   const MainIntroScreenParent({super.key});
 
   @override
+  State<MainIntroScreenParent> createState() => _MainIntroScreenParent();
+}
+
+class _MainIntroScreenParent extends State<MainIntroScreenParent> {
+  //class MainIntroScreenParent extends StatelessWidget {
+
+  void _navigateTo(Child? item) {
+    //if( item['key'] ==  'Dictation') {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) => const AudioListScreen()),
+    );
+    //}
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final session = context.watch<SessionProvider>();
-    print('MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM ' + session.parent.name.toString());
-    print('MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM++ ' + session.parent.children.length.toString());
+    SessionProvider session = context.watch<SessionProvider>();
+    
     return AppScaffold(
       /*appBar: AppBar(
         title: const Text("Parent Dashboard"),
         centerTitle: true,
       ),*/
-
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Title
-            const Text(
-              "My Children",
-              style: TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
+            Center(
+              child: const Text(
+                "My Children",
+                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
               ),
             ),
 
@@ -35,19 +52,90 @@ class MainIntroScreenParent extends StatelessWidget {
 
             // Children list
             Expanded(
-              child: session.parent.children.isEmpty
+              child: session.parent!.children.isEmpty
                   ? const Center(child: Text("No children added"))
                   : ListView.builder(
-                      itemCount: session.parent.children.length,
+                      padding: const EdgeInsets.all(16),
+                      itemCount: session.parent?.children.length,
                       itemBuilder: (context, index) {
-                        final child = session.parent.children[index];
+                        final item = session.parent?.children[index];
 
-                        return Card(
-                          margin: const EdgeInsets.only(bottom: 12),
-                          child: ListTile(
-                            leading: const Icon(Icons.child_care),
-                            title: Text(child.name),
-                            subtitle: Text("ID: ${child.id}"),
+                        return GestureDetector(
+                          onTap: () => _navigateTo(item),
+                          child: Container(
+                            margin: const EdgeInsets.only(bottom: 12),
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 18,
+                              horizontal: 16,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(16),
+                              boxShadow: const [
+                                BoxShadow(
+                                  color: Colors.black12,
+                                  blurRadius: 6,
+                                  offset: Offset(0, 3),
+                                ),
+                              ],
+                            ),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.person_3_outlined,
+                                  color: Colors.blue,
+                                ),
+                                const SizedBox(width: 16),
+                                Expanded(
+                                  child: Text(
+                                    item!.name,
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 16),
+                                Container(
+                                  decoration: BoxDecoration(
+                                    color:
+                                        (session.parent?.currentChild != null &&
+                                            item.id ==
+                                                session.parent?.currentChild?.id)
+                                        ? Colors.blue
+                                        : Colors.grey, // The background color
+                                    shape: BoxShape
+                                        .circle, // The shape of the background
+                                  ),
+                                  child: IconButton(
+                                    icon: const Icon(
+                                      Icons.bluetooth_audio_outlined,
+                                    ),
+                                    color:
+                                        (session.parent?.currentChild != null &&
+                                            item.id ==
+                                                session.parent?.currentChild?.id)
+                                        ? Colors.white
+                                        : Colors.black,
+                                    onPressed: () {
+                                      // Handle button press
+                                      session.setCurrentChildAsParent(item);
+                                      //print(item!.name + ' ===== ' + session.parent!.currentChild!.name);
+                                      Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (_) =>
+                                              const MainIntroScreenChild(),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ),
+
+                                const SizedBox(width: 16),
+                                const Icon(Icons.arrow_forward_ios, size: 16),
+                              ],
+                            ),
                           ),
                         );
                       },
@@ -57,25 +145,26 @@ class MainIntroScreenParent extends StatelessWidget {
             const SizedBox(height: 10),
 
             // Actions
-            Row(
-              children: [
-                Expanded(
-                  child: ElevatedButton.icon(
+            Center(
+              child:ElevatedButton.icon(
                     onPressed: () => _showAddChildDialog(context),
                     icon: const Icon(Icons.person_add),
                     label: const Text("Add Child"),
+                    style: Constant.getTitle3ButtonStyle(),
                   ),
-                ),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: ElevatedButton.icon(
-                    onPressed: () => _showChangePasswordDialog(context),
+            ),
+            const SizedBox(height: 10),
+            Center(
+              child:ElevatedButton.icon(
+                    onPressed: () => _showChangePasswordDialog(context, session),
                     icon: const Icon(Icons.lock),
                     label: const Text("Change Password"),
+                    style: Constant.getTitle3ButtonRedStyle(),
                   ),
-                ),
-              ],
             ),
+            
+            
+            
           ],
         ),
       ),
@@ -86,17 +175,31 @@ class MainIntroScreenParent extends StatelessWidget {
   // Add Child Dialog
   // -------------------------
   void _showAddChildDialog(BuildContext context) {
-    final controller = TextEditingController();
+    final controllerLogin = TextEditingController();
+    final controllerPassword = TextEditingController();
+    final controllerName = TextEditingController();
 
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
         title: const Text("Add Child"),
-        content: TextField(
-          controller: controller,
-          decoration: const InputDecoration(
-            labelText: "Child Name",
-          ),
+        content: Column(
+          children: [
+            TextField(
+          controller: controllerLogin,
+          decoration: const InputDecoration(labelText: "Child Login"),
+        ),
+        SizedBox(height: 10,),
+        TextField(
+          controller: controllerName,
+          decoration: const InputDecoration(labelText: "Child Name"),
+        ),
+        SizedBox(height: 10,),
+        TextField(
+          controller: controllerPassword,
+          decoration: const InputDecoration(labelText: "Child Password"),
+        )
+          ],
         ),
         actions: [
           TextButton(
@@ -105,8 +208,10 @@ class MainIntroScreenParent extends StatelessWidget {
           ),
           ElevatedButton(
             onPressed: () {
-              if (controller.text.isNotEmpty) {
-                context.read<SessionProvider>().addChild(controller.text, 'password');
+              if (controllerLogin.text.isNotEmpty && controllerName.text.isNotEmpty && controllerPassword.text.isNotEmpty) {
+                context.read<SessionProvider>().addChild(
+                  controllerLogin.text, controllerName.text,controllerPassword.text
+                );
                 Navigator.pop(context);
               }
             },
@@ -120,19 +225,28 @@ class MainIntroScreenParent extends StatelessWidget {
   // -------------------------
   // Change Password Dialog
   // -------------------------
-  void _showChangePasswordDialog(BuildContext context) {
-    final controller = TextEditingController();
+  void _showChangePasswordDialog(BuildContext context, SessionProvider session) {
+    final controllerName = TextEditingController();
+    final controllerPassword = TextEditingController();
+    controllerName.text = session.parent!.name;
 
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        title: const Text("Change Password"),
-        content: TextField(
-          controller: controller,
+        title: const Text("Change Name & Password"),
+        content: Column(
+          children: [
+            TextField(
+          controller: controllerName,
+          decoration: InputDecoration(labelText: "New Name"),
+        ),
+        SizedBox(height: 10,),
+        TextField(
+          controller: controllerPassword,
           obscureText: true,
-          decoration: const InputDecoration(
-            labelText: "New Password",
-          ),
+          decoration: const InputDecoration(labelText: "New Password"),
+        )
+          ],
         ),
         actions: [
           TextButton(
@@ -141,8 +255,8 @@ class MainIntroScreenParent extends StatelessWidget {
           ),
           ElevatedButton(
             onPressed: () {
-              if (controller.text.isNotEmpty) {
-                context.read<SessionProvider>().changePassword(controller.text);
+              if (controllerName.text.isNotEmpty && controllerPassword.text.isNotEmpty) {
+                context.read<SessionProvider>().changeParentPassword(controllerName.text, controllerPassword.text);
                 Navigator.pop(context);
               }
             },

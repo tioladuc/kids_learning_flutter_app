@@ -57,6 +57,10 @@ class _AppHeader extends State<AppHeader> with ChangeNotifier {
                   : Constant.languageEN;
               Constant.currentLanguage = currentLanguage;
               notifyData.changeLanguage(currentLanguage);
+              session.setRole(null);
+              session.setParent(null);
+              session.setChild(null);
+              session.setCurrentChildAsParent(null);
             }),
           },
         ),

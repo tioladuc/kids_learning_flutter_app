@@ -134,6 +134,14 @@ class _LoginScreen extends State<LoginScreen> {
                   //context.read<SessionProvider>().login(selectedRole).setUser(user);
 
                   _sessionProvider.setRole(selectedProfile);
+                  if( _sessionProvider.role == ConstantSession.ChoiceChild) {
+                    _sessionProvider.setParent(null);
+                    _sessionProvider.setChild(_sessionProvider.tmpChild);
+                  }
+                  else {
+                    _sessionProvider.setChild(null);
+                    _sessionProvider.setParent(_sessionProvider.tmpParent);
+                  }
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
