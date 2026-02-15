@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../core/constances.dart';
-import '../core/notify_data.dart';
-import '../providers/audio_provider.dart';
-import '../widgets/app_scaffold.dart';
-import '../widgets/audio_tile.dart';
+import '../../core/constances.dart';
+import '../../core/notify_data.dart';
+import '../../providers/audio_provider.dart';
+import '../../widgets/app_scaffold.dart';
+import '../../widgets/audio_tile.dart';
 import 'audio_record_screen.dart';
 
 class AudioListScreen extends StatefulWidget {

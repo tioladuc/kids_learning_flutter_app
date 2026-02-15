@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 
 class Constant {
 
+  static final String profileChild = 'Child';
+  static final String profileParent = 'Parent';
+
   static final AppNameFR = 'Kids Learning FR';
   static final AppNameEN = 'Kids Learning EN';
   static final String languageFR = 'FR';

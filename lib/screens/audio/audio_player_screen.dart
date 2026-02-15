@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
-import '../core/constances.dart';
-import '../core/notify_data.dart';
-import '../models/audio_item.dart';
-import '../providers/audio_provider.dart';
-import '../widgets/app_scaffold.dart';
+import '../../core/constances.dart';
+import '../../core/notify_data.dart';
+import '../../models/audio_item.dart';
+import '../../providers/audio_provider.dart';
+import '../../widgets/app_scaffold.dart';
 import 'package:provider/provider.dart';
 
 class AudioPlayerScreen extends StatefulWidget {

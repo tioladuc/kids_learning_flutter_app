@@ -7,10 +7,10 @@ import 'package:flutter_sound/flutter_sound.dart';
 import 'package:just_audio/just_audio.dart' hide AudioSource;
 import 'package:provider/provider.dart';
 
-import '../core/constances.dart';
-import '../core/notify_data.dart';
-import '../providers/audio_provider.dart';
-import '../widgets/app_scaffold.dart';
+import '../../core/constances.dart';
+import '../../core/notify_data.dart';
+import '../../providers/audio_provider.dart';
+import '../../widgets/app_scaffold.dart';
 
 class RecordAudioScreen extends StatefulWidget {
   const RecordAudioScreen({super.key});

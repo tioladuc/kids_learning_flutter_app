@@ -4,7 +4,7 @@ import '../core/constances.dart';
 import '../core/notify_data.dart';
 import '../models/audio_item.dart';
 import '../providers/audio_provider.dart';
-import '../screens/audio_player_screen.dart';
+import '../screens/audio/audio_player_screen.dart';
 
 class AudioTile extends StatelessWidget {
   final AudioItem audio;

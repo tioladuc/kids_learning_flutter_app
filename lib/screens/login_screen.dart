@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kids_learning_flutter_app/core/notify_data.dart';
+import 'package:kids_learning_flutter_app/screens/introscreen/main_intro_screen_child.dart';
 import 'package:provider/provider.dart';
 import '../core/constance_session.dart';
 import '../core/constances.dart';
@@ -7,7 +8,7 @@ import '../providers/session_provider.dart';
 import '../widgets/app_header.dart';
 import '../widgets/app_footer.dart';
 import '../widgets/app_scaffold.dart';
-import 'audio_list_screen.dart';
+import 'audio/audio_list_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   
@@ -21,6 +22,7 @@ class _LoginScreen  extends State<LoginScreen> {
   
   final controllerLogin = TextEditingController();
   final controllerPwd = TextEditingController();
+  NotifyData _notifyData = NotifyData();
   //final ChoiceChild = 'child';
   //final ChoiceParent = 'parent';
   String selectedProfile = "";
@@ -29,13 +31,16 @@ class _LoginScreen  extends State<LoginScreen> {
     setState(() {
       //_isVisible = !_isVisible;
       selectedProfile = choice;
+      _notifyData.setRole(selectedProfile);
     });
   }
 
   @override
   Widget build(BuildContext context) {
     final notifyData = context.watch<NotifyData>();
-    
+    //final session = context.watch<SessionProvider>();
+    _notifyData = notifyData;
+
     return AppScaffold(
       //appBar: const AppHeader(),
       //bottomNavigationBar: const AppFooter(),
@@ -102,7 +107,7 @@ class _LoginScreen  extends State<LoginScreen> {
 
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (_) => const AudioListScreen()),
+                  MaterialPageRoute(builder: (_) => notifyData.role == ConstantSession.ChoiceChild ? const MainIntroScreenChild() : const AudioListScreen()),
                 );
               },
               child: notifyData.currentLanguage == Constant.languageEN ? Text(ConstantSession.LoginButtonEN) : Text(ConstantSession.LoginButtonFR),
