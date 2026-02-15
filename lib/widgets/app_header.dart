@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kids_learning_flutter_app/screens/login_screen.dart';
 import 'package:provider/provider.dart';
 import '../core/constances.dart';
 import '../core/notify_data.dart';
@@ -64,7 +65,13 @@ class _AppHeader extends State<AppHeader> with ChangeNotifier {
           icon: Icon(session.isLoggedIn ? Icons.logout : Icons.login),
           onPressed: () {
             if (session.isLoggedIn) {
-              session.logout();
+              session.setRole(null);
+               Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) =>const LoginScreen(),
+                    ),
+                  );
             }
           },
         ),

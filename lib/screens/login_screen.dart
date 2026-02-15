@@ -9,20 +9,21 @@ import '../widgets/app_header.dart';
 import '../widgets/app_footer.dart';
 import '../widgets/app_scaffold.dart';
 import 'audio/audio_list_screen.dart';
+import 'introscreen/main_intro_screen_parent.dart';
 
 class LoginScreen extends StatefulWidget {
-  
   const LoginScreen({super.key});
 
   @override
   State<LoginScreen> createState() => _LoginScreen();
 }
 
-class _LoginScreen  extends State<LoginScreen> {
-  
+class _LoginScreen extends State<LoginScreen> {
   final controllerLogin = TextEditingController();
   final controllerPwd = TextEditingController();
   NotifyData _notifyData = NotifyData();
+  SessionProvider _sessionProvider = SessionProvider();
+
   //final ChoiceChild = 'child';
   //final ChoiceParent = 'parent';
   String selectedProfile = "";
@@ -31,13 +32,17 @@ class _LoginScreen  extends State<LoginScreen> {
     setState(() {
       //_isVisible = !_isVisible;
       selectedProfile = choice;
-      _notifyData.setRole(selectedProfile);
+      //_notifyData.setRole(selectedProfile);
+      print('XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX ' + selectedProfile);
+      //_sessionProvider.setRole(selectedProfile);
     });
   }
 
   @override
   Widget build(BuildContext context) {
     final notifyData = context.watch<NotifyData>();
+    final sessionProvider = context.watch<SessionProvider>();
+    _sessionProvider = sessionProvider;
     //final session = context.watch<SessionProvider>();
     _notifyData = notifyData;
 
@@ -48,70 +53,101 @@ class _LoginScreen  extends State<LoginScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            if(selectedProfile !='')
-            ElevatedButton(
-              onPressed: () =>
-                  chooseLoginChoice(''), //context.read<SessionProvider>().login('child'),
-                  style: Constant.getTitle1ButtonStyle(),
-              child: notifyData.currentLanguage == Constant.languageEN ? Text(ConstantSession.ReturnLoginChoicesEN) : Text(ConstantSession.ReturnLoginChoicesFR),
-            ),
-            if(selectedProfile !='')
-            const SizedBox(height: 24),
+            if (selectedProfile != '')
+              ElevatedButton(
+                onPressed: () => chooseLoginChoice(
+                  '',
+                ), //context.read<SessionProvider>().login('child'),
+                style: Constant.getTitle1ButtonStyle(),
+                child: notifyData.currentLanguage == Constant.languageEN
+                    ? Text(ConstantSession.ReturnLoginChoicesEN)
+                    : Text(ConstantSession.ReturnLoginChoicesFR),
+              ),
+            if (selectedProfile != '') const SizedBox(height: 24),
 
+            if (selectedProfile == '' ||
+                selectedProfile == ConstantSession.ChoiceChild)
+              ElevatedButton(
+                onPressed: () => chooseLoginChoice(
+                  ConstantSession.ChoiceChild,
+                ), //context.read<SessionProvider>().login('child'),
+                style: selectedProfile == ConstantSession.ChoiceChild
+                    ? Constant.getTitle1ButtonStyleWhite()
+                    : Constant.getTitle1ButtonStyleBlack(),
+                child: notifyData.currentLanguage == Constant.languageEN
+                    ? Text(ConstantSession.LoginAsChildEN)
+                    : Text(ConstantSession.LoginAsChildFR),
+              ),
+            if (selectedProfile == '' ||
+                selectedProfile == ConstantSession.ChoiceChild)
+              const SizedBox(height: 24),
 
-            if(selectedProfile =='' || selectedProfile == ConstantSession.ChoiceChild)
-            ElevatedButton(
-              onPressed: () =>
-                  chooseLoginChoice(ConstantSession.ChoiceChild), //context.read<SessionProvider>().login('child'),
-                  style: selectedProfile == ConstantSession.ChoiceChild ? Constant.getTitle1ButtonStyleWhite(): Constant.getTitle1ButtonStyleBlack(),
-              child: notifyData.currentLanguage == Constant.languageEN ? Text(ConstantSession.LoginAsChildEN) : Text(ConstantSession.LoginAsChildFR),
-            ),
-            if(selectedProfile =='' || selectedProfile == ConstantSession.ChoiceChild)
-            const SizedBox(height: 24),
+            if (selectedProfile == '' ||
+                selectedProfile == ConstantSession.ChoiceParent)
+              ElevatedButton(
+                onPressed: () =>
+                    chooseLoginChoice(ConstantSession.ChoiceParent),
+                style: selectedProfile == ConstantSession.ChoiceParent
+                    ? Constant.getTitle1ButtonStyleWhite()
+                    : Constant.getTitle1ButtonStyleBlack(), //context.read<SessionProvider>().login('parent'),
+                child: notifyData.currentLanguage == Constant.languageEN
+                    ? Text(ConstantSession.LoginAsParentEN)
+                    : Text(ConstantSession.LoginAsParentFR),
+              ),
+            if (selectedProfile == '' ||
+                selectedProfile == ConstantSession.ChoiceParent)
+              const SizedBox(height: 24),
 
-            if(selectedProfile =='' || selectedProfile == ConstantSession.ChoiceParent)
-            ElevatedButton(
-              onPressed: () =>
-                  chooseLoginChoice(ConstantSession.ChoiceParent), 
-                  style: selectedProfile == ConstantSession.ChoiceParent?Constant.getTitle1ButtonStyleWhite():Constant.getTitle1ButtonStyleBlack(),//context.read<SessionProvider>().login('parent'),
-              child: notifyData.currentLanguage == Constant.languageEN ? Text(ConstantSession.LoginAsParentEN) : Text(ConstantSession.LoginAsParentFR),
-            ),
-            if(selectedProfile =='' || selectedProfile == ConstantSession.ChoiceParent)
-            const SizedBox(height: 24),
+            if (selectedProfile == ConstantSession.ChoiceParent ||
+                selectedProfile == ConstantSession.ChoiceChild)
+              TextField(
+                controller: controllerLogin,
+                decoration: notifyData.currentLanguage == Constant.languageEN
+                    ? InputDecoration(labelText: ConstantSession.LoginTextEN)
+                    : InputDecoration(labelText: ConstantSession.LoginTextFR),
+              ),
+            if (selectedProfile == ConstantSession.ChoiceParent ||
+                selectedProfile == ConstantSession.ChoiceChild)
+              const SizedBox(height: 24),
 
+            if (selectedProfile == ConstantSession.ChoiceParent ||
+                selectedProfile == ConstantSession.ChoiceChild)
+              TextField(
+                controller: controllerPwd,
+                decoration: notifyData.currentLanguage == Constant.languageEN
+                    ? InputDecoration(labelText: ConstantSession.PasswordTextEN)
+                    : InputDecoration(
+                        labelText: ConstantSession.PasswordTextFR,
+                      ),
+              ),
+            if (selectedProfile == ConstantSession.ChoiceParent ||
+                selectedProfile == ConstantSession.ChoiceChild)
+              const SizedBox(height: 24),
 
+            if (selectedProfile == ConstantSession.ChoiceParent ||
+                selectedProfile == ConstantSession.ChoiceChild)
+              ElevatedButton(
+                style: Constant.getTitle3ButtonStyle(),
+                onPressed: () async {
+                  print('asddsdd');
+                  //final user = await AuthService.login(selectedProfile, controllerLogin.text, controllerPwd.text);
+                  //context.read<SessionProvider>().login(selectedRole).setUser(user);
 
-            if(selectedProfile ==ConstantSession.ChoiceParent || selectedProfile == ConstantSession.ChoiceChild)
-            TextField(
-              controller: controllerLogin,
-              decoration: notifyData.currentLanguage == Constant.languageEN ? InputDecoration(labelText: ConstantSession.LoginTextEN) : InputDecoration(labelText: ConstantSession.LoginTextFR),
-            ),
-            if(selectedProfile ==ConstantSession.ChoiceParent || selectedProfile == ConstantSession.ChoiceChild)
-            const SizedBox(height: 24),
-
-            if(selectedProfile ==ConstantSession.ChoiceParent || selectedProfile == ConstantSession.ChoiceChild)
-            TextField(
-              controller: controllerPwd,
-              decoration: notifyData.currentLanguage == Constant.languageEN ? InputDecoration(labelText:ConstantSession.PasswordTextEN): InputDecoration(labelText: ConstantSession.PasswordTextFR),
-            ),
-            if(selectedProfile ==ConstantSession.ChoiceParent || selectedProfile == ConstantSession.ChoiceChild)
-            const SizedBox(height: 24),
-
-            if(selectedProfile ==ConstantSession.ChoiceParent || selectedProfile == ConstantSession.ChoiceChild)
-            ElevatedButton(
-              style: Constant.getTitle3ButtonStyle(),
-              onPressed: () async {
-                print('asddsdd');
-                //final user = await AuthService.login(selectedProfile, controllerLogin.text, controllerPwd.text);
-                //context.read<SessionProvider>().login(selectedRole).setUser(user);
-
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (_) => notifyData.role == ConstantSession.ChoiceChild ? const MainIntroScreenChild() : const AudioListScreen()),
-                );
-              },
-              child: notifyData.currentLanguage == Constant.languageEN ? Text(ConstantSession.LoginButtonEN) : Text(ConstantSession.LoginButtonFR),
-            ),
+                  _sessionProvider.setRole(selectedProfile);
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) =>
+                          _sessionProvider.role == ConstantSession.ChoiceChild
+                          ? const MainIntroScreenChild()
+                          : const MainIntroScreenParent(),
+                    ),
+                  );
+                },
+                child: notifyData.currentLanguage == Constant.languageEN
+                    ? Text(ConstantSession.LoginButtonEN)
+                    : Text(ConstantSession.LoginButtonFR),
+              ),
           ],
         ),
       ),

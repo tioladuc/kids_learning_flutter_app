@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-
+import 'package:kids_learning_flutter_app/core/constances.dart';
+import 'package:provider/provider.dart';
+import '../../core/constance_child.dart';
+import '../../core/notify_data.dart';
 import '../../widgets/app_scaffold.dart';
 import '../audio/audio_list_screen.dart';
 import 'logout_screen.dart';
@@ -15,62 +18,63 @@ class MainIntroScreenChild extends StatefulWidget {
 }
 
 class _MainIntroScreenChild extends State<MainIntroScreenChild> {
-  final List<Map<String, dynamic>> menuItems = [
-    {"title": "Dictation", "icon": Icons.mic},
-    {"title": "Pick A Course", "icon": Icons.menu_book},
-    {"title": "Course Validation Pending", "icon": Icons.hourglass_top},
-    {"title": "Statistics", "icon": Icons.bar_chart},
-    {"title": "Logout", "icon": Icons.logout},
-  ];
+  List<Map<String, dynamic>> menuItems = [];
 
-  void _navigateTo(int index) {
-    switch (index) {
-      case 0:
-        Navigator.push(
+  List<Map<String, dynamic>> produceMenuItems(String langue) {
+    return [
+    {"title": langue==Constant.languageEN ? ConstantChild.menuDictationEN : ConstantChild.menuDictationFR, "icon": Icons.mic, "key": 'Dictation'},
+    {"title": langue==Constant.languageEN ? ConstantChild.menuPickCourseEN : ConstantChild.menuPickCourseFR, "icon": Icons.menu_book, "key": 'PickACourse'},
+    {"title": langue==Constant.languageEN ? ConstantChild.menuCoursesValidationPendingEN : ConstantChild.menuCoursesValidationPendingFR, "icon": Icons.hourglass_top, "key": 'CourseValidationPending'},
+    {"title": langue==Constant.languageEN ? ConstantChild.menuStatisticsEN : ConstantChild.menuStatisticsFR, "icon": Icons.bar_chart, "key": 'Statistics'},
+    {"title": langue==Constant.languageEN ? ConstantChild.menuLogoutEN : ConstantChild.menuLogoutFR, "icon": Icons.logout, "key": 'Logout'},
+  ];
+  }
+
+  void _navigateTo(Map<String, dynamic> item){
+    if( item['key'] ==  'Dictation') {
+      Navigator.push(
           context,
           MaterialPageRoute(builder: (_) => const AudioListScreen()),
         );
-        break;
+    }
 
-      case 1:
-        Navigator.push(
+    if( item['key'] ==  'PickACourse') {
+      Navigator.push(
           context,
           MaterialPageRoute(builder: (_) => const PickCourse()),
         );
-        break;
+    }
 
-      case 2:
-        Navigator.push(
+    if( item['key'] ==  'CourseValidationPending') {
+      Navigator.push(
           context,
           MaterialPageRoute(builder: (_) => const PendingScreen()),
         );
-        break;
+    }
 
-      case 3:
-        Navigator.push(
+    if( item['key'] ==  'Statistics') {
+      Navigator.push(
           context,
           MaterialPageRoute(builder: (_) => const StatisticsScreen()),
         );
-        break;
-
-      case 4:
-        _logout();
-        break;
     }
-  }
 
-  void _logout() {
-    // TODO: clear session / token if using Provider
-
-    Navigator.pushAndRemoveUntil(
+    if( item['key'] ==  'Logout') {
+      Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(builder: (_) => const LogoutScreen()),
       (route) => false,
     );
+    }
+    
   }
+
 
   @override
   Widget build(BuildContext context) {
+    final notifyData = context.watch<NotifyData>();
+    menuItems = produceMenuItems(notifyData.currentLanguage);
+
     return AppScaffold(
       /*appBar: AppBar(
         title: const Text("List of Operations"),
@@ -95,7 +99,7 @@ class _MainIntroScreenChild extends State<MainIntroScreenChild> {
           final item = menuItems[index];
 
           return GestureDetector(
-            onTap: () => _navigateTo(index),
+            onTap: () => _navigateTo(item),
             child: Container(
               margin: const EdgeInsets.only(bottom: 12),
               padding: const EdgeInsets.symmetric(

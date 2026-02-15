@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../widgets/app_page_title.dart';
 import '../../widgets/app_scaffold.dart';
 
 class StatisticsScreen extends StatelessWidget {
@@ -9,7 +10,21 @@ class StatisticsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppScaffold(
       //appBar: AppBar(title: const Text("Statistics")),
-      body: const Center(child: Text("Statistics Page")),
+      body: SafeArea(
+        child: SizedBox(
+          width: double.infinity,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: const [
+              PageTitle(text:"Statistics++"),
+              const Text("Statistics 999")
+            ],
+          ),
+        ),
+      ),
+
+      //const Center(child: Text("Statistics Page")),
     );
   }
 }

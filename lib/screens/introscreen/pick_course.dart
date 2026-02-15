@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../widgets/app_page_title.dart';
 import '../../widgets/app_scaffold.dart';
 
 class PickCourse extends StatelessWidget {
@@ -9,7 +10,19 @@ class PickCourse extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppScaffold(
       //appBar: AppBar(title: const Text("Pick A Course")),
-      body: const Center(child: Text("Course List Page")),
+      body: SafeArea(
+        child: SizedBox(
+          width: double.infinity,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: const [
+              PageTitle(text:"Course List Page++"),
+              Text("Course List Page 999")
+            ],
+          ),
+        ),
+      ),//const Center(child: Text("Course List Page")),
     );
   }
 }
