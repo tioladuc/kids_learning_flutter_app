@@ -19,4 +19,13 @@ class ConstantSession {
 
   static final LoginButtonEN = 'Login EN';
   static final LoginButtonFR = 'Login FR';
+
+  static final LogoutButtonEN = 'Logout EN';
+  static final LogoutButtonFR = 'Logout FR';
+
+  static final LogoutTitleEN = 'Log out from application';
+  static final LogoutTitleFR = "Se déconnecter de l'application";
+
+  static final LogoutMessageEN = 'Do you really want to sign out of your account?';
+  static final LogoutMessageFR = "Voulez vous vraiment vous deconnecter ?";
 }

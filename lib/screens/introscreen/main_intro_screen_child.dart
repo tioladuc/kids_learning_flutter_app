@@ -66,11 +66,7 @@ class _MainIntroScreenChild extends State<MainIntroScreenChild> {
         "icon": Icons.bar_chart,
         "key": 'Statistics',
       },
-      {
-        "title": logoutDisplay,
-        "icon": Icons.logout,
-        "key": 'Logout',
-      },
+      {"title": logoutDisplay, "icon": Icons.logout, "key": 'Logout'},
     ];
   }
 
@@ -127,21 +123,6 @@ class _MainIntroScreenChild extends State<MainIntroScreenChild> {
     menuItems = produceMenuItems(notifyData.currentLanguage, session);
 
     return AppScaffold(
-      /*appBar: AppBar(
-        title: const Text("List of Operations"),
-        centerTitle: true,
-        elevation: 0,
-        flexibleSpace: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                Color(0xFF6A11CB),
-                Color(0xFF2575FC),
-              ],
-            ),
-          ),
-        ),
-      ),*/
       body: ListView.builder(
         padding: const EdgeInsets.all(16),
         itemCount: menuItems.length,

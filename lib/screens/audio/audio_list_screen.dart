@@ -58,29 +58,14 @@ class _AudioListScreenState extends State<AudioListScreen> {
             ],
           ),
 
-          /*ElevatedButton(
-              onPressed: () {}, //context.read<SessionProvider>().login('child'),
-                  style: Constant.getTitle1ButtonStyle(),
-              child: notifyData.currentLanguage == Constant.languageEN ? Text(Constant.listingAudioTitleEN) : Text(Constant.listingAudioTitleFR),
-            ),            
-          const SizedBox(height: 24),*/
           Expanded(
             child: ListView.builder(
               itemCount: audios.length,
               itemBuilder: (_, i) => AudioTile(audio: audios[i]),
             ),
           ),
-          /*ListView.builder(
-            itemCount: audios.length,
-            itemBuilder: (_, i) => AudioTile(audio: audios[i]),
-          ),*/
         ],
       ),
-
-      /*ListView.builder(
-        itemCount: audios.length,
-        itemBuilder: (_, i) => AudioTile(audio: audios[i]),
-      ),*/
     );
   }
 }

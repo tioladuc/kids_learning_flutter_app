@@ -24,7 +24,7 @@ class _RecordAudioScreenState extends State<RecordAudioScreen> {
   final _player = AudioPlayer();
 
   late StreamController<Uint8List> _streamController;
-Uint8List? _audioBytes;
+  Uint8List? _audioBytes;
 
   final _titleController = TextEditingController();
   final _descriptionController = TextEditingController();
@@ -33,7 +33,7 @@ Uint8List? _audioBytes;
   bool _isPlaying = false;
   bool _isUploading = false;
 
-  String? _filePath;      // mobile only
+  String? _filePath; // mobile only
 
   Duration _duration = Duration.zero;
   Duration _position = Duration.zero;
@@ -64,13 +64,12 @@ Uint8List? _audioBytes;
 
   // 🎤 START
   Future<void> _startRecording() async {
-    
-      await _recorder.openRecorder();
+    await _recorder.openRecorder();
     Codec codec = kIsWeb ? Codec.opusWebM : Codec.aacADTS;
     await _recorder.startRecorder(
-        codec: codec,
-        toFile: 'audio.${kIsWeb ? 'webm' : 'aac'}',
-      );
+      codec: codec,
+      toFile: 'audio.${kIsWeb ? 'webm' : 'aac'}',
+    );
 
     setState(() {
       _isRecording = true;
@@ -85,7 +84,7 @@ Uint8List? _audioBytes;
       _filePath = path;
 
       if (kIsWeb) {
-        await _player.setUrl(path);   // for blob URLs
+        await _player.setUrl(path); // for blob URLs
       } else {
         await _player.setFilePath(path); // for mobile
       }
@@ -94,7 +93,6 @@ Uint8List? _audioBytes;
     setState(() {
       _isRecording = false;
     });
-    
   }
 
   // ▶️ PLAY
@@ -102,11 +100,9 @@ Uint8List? _audioBytes;
     if (_isPlaying) {
       setState(() => _isPlaying = false);
       await _player.pause();
-      
     } else {
       setState(() => _isPlaying = true);
       await _player.play();
-      
     }
     print('tiotsop = ' + _isPlaying.toString());
   }
@@ -132,14 +128,13 @@ Uint8List? _audioBytes;
 
     try {
       String data = "Hello, world!";
-  List<int> encodedData = utf8.encode(data);
-  Uint8List bytes = Uint8List.fromList(encodedData);
+      List<int> encodedData = utf8.encode(data);
+      Uint8List bytes = Uint8List.fromList(encodedData);
 
-      await Provider.of<AudioProvider>(context, listen: false)
-          .uploadBytesAudio(
+      await Provider.of<AudioProvider>(context, listen: false).uploadBytesAudio(
         title: _titleController.text,
         description: _descriptionController.text,
-        audioBytes: bytes,//_audioBytes!,
+        audioBytes: bytes, //_audioBytes!,
       );
 
       Navigator.pop(context);
@@ -161,7 +156,7 @@ Uint8List? _audioBytes;
   @override
   void dispose() {
     _streamController.close();
-  
+
     _recorder.closeRecorder();
     _player.dispose();
     _titleController.dispose();
@@ -172,7 +167,7 @@ Uint8List? _audioBytes;
   @override
   Widget build(BuildContext context) {
     final notifyData = context.watch<NotifyData>();
-    
+
     return AppScaffold(
       //appBar: AppBar(title: const Text('Record Audio')),
       body: Padding(
@@ -181,14 +176,20 @@ Uint8List? _audioBytes;
           children: [
             ElevatedButton(
               onPressed: () {},
-                  style: Constant.getTitle1ButtonStyle(),
-              child: notifyData.currentLanguage == Constant.languageEN ? Text(Constant.recordMainTitleEN) : Text(Constant.recordMainTitleFR),
-            ),            
-          const SizedBox(height: 24),
+              style: Constant.getTitle1ButtonStyle(),
+              child: notifyData.currentLanguage == Constant.languageEN
+                  ? Text(Constant.recordMainTitleEN)
+                  : Text(Constant.recordMainTitleFR),
+            ),
+            const SizedBox(height: 24),
 
             TextField(
               controller: _titleController,
-              decoration: InputDecoration(labelText: notifyData.currentLanguage == Constant.languageEN ? Constant.recordTitleEN : Constant.recordTitleFR),
+              decoration: InputDecoration(
+                labelText: notifyData.currentLanguage == Constant.languageEN
+                    ? Constant.recordTitleEN
+                    : Constant.recordTitleFR,
+              ),
             ),
 
             const SizedBox(height: 10),
@@ -196,7 +197,11 @@ Uint8List? _audioBytes;
             TextField(
               controller: _descriptionController,
               maxLines: 2,
-              decoration: InputDecoration(labelText: notifyData.currentLanguage == Constant.languageEN ? Constant.recordDescriptionEN : Constant.recordDescriptionFR),
+              decoration: InputDecoration(
+                labelText: notifyData.currentLanguage == Constant.languageEN
+                    ? Constant.recordDescriptionEN
+                    : Constant.recordDescriptionFR,
+              ),
             ),
 
             const SizedBox(height: 24),
@@ -204,7 +209,15 @@ Uint8List? _audioBytes;
             ElevatedButton.icon(
               onPressed: _isRecording ? _stopRecording : _startRecording,
               icon: Icon(_isRecording ? Icons.stop : Icons.mic),
-              label: Text(_isRecording ? (notifyData.currentLanguage == Constant.languageEN ? Constant.recordStopEN : Constant.recordStopFR) : (notifyData.currentLanguage == Constant.languageEN ? Constant.recordStopEN : Constant.recordStopFR)),
+              label: Text(
+                _isRecording
+                    ? (notifyData.currentLanguage == Constant.languageEN
+                          ? Constant.recordStopEN
+                          : Constant.recordStopFR)
+                    : (notifyData.currentLanguage == Constant.languageEN
+                          ? Constant.recordStopEN
+                          : Constant.recordStopFR),
+              ),
             ),
 
             const SizedBox(height: 24),
@@ -235,8 +248,7 @@ Uint8List? _audioBytes;
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       IconButton(
-                        icon: Icon(
-                            _isPlaying ? Icons.pause : Icons.play_arrow),
+                        icon: Icon(_isPlaying ? Icons.pause : Icons.play_arrow),
                         onPressed: _togglePlay,
                       ),
                       IconButton(
@@ -255,7 +267,11 @@ Uint8List? _audioBytes;
               onPressed: _isUploading ? null : _save,
               child: _isUploading
                   ? const CircularProgressIndicator()
-                  :  Text(notifyData.currentLanguage == Constant.languageEN ? Constant.recordSaveAndUploadEN : Constant.recordSaveAndUploadFR) ,
+                  : Text(
+                      notifyData.currentLanguage == Constant.languageEN
+                          ? Constant.recordSaveAndUploadEN
+                          : Constant.recordSaveAndUploadFR,
+                    ),
             ),
           ],
         ),
@@ -263,8 +279,3 @@ Uint8List? _audioBytes;
     );
   }
 }
-
-
-
-
-

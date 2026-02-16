@@ -76,43 +76,40 @@ class AudioProvider extends ChangeNotifier {
   }
 
   Future<void> uploadBytesAudio({
-  required String title,
-  required String description,
-  required Uint8List audioBytes,
-}) async {
+    required String title,
+    required String description,
+    required Uint8List audioBytes,
+  }) async {
+    print('ahahah ahahaha');
+    AudioItem audio = AudioItem(
+      id: DateTime.now().toString(),
+      title: title,
+      audioUrl: '',
+      description: description,
+    );
+    audios.add(audio);
+    notifyListeners();
+    return;
 
-  print('ahahah ahahaha');
-  AudioItem audio = AudioItem(id: DateTime.now().toString(), title: title, audioUrl: '', description: description);
-  audios.add(audio);
-  notifyListeners();
-  return;
+    String baseUrl = '';
+    final request = http.MultipartRequest(
+      'POST',
+      Uri.parse('$baseUrl/selfdictation'),
+    );
 
+    request.fields['title'] = title;
+    request.fields['description'] = description;
 
-  String baseUrl = '';
-  final request = http.MultipartRequest(
-    'POST',
-    Uri.parse('$baseUrl/selfdictation'),
-  );
+    request.files.add(
+      http.MultipartFile.fromBytes('file', audioBytes, filename: 'audio.aac'),
+    );
 
-  request.fields['title'] = title;
-  request.fields['description'] = description;
+    final response = await request.send();
 
-  request.files.add(
-    http.MultipartFile.fromBytes(
-      'file',
-      audioBytes,
-      filename: 'audio.aac',
-    ),
-  );
-
-  final response = await request.send();
-
-  if (response.statusCode != 200 && response.statusCode != 201) {
-    throw Exception('Upload failed');
+    if (response.statusCode != 200 && response.statusCode != 201) {
+      throw Exception('Upload failed');
+    }
   }
-}
-
-
 
   final List<Map<String, dynamic>> sampleAudioJson = [
     {

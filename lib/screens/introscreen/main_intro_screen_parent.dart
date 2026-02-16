@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:kids_learning_flutter_app/screens/introscreen/main_intro_screen_child.dart';
 import 'package:provider/provider.dart';
+import '../../core/constance_parent.dart';
 import '../../core/constances.dart';
+import '../../core/notify_data.dart';
 import '../../models/child.dart';
 import '../../providers/session_provider.dart';
 import '../../widgets/app_scaffold.dart';
@@ -16,20 +18,18 @@ class MainIntroScreenParent extends StatefulWidget {
 }
 
 class _MainIntroScreenParent extends State<MainIntroScreenParent> {
-  //class MainIntroScreenParent extends StatelessWidget {
-
   void _navigateTo(Child? item) {
-    //if( item['key'] ==  'Dictation') {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (_) => ParentChildScreen(child: item!,)),
+      MaterialPageRoute(builder: (_) => ParentChildScreen(child: item!)),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     SessionProvider session = context.watch<SessionProvider>();
-    
+    final notifyData = context.watch<NotifyData>();
+
     return AppScaffold(
       /*appBar: AppBar(
         title: const Text("Parent Dashboard"),
@@ -42,8 +42,10 @@ class _MainIntroScreenParent extends State<MainIntroScreenParent> {
           children: [
             // Title
             Center(
-              child: const Text(
-                "My Children",
+              child: Text(
+                notifyData.currentLanguage == Constant.languageEN
+                    ? ConstantParent.menuTitrePageIntroParentEN
+                    : ConstantParent.menuTitrePageIntroParentFR,
                 style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
               ),
             ),
@@ -53,7 +55,13 @@ class _MainIntroScreenParent extends State<MainIntroScreenParent> {
             // Children list
             Expanded(
               child: session.parent!.children.isEmpty
-                  ? const Center(child: Text("No children added"))
+                  ? Center(
+                      child: Text(
+                        notifyData.currentLanguage == Constant.languageEN
+                            ? ConstantParent.menuNoChildRegisterEN
+                            : ConstantParent.menuNoChildRegisterEN,
+                      ),
+                    )
                   : ListView.builder(
                       padding: const EdgeInsets.all(16),
                       itemCount: session.parent?.children.length,
@@ -101,7 +109,10 @@ class _MainIntroScreenParent extends State<MainIntroScreenParent> {
                                     color:
                                         (session.parent?.currentChild != null &&
                                             item.id ==
-                                                session.parent?.currentChild?.id)
+                                                session
+                                                    .parent
+                                                    ?.currentChild
+                                                    ?.id)
                                         ? Colors.blue
                                         : Colors.grey, // The background color
                                     shape: BoxShape
@@ -114,7 +125,10 @@ class _MainIntroScreenParent extends State<MainIntroScreenParent> {
                                     color:
                                         (session.parent?.currentChild != null &&
                                             item.id ==
-                                                session.parent?.currentChild?.id)
+                                                session
+                                                    .parent
+                                                    ?.currentChild
+                                                    ?.id)
                                         ? Colors.white
                                         : Colors.black,
                                     onPressed: () {
@@ -128,7 +142,6 @@ class _MainIntroScreenParent extends State<MainIntroScreenParent> {
                                               const MainIntroScreenChild(),
                                         ),
                                       );
-                                      
                                     },
                                   ),
                                 ),
@@ -147,25 +160,22 @@ class _MainIntroScreenParent extends State<MainIntroScreenParent> {
 
             // Actions
             Center(
-              child:ElevatedButton.icon(
-                    onPressed: () => _showAddChildDialog(context),
-                    icon: const Icon(Icons.person_add),
-                    label: const Text("Add Child"),
-                    style: Constant.getTitle3ButtonStyle(),
-                  ),
+              child: ElevatedButton.icon(
+                onPressed: () => _showAddChildDialog(context),
+                icon: const Icon(Icons.person_add),
+                label: const Text("Add Child"),
+                style: Constant.getTitle3ButtonStyle(),
+              ),
             ),
             const SizedBox(height: 10),
             Center(
-              child:ElevatedButton.icon(
-                    onPressed: () => _showChangePasswordDialog(context, session),
-                    icon: const Icon(Icons.lock),
-                    label: const Text("Change Password"),
-                    style: Constant.getTitle3ButtonRedStyle(),
-                  ),
+              child: ElevatedButton.icon(
+                onPressed: () => _showChangePasswordDialog(context, session),
+                icon: const Icon(Icons.lock),
+                label: const Text("Change Password"),
+                style: Constant.getTitle3ButtonRedStyle(),
+              ),
             ),
-            
-            
-            
           ],
         ),
       ),
@@ -187,19 +197,19 @@ class _MainIntroScreenParent extends State<MainIntroScreenParent> {
         content: Column(
           children: [
             TextField(
-          controller: controllerLogin,
-          decoration: const InputDecoration(labelText: "Child Login"),
-        ),
-        SizedBox(height: 10,),
-        TextField(
-          controller: controllerName,
-          decoration: const InputDecoration(labelText: "Child Name"),
-        ),
-        SizedBox(height: 10,),
-        TextField(
-          controller: controllerPassword,
-          decoration: const InputDecoration(labelText: "Child Password"),
-        )
+              controller: controllerLogin,
+              decoration: const InputDecoration(labelText: "Child Login"),
+            ),
+            SizedBox(height: 10),
+            TextField(
+              controller: controllerName,
+              decoration: const InputDecoration(labelText: "Child Name"),
+            ),
+            SizedBox(height: 10),
+            TextField(
+              controller: controllerPassword,
+              decoration: const InputDecoration(labelText: "Child Password"),
+            ),
           ],
         ),
         actions: [
@@ -209,9 +219,13 @@ class _MainIntroScreenParent extends State<MainIntroScreenParent> {
           ),
           ElevatedButton(
             onPressed: () {
-              if (controllerLogin.text.isNotEmpty && controllerName.text.isNotEmpty && controllerPassword.text.isNotEmpty) {
+              if (controllerLogin.text.isNotEmpty &&
+                  controllerName.text.isNotEmpty &&
+                  controllerPassword.text.isNotEmpty) {
                 context.read<SessionProvider>().addChild(
-                  controllerLogin.text, controllerName.text,controllerPassword.text
+                  controllerLogin.text,
+                  controllerName.text,
+                  controllerPassword.text,
                 );
                 Navigator.pop(context);
               }
@@ -226,7 +240,10 @@ class _MainIntroScreenParent extends State<MainIntroScreenParent> {
   // -------------------------
   // Change Password Dialog
   // -------------------------
-  void _showChangePasswordDialog(BuildContext context, SessionProvider session) {
+  void _showChangePasswordDialog(
+    BuildContext context,
+    SessionProvider session,
+  ) {
     final controllerName = TextEditingController();
     final controllerPassword = TextEditingController();
     controllerName.text = session.parent!.name;
@@ -238,15 +255,15 @@ class _MainIntroScreenParent extends State<MainIntroScreenParent> {
         content: Column(
           children: [
             TextField(
-          controller: controllerName,
-          decoration: InputDecoration(labelText: "New Name"),
-        ),
-        SizedBox(height: 10,),
-        TextField(
-          controller: controllerPassword,
-          obscureText: true,
-          decoration: const InputDecoration(labelText: "New Password"),
-        )
+              controller: controllerName,
+              decoration: InputDecoration(labelText: "New Name"),
+            ),
+            SizedBox(height: 10),
+            TextField(
+              controller: controllerPassword,
+              obscureText: true,
+              decoration: const InputDecoration(labelText: "New Password"),
+            ),
           ],
         ),
         actions: [
@@ -256,8 +273,12 @@ class _MainIntroScreenParent extends State<MainIntroScreenParent> {
           ),
           ElevatedButton(
             onPressed: () {
-              if (controllerName.text.isNotEmpty && controllerPassword.text.isNotEmpty) {
-                context.read<SessionProvider>().changeParentPassword(controllerName.text, controllerPassword.text);
+              if (controllerName.text.isNotEmpty &&
+                  controllerPassword.text.isNotEmpty) {
+                context.read<SessionProvider>().changeParentPassword(
+                  controllerName.text,
+                  controllerPassword.text,
+                );
                 Navigator.pop(context);
               }
             },

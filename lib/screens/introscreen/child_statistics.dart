@@ -39,19 +39,7 @@ class ChildStatistics extends StatelessWidget {
       ),
     ),
     );
-    /*SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildHeader(),
-          const SizedBox(height: 20),
-          _buildProgressCard(completionRate.toDouble()),
-          const SizedBox(height: 20),
-          _buildStatsGrid(),
-        ],
-      ),
-    );*/
+    
   }
 
   Widget _buildHeader() {

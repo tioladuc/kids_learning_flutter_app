@@ -26,9 +26,21 @@ class LogoutScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const PageTitle(text: "Login Page++"),
-              const Text("Login Page 999"),
+              const SizedBox(height: 20),
+              PageTitle(
+                text: notifyData.currentLanguage == Constant.languageEN
+                    ? ConstantSession.LogoutTitleEN
+                    : ConstantSession.LogoutTitleFR,
+              ),
 
+              const SizedBox(height: 20),
+              Text(
+                notifyData.currentLanguage == Constant.languageEN
+                    ? ConstantSession.LogoutMessageEN
+                    : ConstantSession.LogoutMessageFR,
+              ),
+
+              const SizedBox(height: 20),
               ElevatedButton(
                 style: Constant.getTitle3ButtonStyle(),
                 onPressed: () async {
@@ -41,30 +53,13 @@ class LogoutScreen extends StatelessWidget {
                   );
                 },
                 child: notifyData.currentLanguage == Constant.languageEN
-                    ?  Text(ConstantSession.LoginButtonEN)
-                    :  Text(ConstantSession.LoginButtonFR),
+                    ? Text(ConstantSession.LogoutButtonEN)
+                    : Text(ConstantSession.LogoutButtonFR),
               ),
             ],
           ),
         ),
-      ) /*Column(
-        children: [
-          Center(child: Text("Login Page")),
-          ElevatedButton(
-              style: Constant.getTitle3ButtonStyle(),
-              onPressed: () async {
-                notifyData.setRole(null);
-                sessionProvider.setRole(null);
-
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (_) => LoginScreen()),
-                );
-              },
-              child: notifyData.currentLanguage == Constant.languageEN ? Text(ConstantSession.LoginButtonEN) : Text(ConstantSession.LoginButtonFR),
-            )
-        ],
-      )*/, //Center(child: Text("Login Page")),
+      ),
     );
   }
 }
