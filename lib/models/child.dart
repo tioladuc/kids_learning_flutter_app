@@ -3,6 +3,13 @@ class Child {
   String name;
   final String login;
   String password;
+//////////////////////////////////////////
+///final int age;
+   int? completedTasks;
+   int? totalTasks;
+   int? totalTimeMinutes;
+   int? streakDays;
+  int? age;
 
   Child({required this.id, required this.name, required this.login, required this.password});
 

@@ -6,6 +6,7 @@ import '../../models/child.dart';
 import '../../providers/session_provider.dart';
 import '../../widgets/app_scaffold.dart';
 import '../audio/audio_list_screen.dart';
+import 'parent_child_screen.dart';
 
 class MainIntroScreenParent extends StatefulWidget {
   const MainIntroScreenParent({super.key});
@@ -21,9 +22,8 @@ class _MainIntroScreenParent extends State<MainIntroScreenParent> {
     //if( item['key'] ==  'Dictation') {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (_) => const AudioListScreen()),
+      MaterialPageRoute(builder: (_) => ParentChildScreen(child: item!,)),
     );
-    //}
   }
 
   @override
@@ -128,6 +128,7 @@ class _MainIntroScreenParent extends State<MainIntroScreenParent> {
                                               const MainIntroScreenChild(),
                                         ),
                                       );
+                                      
                                     },
                                   ),
                                 ),

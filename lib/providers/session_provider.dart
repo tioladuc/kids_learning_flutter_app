@@ -69,6 +69,7 @@ class SessionProvider extends ChangeNotifier {
     parent?.password = newPassword;
     // TODO: call API
     print("Password changed: $newPassword");
+    notifyListeners();
   }
 
   void changeChildPassword(String name, String newPassword) {
@@ -76,6 +77,7 @@ class SessionProvider extends ChangeNotifier {
     child?.password = newPassword;
     // TODO: call API
     print("Password changed: $newPassword");
+    notifyListeners();
   }
 
   void changePasswordParentChild(String name, String newPassword, Child child) {
@@ -83,5 +85,6 @@ class SessionProvider extends ChangeNotifier {
     parent?.children.firstWhere((element) => element.id == child.id).name = name;
     parent?.children.firstWhere((element) => element.id == child.id).password = newPassword;
     print("Password changed: $newPassword");
+    notifyListeners();
   }
 }
