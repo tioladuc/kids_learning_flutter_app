@@ -161,18 +161,27 @@ class _MainIntroScreenParent extends State<MainIntroScreenParent> {
             // Actions
             Center(
               child: ElevatedButton.icon(
-                onPressed: () => _showAddChildDialog(context),
+                onPressed: () => _showAddChildDialog(context, notifyData),
                 icon: const Icon(Icons.person_add),
-                label: const Text("Add Child"),
+                label: Text(
+                  notifyData.currentLanguage == Constant.languageEN
+                      ? ConstantParent.menuAddChildEN
+                      : ConstantParent.menuAddChildFR,
+                ),
                 style: Constant.getTitle3ButtonStyle(),
               ),
             ),
             const SizedBox(height: 10),
             Center(
               child: ElevatedButton.icon(
-                onPressed: () => _showChangePasswordDialog(context, session),
+                onPressed: () =>
+                    _showChangePasswordDialog(context, session, notifyData),
                 icon: const Icon(Icons.lock),
-                label: const Text("Change Password"),
+                label: Text(
+                  notifyData.currentLanguage == Constant.languageEN
+                      ? ConstantParent.menuChangeNameAndPwdEN
+                      : ConstantParent.menuChangeNameAndPwdFR,
+                ),
                 style: Constant.getTitle3ButtonRedStyle(),
               ),
             ),
@@ -185,7 +194,7 @@ class _MainIntroScreenParent extends State<MainIntroScreenParent> {
   // -------------------------
   // Add Child Dialog
   // -------------------------
-  void _showAddChildDialog(BuildContext context) {
+  void _showAddChildDialog(BuildContext context, NotifyData notifyData) {
     final controllerLogin = TextEditingController();
     final controllerPassword = TextEditingController();
     final controllerName = TextEditingController();
@@ -193,29 +202,49 @@ class _MainIntroScreenParent extends State<MainIntroScreenParent> {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        title: const Text("Add Child"),
+        title: Text(
+          notifyData.currentLanguage == Constant.languageEN
+              ? ConstantParent.titleAddChildEN
+              : ConstantParent.titleAddChildFR,
+        ),
         content: Column(
           children: [
             TextField(
-              controller: controllerLogin,
-              decoration: const InputDecoration(labelText: "Child Login"),
+              controller: controllerName,
+              decoration: InputDecoration(
+                labelText: notifyData.currentLanguage == Constant.languageEN
+                    ? ConstantParent.labelChildNameEN
+                    : ConstantParent.labelChildNameFR,
+              ),
             ),
             SizedBox(height: 10),
             TextField(
-              controller: controllerName,
-              decoration: const InputDecoration(labelText: "Child Name"),
+              controller: controllerLogin,
+              decoration: InputDecoration(
+                labelText: notifyData.currentLanguage == Constant.languageEN
+                    ? ConstantParent.labelChildLoginEN
+                    : ConstantParent.labelChildLoginFR,
+              ),
             ),
             SizedBox(height: 10),
             TextField(
               controller: controllerPassword,
-              decoration: const InputDecoration(labelText: "Child Password"),
+              decoration: InputDecoration(
+                labelText: notifyData.currentLanguage == Constant.languageEN
+                    ? ConstantParent.labelChildPwdEN
+                    : ConstantParent.labelChildPwdEN,
+              ),
             ),
           ],
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text("Cancel"),
+            child: Text(
+              notifyData.currentLanguage == Constant.languageEN
+                  ? ConstantParent.labelChildCancelButtonEN
+                  : ConstantParent.labelChildCancelButtonFR,
+            ),
           ),
           ElevatedButton(
             onPressed: () {
@@ -230,7 +259,11 @@ class _MainIntroScreenParent extends State<MainIntroScreenParent> {
                 Navigator.pop(context);
               }
             },
-            child: const Text("Add"),
+            child: Text(
+              notifyData.currentLanguage == Constant.languageEN
+                  ? ConstantParent.labelChildSaveButtonEN
+                  : ConstantParent.labelChildSaveButtonFR,
+            ),
           ),
         ],
       ),
@@ -243,6 +276,7 @@ class _MainIntroScreenParent extends State<MainIntroScreenParent> {
   void _showChangePasswordDialog(
     BuildContext context,
     SessionProvider session,
+    NotifyData notifyData,
   ) {
     final controllerName = TextEditingController();
     final controllerPassword = TextEditingController();
@@ -251,25 +285,41 @@ class _MainIntroScreenParent extends State<MainIntroScreenParent> {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        title: const Text("Change Name & Password"),
+        title: Text(
+          notifyData.currentLanguage == Constant.languageEN
+              ? ConstantParent.labelTitleParentPwdChangeEN
+              : ConstantParent.labelTitleParentPwdChangeFR,
+        ),
         content: Column(
           children: [
             TextField(
               controller: controllerName,
-              decoration: InputDecoration(labelText: "New Name"),
+              decoration: InputDecoration(
+                labelText: notifyData.currentLanguage == Constant.languageEN
+                    ? ConstantParent.labelNameParentPwdChangeEN
+                    : ConstantParent.labelNameParentPwdChangeFR,
+              ),
             ),
             SizedBox(height: 10),
             TextField(
               controller: controllerPassword,
               obscureText: true,
-              decoration: const InputDecoration(labelText: "New Password"),
+              decoration: InputDecoration(
+                labelText: notifyData.currentLanguage == Constant.languageEN
+                    ? ConstantParent.labelNameParentPwdChangeEN
+                    : ConstantParent.labelNameParentPwdChangeFR,
+              ),
             ),
           ],
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text("Cancel"),
+            child: Text(
+              notifyData.currentLanguage == Constant.languageEN
+                  ? ConstantParent.labelCancelButtonParentPwdChangeEN
+                  : ConstantParent.labelCancelButtonParentPwdChangeFR,
+            ),
           ),
           ElevatedButton(
             onPressed: () {
@@ -282,7 +332,11 @@ class _MainIntroScreenParent extends State<MainIntroScreenParent> {
                 Navigator.pop(context);
               }
             },
-            child: const Text("Save"),
+            child: Text(
+              notifyData.currentLanguage == Constant.languageEN
+                  ? ConstantParent.labelSaveButtonParentPwdChangeEN
+                  : ConstantParent.labelSaveButtonParentPwdChangeFR,
+            ),
           ),
         ],
       ),
