@@ -9,6 +9,7 @@ import '../../../providers/session_provider.dart';
 import '../../../widgets/app_scaffold.dart';
 import '../child/child_statistics.dart';
 import '../main_intro_screen_child.dart';
+import '../statistics/intro_statistics.dart';
 import 'parent_pending_screen.dart';
 
 class ParentChildScreen extends StatefulWidget {
@@ -139,7 +140,7 @@ class _ParentChildScreenState extends State<ParentChildScreen> {
     // TODO: navigate to statistics screen
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (_) => ChildStatistics(child: widget.child)),
+      MaterialPageRoute(builder: (_) => IntroStatistics(child: widget.child, isViewParent: true, isResponsible: widget.child.parentResponsible!,)),
     );
   }
 

@@ -17,3 +17,19 @@ class Course {
     required this.description,
   });
 }
+
+//////////////////////////////////////////////
+class VisitedCourse {
+  final Course course;
+  final int timeSpent;
+
+  VisitedCourse(this.course, this.timeSpent);
+}
+
+class NeverDoneCourse {
+  final Course course;
+  final DateTime pickedDate;
+
+  NeverDoneCourse(this.course, this.pickedDate);
+}
+

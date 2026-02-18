@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kids_learning_flutter_app/providers/course_provider.dart';
+import 'package:kids_learning_flutter_app/providers/statistics_provider.dart';
 import 'package:provider/provider.dart';
 
 import 'app.dart';
@@ -29,6 +30,7 @@ void main() {
         ChangeNotifierProvider(create: (_) => SessionProvider()),
         ChangeNotifierProvider(create: (_) => CourseProvider()),
         ChangeNotifierProvider(create: (_) => AudioProvider()),
+        ChangeNotifierProvider(create: (_) => StatisticsProvider()),
       ],
       child: const KidsLearningApp(),
     ),

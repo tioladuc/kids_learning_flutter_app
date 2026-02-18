@@ -12,6 +12,7 @@ import 'logout_screen.dart';
 import 'child/child_pending_screen.dart';
 import 'child/child_pick_course.dart';
 import 'parent/parent_child_statistics.dart';
+import 'statistics/intro_statistics.dart';
 
 class MainIntroScreenChild extends StatefulWidget {
   const MainIntroScreenChild({super.key});
@@ -96,7 +97,7 @@ class _MainIntroScreenChild extends State<MainIntroScreenChild> {
     if (item['key'] == 'Statistics') {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (_) => ChildStatistics(child: session.child!,)),
+        MaterialPageRoute(builder: (_) => IntroStatistics(child: session.child!, isResponsible: false, isViewParent: false,)),
       );
     }
 

@@ -26,7 +26,7 @@ class _ChildPickCourseState extends State<ChildPickCourse> {
     Future.microtask(() {
       context
           .read<CourseProvider>()
-          .loadChildPendingCourses(widget.child.id);
+          .loadChildPickCourses(widget.child.id);
     });
   }
 
@@ -44,7 +44,7 @@ class _ChildPickCourseState extends State<ChildPickCourse> {
       return const Center(child: CircularProgressIndicator());
     }
 
-    if (provider.pendingCourses.isEmpty) {
+    if (provider.pickCourses.isEmpty) {
       return const Center(
         child: Text("No available courses"),
       );
@@ -61,9 +61,9 @@ class _ChildPickCourseState extends State<ChildPickCourse> {
         Expanded(
           child: ListView.builder(
             padding: const EdgeInsets.all(12),
-            itemCount: provider.pendingCourses.length,
+            itemCount: provider.pickCourses.length,
             itemBuilder: (context, index) {
-              final course = provider.pendingCourses[index];
+              final course = provider.pickCourses[index];
               return _courseCard(course);
             },
           ),
@@ -217,7 +217,7 @@ class _ChildPickCourseState extends State<ChildPickCourse> {
       );
 
       /// REFRESH LIST
-      provider.loadChildPendingCourses(widget.child.id);
+      provider.loadChildPickCourses(widget.child.id);
     } catch (e) {
       if (!mounted) return;
 
