@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:kids_learning_flutter_app/core/notify_data.dart';
 import 'package:provider/provider.dart';
+import '../../../core/constance_course.dart';
 import '../../../core/constances.dart';
 import '../../../models/child.dart';
 import '../../../models/course.dart';
@@ -21,37 +23,32 @@ class ParentChildPendingScreen extends StatefulWidget {
       _ParentChildPendingScreenState();
 }
 
-class _ParentChildPendingScreenState
-    extends State<ParentChildPendingScreen> {
+class _ParentChildPendingScreenState extends State<ParentChildPendingScreen> {
   @override
   void initState() {
     super.initState();
 
     Future.microtask(() {
-      context
-          .read<CourseProvider>()
-          .loadChildPendingCourses(widget.child.id);
+      context.read<CourseProvider>().loadChildPendingCourses(widget.child.id);
     });
   }
 
   @override
   Widget build(BuildContext context) {
     final provider = context.watch<CourseProvider>();
+    final notifyData = context.watch<NotifyData>();
 
-    return AppScaffold(
-      body: _buildBody(provider),
-    );
+
+    return AppScaffold(body: _buildBody(provider, notifyData));
   }
 
-  Widget _buildBody(CourseProvider provider) {
+  Widget _buildBody(CourseProvider provider, NotifyData notifyData) {
     if (provider.isLoading && provider.pendingCourses.isEmpty) {
       return const Center(child: CircularProgressIndicator());
     }
 
     if (provider.pendingCourses.isEmpty) {
-      return const Center(
-        child: Text("No pending courses"),
-      );
+      return Center(child: Text(notifyData.currentLanguage == Constant.AppNameEN? ConstantCourse.NoPendingCourseMsgEN:ConstantCourse.NoPendingCourseMsgFR));
     }
 
     return Column(
@@ -59,7 +56,7 @@ class _ParentChildPendingScreenState
         ElevatedButton(
           onPressed: () {},
           style: Constant.getTitle1ButtonStyle(),
-          child: Text("${widget.child.name} - Pending Courses"),
+          child: Text("${widget.child.name} - Pending Courses" + (notifyData.currentLanguage == Constant.AppNameEN? ConstantCourse.PendingCourseTitleEN:ConstantCourse.PendingCourseTitleFR)),
         ),
 
         Expanded(
@@ -77,7 +74,8 @@ class _ParentChildPendingScreenState
   }
 
   Widget _courseCard(Course course, CourseProvider provider) {
-    final isExpiringSoon = course.expiryDate != null &&
+    final isExpiringSoon =
+        course.expiryDate != null &&
         course.expiryDate!.isBefore(
           DateTime.now().add(const Duration(days: 7)),
         );
@@ -85,9 +83,7 @@ class _ParentChildPendingScreenState
     return Card(
       elevation: 4,
       margin: const EdgeInsets.only(bottom: 12),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -108,9 +104,8 @@ class _ParentChildPendingScreenState
                 highlight: isExpiringSoon,
               ),
 
-            if (widget.isResponsible)
-              _paymentButton(course, provider),
-              
+            if (widget.isResponsible) _paymentButton(course, provider),
+
             _removeCourseButton(course, provider),
           ],
         ),
@@ -148,7 +143,6 @@ class _ParentChildPendingScreenState
   }
 
   Widget _removeCourseButton(Course course, CourseProvider provider) {
-    
     return Padding(
       padding: const EdgeInsets.only(top: 12),
       child: SizedBox(
@@ -157,9 +151,7 @@ class _ParentChildPendingScreenState
           onPressed: provider.isLoading
               ? null
               : () => _handleRemoveCourse(course, provider),
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.red,
-          ),
+          style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
           child: provider.isLoading
               ? const SizedBox(
                   height: 18,
@@ -175,8 +167,7 @@ class _ParentChildPendingScreenState
     );
   }
 
-  Future<void> _handlePayment(
-      Course course, CourseProvider provider) async {
+  Future<void> _handlePayment(Course course, CourseProvider provider) async {
     final confirm = await _showConfirmationDialog(course);
 
     if (confirm != true) return;
@@ -196,7 +187,9 @@ class _ParentChildPendingScreenState
   }
 
   Future<void> _handleRemoveCourse(
-      Course course, CourseProvider provider) async {
+    Course course,
+    CourseProvider provider,
+  ) async {
     final confirm = await _showConfirmationCourseRemovalDialog(course);
 
     if (confirm != true) return;
@@ -242,9 +235,7 @@ class _ParentChildPendingScreenState
       context: context,
       builder: (_) => AlertDialog(
         title: const Text("Confirm Removal"),
-        content: Text(
-          "Do you want to remove the course: '${course.name}'?",
-        ),
+        content: Text("Do you want to remove the course: '${course.name}'?"),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
@@ -269,7 +260,7 @@ class _ParentChildPendingScreenState
           TextButton(
             onPressed: () => Navigator.pop(context),
             child: const Text("OK"),
-          )
+          ),
         ],
       ),
     );
@@ -285,20 +276,19 @@ class _ParentChildPendingScreenState
           TextButton(
             onPressed: () => Navigator.pop(context),
             child: const Text("OK"),
-          )
+          ),
         ],
       ),
     );
   }
 
   void _showError(String msg) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(msg)),
-    );
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
   }
 
   Widget _header(Course course) {
-    final isExpiringSoon = course.expiryDate != null &&
+    final isExpiringSoon =
+        course.expiryDate != null &&
         course.expiryDate!.isBefore(
           DateTime.now().add(const Duration(days: 7)),
         );
@@ -309,10 +299,7 @@ class _ParentChildPendingScreenState
         Expanded(
           child: Text(
             course.name,
-            style: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
         ),
         _statusBadge(course, isExpiringSoon),
@@ -336,43 +323,30 @@ class _ParentChildPendingScreenState
     }
 
     return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 10,
-        vertical: 5,
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       decoration: BoxDecoration(
         color: color.withOpacity(0.15),
         borderRadius: BorderRadius.circular(20),
       ),
       child: Text(
         text,
-        style: TextStyle(
-          color: color,
-          fontWeight: FontWeight.bold,
-        ),
+        style: TextStyle(color: color, fontWeight: FontWeight.bold),
       ),
     );
   }
 
-  Widget _infoRow(String label, String value,
-      {bool highlight = false}) {
+  Widget _infoRow(String label, String value, {bool highlight = false}) {
     return Padding(
       padding: const EdgeInsets.only(top: 6),
       child: Row(
         children: [
-          Text(
-            "$label: ",
-            style: const TextStyle(
-              fontWeight: FontWeight.w600,
-            ),
-          ),
+          Text("$label: ", style: const TextStyle(fontWeight: FontWeight.w600)),
           Expanded(
             child: Text(
               value,
               style: TextStyle(
                 color: highlight ? Colors.red : Colors.black,
-                fontWeight:
-                    highlight ? FontWeight.bold : FontWeight.normal,
+                fontWeight: highlight ? FontWeight.bold : FontWeight.normal,
               ),
             ),
           ),

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:kids_learning_flutter_app/providers/session_provider.dart';
 import 'package:provider/provider.dart';
+import '../../../core/constance_course.dart';
 import '../../../core/constances.dart';
+import '../../../core/notify_data.dart';
 import '../../../models/child.dart';
 import '../../../models/course.dart';
 import '../../../providers/course_provider.dart';
@@ -10,14 +11,10 @@ import '../../../widgets/app_scaffold.dart';
 class ChildPendingScreen extends StatefulWidget {
   final Child child;
 
-  const ChildPendingScreen({
-    super.key,
-    required this.child,
-  });
+  const ChildPendingScreen({super.key, required this.child});
 
   @override
-  State<ChildPendingScreen> createState() =>
-      _ChildPendingScreenState();
+  State<ChildPendingScreen> createState() => _ChildPendingScreenState();
 }
 
 class _ChildPendingScreenState extends State<ChildPendingScreen> {
@@ -26,54 +23,48 @@ class _ChildPendingScreenState extends State<ChildPendingScreen> {
     super.initState();
 
     Future.microtask(() {
-      context
-          .read<CourseProvider>()
-          .loadChildPendingCourses(widget.child.id);
+      context.read<CourseProvider>().loadChildPendingCourses(widget.child.id);
     });
   }
 
   @override
   Widget build(BuildContext context) {
     final provider = context.watch<CourseProvider>();
+    final notifyData = context.watch<NotifyData>();
 
-    return AppScaffold(
-      
-      body: _buildBody(provider),
-    );
+    return AppScaffold(body: _buildBody(provider, notifyData));
   }
 
-  Widget _buildBody(CourseProvider provider) {
+  Widget _buildBody(CourseProvider provider, NotifyData notifyData) {
     if (provider.isLoading) {
       return const Center(child: CircularProgressIndicator());
     }
 
     if (provider.pendingCourses.isEmpty) {
-      return const Center(
-        child: Text("No pending courses"),
-      );
+      return Center(child: Text(notifyData.currentLanguage == Constant.AppNameEN? ConstantCourse.NoPendingCourseMsgEN:ConstantCourse.NoPendingCourseMsgFR));
     }
 
     return Column(
-  children: <Widget>[
-    ElevatedButton(
-                onPressed: () => {}, //context.read<SessionProvider>().login('child'),
-                style: Constant.getTitle1ButtonStyle(),
-                child:  Text("${widget.child.name} - Pending Courses"),
-              ),
-    
-    
-    Expanded( // <-- Use Expanded
-      child: ListView.builder(
-      padding: const EdgeInsets.all(12),
-      itemCount: provider.pendingCourses.length,
-      itemBuilder: (context, index) {
-        final course = provider.pendingCourses[index];
-        return _courseCard(course, provider);
-      },
-    ),
-    ),
-  ],
-);/*Column(
+      children: <Widget>[
+        ElevatedButton(
+          onPressed: () => {}, //context.read<SessionProvider>().login('child'),
+          style: Constant.getTitle1ButtonStyle(),
+          child: Text("${widget.child.name} - Pending Courses" + (notifyData.currentLanguage == Constant.AppNameEN? ConstantCourse.PendingCourseTitleEN:ConstantCourse.PendingCourseTitleFR)),
+        ),
+
+        Expanded(
+          // <-- Use Expanded
+          child: ListView.builder(
+            padding: const EdgeInsets.all(12),
+            itemCount: provider.pendingCourses.length,
+            itemBuilder: (context, index) {
+              final course = provider.pendingCourses[index];
+              return _courseCard(course, provider);
+            },
+          ),
+        ),
+      ],
+    ); /*Column(
       children: [
         ElevatedButton(
                 onPressed: () => {}, //context.read<SessionProvider>().login('child'),
@@ -94,7 +85,8 @@ class _ChildPendingScreenState extends State<ChildPendingScreen> {
   }
 
   Widget _courseCard(Course course, CourseProvider courseProvider) {
-    final isExpiringSoon = course.expiryDate != null &&
+    final isExpiringSoon =
+        course.expiryDate != null &&
         course.expiryDate!.isBefore(
           DateTime.now().add(const Duration(days: 7)),
         );
@@ -102,9 +94,7 @@ class _ChildPendingScreenState extends State<ChildPendingScreen> {
     return Card(
       elevation: 4,
       margin: const EdgeInsets.only(bottom: 12),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -132,7 +122,6 @@ class _ChildPendingScreenState extends State<ChildPendingScreen> {
   }
 
   Widget _removeCourseButton(Course course, CourseProvider provider) {
-    
     return Padding(
       padding: const EdgeInsets.only(top: 12),
       child: SizedBox(
@@ -141,9 +130,7 @@ class _ChildPendingScreenState extends State<ChildPendingScreen> {
           onPressed: provider.isLoading
               ? null
               : () => _handleRemoveCourse(course, provider),
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.red,
-          ),
+          style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
           child: provider.isLoading
               ? const SizedBox(
                   height: 18,
@@ -160,7 +147,9 @@ class _ChildPendingScreenState extends State<ChildPendingScreen> {
   }
 
   Future<void> _handleRemoveCourse(
-      Course course, CourseProvider provider) async {
+    Course course,
+    CourseProvider provider,
+  ) async {
     final confirm = await _showConfirmationCourseRemovalDialog(course);
 
     if (confirm != true) return;
@@ -184,9 +173,7 @@ class _ChildPendingScreenState extends State<ChildPendingScreen> {
       context: context,
       builder: (_) => AlertDialog(
         title: const Text("Confirm Removal"),
-        content: Text(
-          "Do you want to remove the course: '${course.name}'?",
-        ),
+        content: Text("Do you want to remove the course: '${course.name}'?"),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
@@ -211,20 +198,19 @@ class _ChildPendingScreenState extends State<ChildPendingScreen> {
           TextButton(
             onPressed: () => Navigator.pop(context),
             child: const Text("OK"),
-          )
+          ),
         ],
       ),
     );
   }
 
   void _showError(String msg) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(msg)),
-    );
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
   }
 
   Widget _header(Course course) {
-    final isExpiringSoon = course.expiryDate != null &&
+    final isExpiringSoon =
+        course.expiryDate != null &&
         course.expiryDate!.isBefore(
           DateTime.now().add(const Duration(days: 7)),
         );
@@ -235,10 +221,7 @@ class _ChildPendingScreenState extends State<ChildPendingScreen> {
         Expanded(
           child: Text(
             course.name,
-            style: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
         ),
         _statusBadge(course, isExpiringSoon),
@@ -262,10 +245,7 @@ class _ChildPendingScreenState extends State<ChildPendingScreen> {
     }
 
     return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 10,
-        vertical: 5,
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       decoration: BoxDecoration(
         color: color.withOpacity(0.15),
         borderRadius: BorderRadius.circular(20),
@@ -277,25 +257,18 @@ class _ChildPendingScreenState extends State<ChildPendingScreen> {
     );
   }
 
-  Widget _infoRow(String label, String value,
-      {bool highlight = false}) {
+  Widget _infoRow(String label, String value, {bool highlight = false}) {
     return Padding(
       padding: const EdgeInsets.only(top: 6),
       child: Row(
         children: [
-          Text(
-            "$label: ",
-            style: const TextStyle(
-              fontWeight: FontWeight.w600,
-            ),
-          ),
+          Text("$label: ", style: const TextStyle(fontWeight: FontWeight.w600)),
           Expanded(
             child: Text(
               value,
               style: TextStyle(
                 color: highlight ? Colors.red : Colors.black,
-                fontWeight:
-                    highlight ? FontWeight.bold : FontWeight.normal,
+                fontWeight: highlight ? FontWeight.bold : FontWeight.normal,
               ),
             ),
           ),
