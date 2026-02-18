@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:kids_learning_flutter_app/screens/introscreen/main_intro_screen_parent.dart';
 import 'package:provider/provider.dart';
-import '../../core/constance_parent.dart';
-import '../../core/constances.dart';
-import '../../core/notify_data.dart';
-import '../../models/child.dart';
-import '../../providers/session_provider.dart';
-import '../../widgets/app_scaffold.dart';
-import 'child_statistics.dart';
-import 'main_intro_screen_child.dart';
+import '../../../core/constance_parent.dart';
+import '../../../core/constances.dart';
+import '../../../core/notify_data.dart';
+import '../../../models/child.dart';
+import '../../../providers/session_provider.dart';
+import '../../../widgets/app_scaffold.dart';
+import '../child/child_statistics.dart';
+import '../main_intro_screen_child.dart';
+import 'parent_pending_screen.dart';
 
 class ParentChildScreen extends StatefulWidget {
   final Child child;
@@ -143,6 +144,24 @@ class _ParentChildScreenState extends State<ParentChildScreen> {
   }
 
   // -------------------------
+  // VIEW PENDING COURSES
+  // -------------------------
+  void _viewPendingCourses() {
+    // TODO: navigate to statistics screen
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) => ParentChildPendingScreen(child: widget.child, isResponsible: widget.child.parentResponsible! ,)),
+    );
+  }
+
+  // -------------------------
+  // SETTING THE RESPONSIBLE OF THE CHILD
+  // -------------------------
+  void setParentAsResponsible(SessionProvider session) {
+    session.setParentAsReponsibleOfChild(isResponsible: !widget.child.parentResponsible!, child: widget.child);
+  }
+
+  // -------------------------
   // WORK AS CHILD
   // -------------------------
   void _workAsChild(NotifyData notifyData) {
@@ -175,6 +194,7 @@ class _ParentChildScreenState extends State<ParentChildScreen> {
   @override
   Widget build(BuildContext context) {
     final notifyData = context.watch<NotifyData>();
+    final session = context.watch<SessionProvider>();
 
     return AppScaffold(
       /*appBar: AppBar(
@@ -279,9 +299,7 @@ class _ParentChildScreenState extends State<ParentChildScreen> {
                             ? ConstantParent.labelChildSaveChangesDetailEN
                             : ConstantParent.labelChildSaveChangesDetailFR,
                       ),
-                      style: ElevatedButton.styleFrom(
-                        minimumSize: const Size(double.infinity, 50),
-                      ),
+                      style: Constant.getTitle3ButtonStyle()
                     ),
                   ],
                 ),
@@ -296,6 +314,39 @@ class _ParentChildScreenState extends State<ParentChildScreen> {
             Card(
               child: Column(
                 children: [
+                  ListTile(
+                    leading: const Icon(Icons.timer),
+                    title: Text(notifyData.currentLanguage == Constant.languageEN
+                          ? ConstantParent.labelChildPendingCourseDetailEN
+                          : ConstantParent.labelChildPendingCourseDetailFR),
+                    onTap: _viewPendingCourses,
+                  ),
+                  if(widget.child.parentResponsible!) 
+                    ListTile(
+                    leading: const Icon(Icons.money_off_csred_outlined),
+                    title: Text(notifyData.currentLanguage == Constant.languageEN
+                          ? ConstantParent.labelChildRemoveFinancialAuthorityEN
+                          : ConstantParent.labelChildRemoveFinancialAuthorityFR),
+                    onTap: (){
+                      setState(() {
+                        session.setParentAsReponsibleOfChild(isResponsible: false, child: widget.child);
+                      });
+                    },
+                  ),
+                  if(!widget.child.parentResponsible!) 
+                    ListTile(
+                    leading: const Icon(Icons.monetization_on_outlined),
+                    title: Text(notifyData.currentLanguage == Constant.languageEN
+                          ? ConstantParent.labelChildAcquisitionFinancialAuthorityEN
+                          : ConstantParent.labelChildAcquisitionFinancialAuthorityFR),
+                    onTap: (){
+                      setState(() {
+                        session.setParentAsReponsibleOfChild(isResponsible: false, child: widget.child);
+                      });
+                    },
+                  ),
+                  
+                  const Divider(height: 1),
                   ListTile(
                     leading: const Icon(Icons.bar_chart),
                     title: Text(notifyData.currentLanguage == Constant.languageEN

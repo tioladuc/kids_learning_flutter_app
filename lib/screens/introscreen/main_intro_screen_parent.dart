@@ -8,7 +8,7 @@ import '../../models/child.dart';
 import '../../providers/session_provider.dart';
 import '../../widgets/app_scaffold.dart';
 import '../audio/audio_list_screen.dart';
-import 'parent_child_screen.dart';
+import 'parent/parent_child_screen.dart';
 
 class MainIntroScreenParent extends StatefulWidget {
   const MainIntroScreenParent({super.key});
@@ -29,12 +29,9 @@ class _MainIntroScreenParent extends State<MainIntroScreenParent> {
   Widget build(BuildContext context) {
     SessionProvider session = context.watch<SessionProvider>();
     final notifyData = context.watch<NotifyData>();
-
+    print('dododododododdo');
     return AppScaffold(
-      /*appBar: AppBar(
-        title: const Text("Parent Dashboard"),
-        centerTitle: true,
-      ),*/
+      
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(

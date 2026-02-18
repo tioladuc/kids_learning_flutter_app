@@ -7,10 +7,11 @@ import '../../core/constance_child.dart';
 import '../../core/notify_data.dart';
 import '../../widgets/app_scaffold.dart';
 import '../audio/audio_list_screen.dart';
+import 'child/child_statistics.dart';
 import 'logout_screen.dart';
-import 'pending_screen.dart';
-import 'pick_course.dart';
-import 'statistics_screen.dart';
+import 'child/child_pending_screen.dart';
+import 'child/child_pick_course.dart';
+import 'parent/parent_child_statistics.dart';
 
 class MainIntroScreenChild extends StatefulWidget {
   const MainIntroScreenChild({super.key});
@@ -81,21 +82,21 @@ class _MainIntroScreenChild extends State<MainIntroScreenChild> {
     if (item['key'] == 'PickACourse') {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (_) => const PickCourse()),
+        MaterialPageRoute(builder: (_) => ChildPickCourse(child: session.child!)),
       );
     }
 
     if (item['key'] == 'CourseValidationPending') {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (_) => const PendingScreen()),
+        MaterialPageRoute(builder: (_) => ChildPendingScreen(child: session.child!)),
       );
     }
 
     if (item['key'] == 'Statistics') {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (_) => const StatisticsScreen()),
+        MaterialPageRoute(builder: (_) => ChildStatistics(child: session.child!,)),
       );
     }
 

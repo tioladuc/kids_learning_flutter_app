@@ -1,0 +1,239 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../../core/constances.dart';
+import '../../../models/child.dart';
+import '../../../models/course.dart';
+import '../../../providers/course_provider.dart';
+import '../../../widgets/app_scaffold.dart';
+
+class ChildPickCourse extends StatefulWidget {
+  final Child child;
+
+  const ChildPickCourse({
+    super.key,
+    required this.child,
+  });
+
+  @override
+  State<ChildPickCourse> createState() => _ChildPickCourseState();
+}
+
+class _ChildPickCourseState extends State<ChildPickCourse> {
+  @override
+  void initState() {
+    super.initState();
+
+    Future.microtask(() {
+      context
+          .read<CourseProvider>()
+          .loadChildPendingCourses(widget.child.id);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final provider = context.watch<CourseProvider>();
+
+    return AppScaffold(
+      body: _buildBody(provider),
+    );
+  }
+
+  Widget _buildBody(CourseProvider provider) {
+    if (provider.isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    if (provider.pendingCourses.isEmpty) {
+      return const Center(
+        child: Text("No available courses"),
+      );
+    }
+
+    return Column(
+      children: [
+        ElevatedButton(
+          onPressed: () {},
+          style: Constant.getTitle1ButtonStyle(),
+          child: Text("${widget.child.name} - Pick a Course"),
+        ),
+
+        Expanded(
+          child: ListView.builder(
+            padding: const EdgeInsets.all(12),
+            itemCount: provider.pendingCourses.length,
+            itemBuilder: (context, index) {
+              final course = provider.pendingCourses[index];
+              return _courseCard(course);
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _courseCard(Course course) {
+    return Card(
+      elevation: 4,
+      margin: const EdgeInsets.only(bottom: 12),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _header(course),
+            const SizedBox(height: 10),
+
+            _infoRow("Code", course.code),
+            _infoRow("Description", course.description),
+            _infoRow("Amount", "\$${course.amount.toStringAsFixed(2)}"),
+            _infoRow("Validity", course.validity),
+
+            const SizedBox(height: 12),
+
+            Align(
+              alignment: Alignment.centerRight,
+              child: ElevatedButton(
+                onPressed: () => _confirmPick(course),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blue,
+                ),
+                child: const Text("Pick Course"),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _header(Course course) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Expanded(
+          child: Text(
+            course.name,
+            style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        _statusBadge(),
+      ],
+    );
+  }
+
+  Widget _statusBadge() {
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 10,
+        vertical: 5,
+      ),
+      decoration: BoxDecoration(
+        color: Colors.orange.withOpacity(0.15),
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: const Text(
+        "Available",
+        style: TextStyle(
+          color: Colors.orange,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    );
+  }
+
+  Widget _infoRow(String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 6),
+      child: Row(
+        children: [
+          Text(
+            "$label: ",
+            style: const TextStyle(
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          Expanded(
+            child: Text(value),
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// CONFIRMATION DIALOG
+  void _confirmPick(Course course) async {
+    final confirm = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text("Confirm"),
+        content: const Text("Do you want to pick this course?"),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text("Cancel"),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text("Confirm"),
+          ),
+        ],
+      ),
+    );
+
+    if (confirm == true) {
+      _pickCourse(course);
+    }
+  }
+
+  /// PICK COURSE ACTION
+  Future<void> _pickCourse(Course course) async {
+    final provider = context.read<CourseProvider>();
+
+    try {
+      await provider.pickCourse(widget.child.id, course.code);
+
+      if (!mounted) return;
+
+      /// SUCCESS MESSAGE
+      await showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text("Success"),
+          content: const Text("Course successfully picked"),
+          actions: [
+            ElevatedButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text("OK"),
+            ),
+          ],
+        ),
+      );
+
+      /// REFRESH LIST
+      provider.loadChildPendingCourses(widget.child.id);
+    } catch (e) {
+      if (!mounted) return;
+
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text("Error"),
+          content: Text(e.toString()),
+          actions: [
+            ElevatedButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text("OK"),
+            ),
+          ],
+        ),
+      );
+    }
+  }
+}

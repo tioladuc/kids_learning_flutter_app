@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'core/constance_session.dart';
 import 'providers/session_provider.dart';
 import 'screens/introscreen/main_intro_screen_child.dart';
-import 'screens/login_screen.dart';
+import 'screens/session/login_screen.dart';
 import 'screens/audio/audio_list_screen.dart';
 import 'core/theme.dart';
 

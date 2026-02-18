@@ -69,6 +69,15 @@ class Constant {
   );
   } 
 
+  static ButtonStyle getTitle1ButtonStyleForResetCreate() {
+    return ElevatedButton.styleFrom(
+    backgroundColor: Colors.grey, // Background color of the button
+    foregroundColor: Colors.black, 
+    textStyle:  TextStyle(height: 1, fontSize: 25),// Text/Icon color
+    
+  );
+  } 
+
   static ButtonStyle getTitle3ButtonStyle() {
     return ElevatedButton.styleFrom(
     backgroundColor: Colors.lightBlue, // Background color of the button

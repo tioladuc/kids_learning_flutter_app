@@ -11,6 +11,12 @@ class ConstantSession {
   static final LoginAsParentEN = 'Login as Parent EN';
   static final LoginAsParentFR = 'Login as Parent FR';
 
+  static final CreateParentAccountEN = 'Create Parent Account';
+  static final CreateParentAccountFR = 'Créer Compte Parent';
+
+  static final ResetParentAccountEN = 'Reset Parent Account';
+  static final ResetParentAccountFR = 'ReInitialiser Compte Parent';
+
   static final LoginTextEN = 'Login EN';
   static final LoginTextFR = 'Login FR';
 

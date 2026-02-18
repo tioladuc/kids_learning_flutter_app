@@ -107,4 +107,152 @@ class SessionProvider extends ChangeNotifier {
     print("Password changed: $newPassword");
     notifyListeners();
   }
+
+  ///////////////////////////////////////////////////////////////////
+
+  bool isLoading = false;
+  bool isActivationCodeSending = false;
+  String? errorMessage;
+
+  /// CREATE ACCOUNT
+  Future<bool> createParentAccount({
+    required String firstName,
+    required String lastName,
+    required String login,
+    required String password,
+    required String email,
+  }) async {
+    isLoading = true;
+    errorMessage = null;
+    notifyListeners();
+
+    try {
+      // TODO: Replace with your API call
+      await Future.delayed(const Duration(seconds: 2));
+
+      // Example success
+      return true;
+    } catch (e) {
+      errorMessage = "Failed to create account";
+      return false;
+    } finally {
+      isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  /// ACTIVATE ACCOUNT
+  Future<bool> activateParentAccount({
+    required String email,
+    required String code,
+  }) async {
+    isLoading = true;
+    errorMessage = null;
+    notifyListeners();
+
+    try {
+      // TODO: Replace with your API call
+      await Future.delayed(const Duration(seconds: 2));
+
+      return true;
+    } catch (e) {
+      errorMessage = "Invalid activation code";
+      return false;
+    } finally {
+      isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  /// RESEND ACTIVATION CODE ACCOUNT
+  Future<bool> resendActivationCode({
+    required String email
+  }) async {
+    
+    isActivationCodeSending = true;
+    errorMessage = null;
+    notifyListeners();
+
+    try {
+      // TODO: Replace with your API call
+      await Future.delayed(const Duration(seconds: 2));
+
+      return true;
+    } catch (e) {
+      errorMessage = "Invalid activation code";
+      return false;
+    } finally {
+      isActivationCodeSending = false;
+      notifyListeners();
+    }
+  }
+
+  /// SEND RESET CODE
+  Future<bool> sendResetCode({required String email}) async {
+    _start();
+
+    try {
+      // TODO: API call
+      await Future.delayed(const Duration(seconds: 2));
+
+      return true;
+    } catch (e) {
+      errorMessage = "Failed to send reset code";
+      return false;
+    } finally {
+      _end();
+    }
+  }
+
+  void _start() {
+    isLoading = true;
+    errorMessage = null;
+    notifyListeners();
+  }
+
+  void _end() {
+    isLoading = false;
+    notifyListeners();
+  }
+
+  /// RESET PASSWORD
+  Future<bool> setParentAsReponsibleOfChild({
+    required bool isResponsible, required Child child
+  }) async {
+    _start();
+
+    try {
+      // TODO: API call
+      await Future.delayed(const Duration(seconds: 2));
+      parent?.children.firstWhere((element) => element.id == child.id).parentResponsible = isResponsible;
+      notifyListeners();
+      return true;
+    } catch (e) {
+      errorMessage = "Invalid code or password";
+      return false;
+    } finally {
+      _end();
+    }
+  }
+  /// RESET PASSWORD
+  Future<bool> resetPassword({
+    required String email,
+    required String code,
+    required String newPassword,
+  }) async {
+    _start();
+
+    try {
+      // TODO: API call
+      await Future.delayed(const Duration(seconds: 2));
+
+      return true;
+    } catch (e) {
+      errorMessage = "Invalid code or password";
+      return false;
+    } finally {
+      _end();
+    }
+  }
+  ///////////////////////////////////////////////////////////////////
 }

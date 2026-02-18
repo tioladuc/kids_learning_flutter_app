@@ -1,8 +1,12 @@
 import 'child.dart';
 
 class Parent extends Child {
-  /*final String id;
-  final List¯­ name;*/
+  
+   String? firstName;
+     String? lastName;
+     String? email;
+
+
   List<Child> children = [];
   Child? currentChild;
 

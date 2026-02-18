@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kids_learning_flutter_app/providers/course_provider.dart';
 import 'package:provider/provider.dart';
 
 import 'app.dart';
@@ -26,6 +27,7 @@ void main() {
       child: MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => SessionProvider()),
+        ChangeNotifierProvider(create: (_) => CourseProvider()),
         ChangeNotifierProvider(create: (_) => AudioProvider()),
       ],
       child: const KidsLearningApp(),

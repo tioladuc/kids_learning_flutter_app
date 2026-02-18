@@ -2,14 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:kids_learning_flutter_app/core/notify_data.dart';
 import 'package:kids_learning_flutter_app/screens/introscreen/main_intro_screen_child.dart';
 import 'package:provider/provider.dart';
-import '../core/constance_session.dart';
-import '../core/constances.dart';
-import '../providers/session_provider.dart';
-import '../widgets/app_header.dart';
-import '../widgets/app_footer.dart';
-import '../widgets/app_scaffold.dart';
-import 'audio/audio_list_screen.dart';
-import 'introscreen/main_intro_screen_parent.dart';
+import '../../core/constance_session.dart';
+import '../../core/constances.dart';
+import '../../providers/session_provider.dart';
+import '../../widgets/app_header.dart';
+import '../../widgets/app_footer.dart';
+import '../../widgets/app_scaffold.dart';
+import '../audio/audio_list_screen.dart';
+import '../introscreen/main_intro_screen_parent.dart';
+import 'create_parent_account.dart';
+import 'parent_reset.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -129,16 +131,11 @@ class _LoginScreen extends State<LoginScreen> {
               ElevatedButton(
                 style: Constant.getTitle3ButtonStyle(),
                 onPressed: () async {
-                  print('asddsdd');
-                  //final user = await AuthService.login(selectedProfile, controllerLogin.text, controllerPwd.text);
-                  //context.read<SessionProvider>().login(selectedRole).setUser(user);
-
                   _sessionProvider.setRole(selectedProfile);
-                  if( _sessionProvider.role == ConstantSession.ChoiceChild) {
+                  if (_sessionProvider.role == ConstantSession.ChoiceChild) {
                     _sessionProvider.setParent(null);
                     _sessionProvider.setChild(_sessionProvider.tmpChild);
-                  }
-                  else {
+                  } else {
                     _sessionProvider.setChild(null);
                     _sessionProvider.setParent(_sessionProvider.tmpParent);
                   }
@@ -156,6 +153,67 @@ class _LoginScreen extends State<LoginScreen> {
                     ? Text(ConstantSession.LoginButtonEN)
                     : Text(ConstantSession.LoginButtonFR),
               ),
+
+            if (selectedProfile == '' ||
+                selectedProfile == ConstantSession.ChoiceParent)
+                FractionallySizedBox(
+              widthFactor: 0.5, // 50% of the parent width
+              child: Divider(
+                color: Colors.blue,
+                thickness: 5.0,
+                indent: 20.0,
+                endIndent: 20.0,
+                height: 30.0,
+              ),
+            ),
+
+            if (selectedProfile == '' ||
+                selectedProfile == ConstantSession.ChoiceParent)
+              const SizedBox(height: 24),
+
+            if (selectedProfile == '' ||
+                selectedProfile == ConstantSession.ChoiceParent)
+              ElevatedButton(
+                onPressed: () =>{
+                  Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => CreateParentAccount(),
+                ),
+              )
+                },
+                style: selectedProfile == ConstantSession.ChoiceParent
+                    ? Constant.getTitle1ButtonStyleForResetCreate()
+                    : Constant.getTitle1ButtonStyleForResetCreate(), //context.read<SessionProvider>().login('parent'),
+                child: notifyData.currentLanguage == Constant.languageEN
+                    ? Text(ConstantSession.CreateParentAccountEN)
+                    : Text(ConstantSession.CreateParentAccountFR),
+              ),
+            if (selectedProfile == '' ||
+                selectedProfile == ConstantSession.ChoiceParent)
+              const SizedBox(height: 24),
+
+            if (selectedProfile == '' ||
+                selectedProfile == ConstantSession.ChoiceParent)
+              ElevatedButton(
+                onPressed: () =>{
+                  Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => ParentReset(),
+                ),
+              )
+                },
+                style: selectedProfile == ConstantSession.ChoiceParent
+                    ? Constant.getTitle1ButtonStyleForResetCreate()
+                    : Constant.getTitle1ButtonStyleForResetCreate(), //context.read<SessionProvider>().login('parent'),
+                child: notifyData.currentLanguage == Constant.languageEN
+                    ? Text(ConstantSession.ResetParentAccountEN)
+                    : Text(ConstantSession.ResetParentAccountFR),
+              ),
+            if (selectedProfile == '' ||
+                selectedProfile == ConstantSession.ChoiceParent)
+              const SizedBox(height: 24),
           ],
         ),
       ),

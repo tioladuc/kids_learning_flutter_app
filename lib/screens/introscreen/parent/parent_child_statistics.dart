@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-import '../../models/child.dart';
-import '../../widgets/app_scaffold.dart';
+import '../../../models/child.dart';
+import '../../../widgets/app_scaffold.dart';
 
-class ChildStatistics extends StatelessWidget {
+class ParentChildStatistics extends StatelessWidget {
   final Child child;
 
-  const ChildStatistics({
+  const ParentChildStatistics({
     super.key,
     required this.child,
   });

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kids_learning_flutter_app/screens/login_screen.dart';
+import 'package:kids_learning_flutter_app/screens/session/login_screen.dart';
 import 'package:provider/provider.dart';
 import '../core/constances.dart';
 import '../core/notify_data.dart';
@@ -57,10 +57,10 @@ class _AppHeader extends State<AppHeader> with ChangeNotifier {
                   : Constant.languageEN;
               Constant.currentLanguage = currentLanguage;
               notifyData.changeLanguage(currentLanguage);
-              session.setRole(null);
+              /*session.setRole(null);
               session.setParent(null);
               session.setChild(null);
-              session.setCurrentChildAsParent(null);
+              session.setCurrentChildAsParent(null);*/
             }),
           },
         ),

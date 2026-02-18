@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kids_learning_flutter_app/providers/session_provider.dart';
-import 'package:kids_learning_flutter_app/screens/login_screen.dart';
+import 'package:kids_learning_flutter_app/screens/session/login_screen.dart';
 import 'package:provider/provider.dart';
 import '../../core/constance_session.dart';
 //import '../../core/constances.dart';

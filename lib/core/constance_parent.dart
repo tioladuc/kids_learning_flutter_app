@@ -8,8 +8,8 @@ class ConstantParent {
   static final String menuAddChildFR = 'Ajouter Enfant';
   static final String menuAddChildEN = 'Add Child';
 
-  static final String menuChangeNameAndPwdFR = 'Ajouter Enfant';
-  static final String menuChangeNameAndPwdEN = 'Add Child';
+  static final String menuChangeNameAndPwdFR = 'Changer Info';
+  static final String menuChangeNameAndPwdEN = 'Update Info';
 
   static final String titleAddChildFR = 'Enregistrer un enfant';
   static final String titleAddChildEN = 'Register a child';
@@ -89,6 +89,16 @@ static final String labelCancelButtonParentPwdChangeFR = 'Annuler';
 
   static final String labelChildDeleteChildDetailFR = 'Supprimer Enfant';
   static final String labelChildDeleteChildDetailEN = 'Delete Child';
+
+  static final String labelChildPendingCourseDetailFR = 'Achat Renouvellement Cours';
+  static final String labelChildPendingCourseDetailEN = 'Pending Course Purchase/Renewal';
+
+  static final String labelChildRemoveFinancialAuthorityFR = 'Retrait Droit Paiement De L`enfant';
+  static final String labelChildRemoveFinancialAuthorityEN = 'Removal of Child Payment Rights';
+
+  static final String labelChildAcquisitionFinancialAuthorityFR = 'Prendre Droit Paiement De L`enfant';
+  static final String labelChildAcquisitionFinancialAuthorityEN = 'Acquisization of Child Payment Rights';
+
 
   static final String labelChildViewStatsDetailFR = 'Voir Statistics';
   static final String labelChildViewStatsDetailEN = 'View Statistics';

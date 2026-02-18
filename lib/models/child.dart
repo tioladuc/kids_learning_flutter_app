@@ -11,6 +11,8 @@ class Child {
    int? streakDays;
   int? age;
 
+  bool? parentResponsible = false;
+
   Child({required this.id, required this.name, required this.login, required this.password});
 
   static Child copy(Child child) {
