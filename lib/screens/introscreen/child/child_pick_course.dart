@@ -24,29 +24,30 @@ class _ChildPickCourseState extends State<ChildPickCourse> {
     super.initState();
 
     Future.microtask(() {
-      context
-          .read<CourseProvider>()
-          .loadChildPickCourses(widget.child.id);
+      context.read<CourseProvider>().loadChildPickCourses(widget.child.id);
     });
   }
 
   @override
   Widget build(BuildContext context) {
     final provider = context.watch<CourseProvider>();
+    final notifyData = context.watch<NotifyData>();
 
     return AppScaffold(
-      body: _buildBody(provider),
+      body: _buildBody(provider, notifyData),
     );
   }
 
-  Widget _buildBody(CourseProvider provider) {
+  Widget _buildBody(CourseProvider provider, NotifyData notifyData) {
     if (provider.isLoading) {
       return const Center(child: CircularProgressIndicator());
     }
 
     if (provider.pickCourses.isEmpty) {
       return const Center(
-        child: Text("No available courses"),
+        child: Text(notifyData.currentLanguage == Constant.AppNameEN
+            ? ConstantCourse.PickCourseNoCourseAvailableEN
+            : ConstantCourse.PickCourseNoCourseAvailableFR),
       );
     }
 
@@ -55,9 +56,11 @@ class _ChildPickCourseState extends State<ChildPickCourse> {
         ElevatedButton(
           onPressed: () {},
           style: Constant.getTitle1ButtonStyle(),
-          child: Text("${widget.child.name} - Pick a Course"),
+          child: Text("${widget.child.name} - "(
+              notifyData.currentLanguage == Constant.AppNameEN
+                  ? ConstantCourse.PickCoursePickACourseEN
+                  : ConstantCourse.PickCoursePickACourseFR)),
         ),
-
         Expanded(
           child: ListView.builder(
             padding: const EdgeInsets.all(12),
@@ -72,7 +75,7 @@ class _ChildPickCourseState extends State<ChildPickCourse> {
     );
   }
 
-  Widget _courseCard(Course course) {
+  Widget _courseCard(Course course, NotifyData notifyData) {
     return Card(
       elevation: 4,
       margin: const EdgeInsets.only(bottom: 12),
@@ -86,14 +89,27 @@ class _ChildPickCourseState extends State<ChildPickCourse> {
           children: [
             _header(course),
             const SizedBox(height: 10),
-
-            _infoRow("Code", course.code),
-            _infoRow("Description", course.description),
-            _infoRow("Amount", "\$${course.amount.toStringAsFixed(2)}"),
-            _infoRow("Validity", course.validity),
-
+            _infoRow(
+                (notifyData.currentLanguage == Constant.AppNameEN
+                    ? ConstantCourse.PendingCourseCodeEN
+                    : ConstantCourse.PendingCourseCodeFR),
+                course.code),
+            _infoRow(
+                (notifyData.currentLanguage == Constant.AppNameEN
+                    ? ConstantCourse.PendingCourseDescriptionEN
+                    : ConstantCourse.PendingCourseDescriptionFR),
+                course.description),
+            _infoRow(
+                (notifyData.currentLanguage == Constant.AppNameEN
+                    ? ConstantCourse.PendingCourseAmountEN
+                    : ConstantCourse.PendingCourseAmountFR),
+                "\$${course.amount.toStringAsFixed(2)}"),
+            _infoRow(
+                (notifyData.currentLanguage == Constant.AppNameEN
+                    ? ConstantCourse.PendingCourseValidityEN
+                    : ConstantCourse.PendingCourseValidityFR),
+                course.validity),
             const SizedBox(height: 12),
-
             Align(
               alignment: Alignment.centerRight,
               child: ElevatedButton(
@@ -101,7 +117,10 @@ class _ChildPickCourseState extends State<ChildPickCourse> {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue,
                 ),
-                child: const Text("Pick Course"),
+                child: const Text(
+                    (notifyData.currentLanguage == Constant.AppNameEN
+                        ? ConstantCourse.PickCoursePickACourseEN
+                        : ConstantCourse.PickCoursePickACourseFR)),
               ),
             ),
           ],
@@ -168,20 +187,28 @@ class _ChildPickCourseState extends State<ChildPickCourse> {
   }
 
   /// CONFIRMATION DIALOG
-  void _confirmPick(Course course) async {
+  void _confirmPick(Course course, NotifyData notifyData) async {
     final confirm = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text("Confirm"),
-        content: const Text("Do you want to pick this course?"),
+        title: const Text((notifyData.currentLanguage == Constant.AppNameEN
+            ? ConstantCourse.PickCourseConfirmTitleEN
+            : ConstantCourse.PickCourseConfirmTitleFR)),
+        content: const Text((notifyData.currentLanguage == Constant.AppNameEN
+            ? ConstantCourse.PickCourseConfirmDescriptionEN
+            : ConstantCourse.PickCourseConfirmDescriptionFR)),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text("Cancel"),
+            child: const Text((notifyData.currentLanguage == Constant.AppNameEN
+                ? ConstantCourse.PickCoursePickCancelBtnEN
+                : ConstantCourse.PickCoursePickCancelBtnFR)),
           ),
           ElevatedButton(
             onPressed: () => Navigator.pop(context, true),
-            child: const Text("Confirm"),
+            child: const Text((notifyData.currentLanguage == Constant.AppNameEN
+                ? ConstantCourse.PickCoursePickConfirmBtnEN
+                : ConstantCourse.PickCoursePickConfirmBtnFR)),
           ),
         ],
       ),
@@ -195,6 +222,7 @@ class _ChildPickCourseState extends State<ChildPickCourse> {
   /// PICK COURSE ACTION
   Future<void> _pickCourse(Course course) async {
     final provider = context.read<CourseProvider>();
+    final notifyData = context.read<NotifyData>();
 
     try {
       await provider.pickCourse(widget.child.id, course.code);
@@ -205,12 +233,19 @@ class _ChildPickCourseState extends State<ChildPickCourse> {
       await showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: const Text("Success"),
-          content: const Text("Course successfully picked"),
+          title: const Text((notifyData.currentLanguage == Constant.AppNameEN
+              ? ConstantCourse.PickCoursePickConfirmSuccessEN
+              : ConstantCourse.PickCoursePickConfirmSuccessFR)),
+          content: const Text((notifyData.currentLanguage == Constant.AppNameEN
+              ? ConstantCourse.PickCoursePickConfirmSuccessMsgEN
+              : ConstantCourse.PickCoursePickConfirmSuccessMsgFR)),
           actions: [
             ElevatedButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text("OK"),
+              child: const Text(
+                  (notifyData.currentLanguage == Constant.AppNameEN
+                      ? ConstantCourse.PickCoursePickConfirmSuccessOKEN
+                      : ConstantCourse.PickCoursePickConfirmSuccessOKFR)),
             ),
           ],
         ),
@@ -224,12 +259,17 @@ class _ChildPickCourseState extends State<ChildPickCourse> {
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: const Text("Error"),
+          title: const Text((notifyData.currentLanguage == Constant.AppNameEN
+              ? ConstantCourse.PickCoursePickConfirmSuccessErrorEN
+              : ConstantCourse.PickCoursePickConfirmSuccessErrorFR)),
           content: Text(e.toString()),
           actions: [
             ElevatedButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text("OK"),
+              child: const Text(
+                  (notifyData.currentLanguage == Constant.AppNameEN
+                      ? ConstantCourse.PickCoursePickConfirmSuccessOKEN
+                      : ConstantCourse.PickCoursePickConfirmSuccessOKFR)),
             ),
           ],
         ),

@@ -37,6 +37,7 @@ class _StatisticsCourseState extends State<StatisticsCourse> {
   @override
   Widget build(BuildContext context) {
     final provider = context.watch<StatisticsProvider>();
+    final notifyData = context.read<NotifyData>();
 
     return AppScaffold(
       body: provider.isLoading
@@ -45,10 +46,12 @@ class _StatisticsCourseState extends State<StatisticsCourse> {
     );
   }
 
-  Widget _buildBody(StatisticsProvider provider) {
+  Widget _buildBody(StatisticsProvider provider, NotifyData notifyData) {
     if (provider.courseStatistics.isEmpty) {
       return const Center(
-        child: Text("No statistics available"),
+        child: Text((notifyData.currentLanguage == Constant.AppNameEN
+            ? ConstantStatistics.CourseStatNoStatisticsAvailableEN
+            : ConstantStatistics.CourseStatNoStatisticsAvailableFR)),
       );
     }
 
@@ -70,20 +73,23 @@ class _StatisticsCourseState extends State<StatisticsCourse> {
   }
 
   /// HEADER
-  Widget _header() {
+  Widget _header(NotifyData notifyData) {
     return Card(
       margin: const EdgeInsets.all(12),
       elevation: 4,
       child: ListTile(
         leading: const Icon(Icons.bar_chart, size: 40),
         title: Text(widget.course.name),
-        subtitle: Text("Child: ${widget.child.name}"),
+        subtitle: Text((notifyData.currentLanguage == Constant.AppNameEN
+                ? ConstantStatistics.CourseStatChildEN
+                : ConstantStatistics.CourseStatChildFR)
+            .replaceAll('{0}', widget.child.name)),
       ),
     );
   }
 
   /// STAT CARD
-  Widget _statCard(CourseStatistics stat) {
+  Widget _statCard(CourseStatistics stat, NotifyData notifyData) {
     return Card(
       elevation: 3,
       margin: const EdgeInsets.only(bottom: 12),
@@ -97,17 +103,31 @@ class _StatisticsCourseState extends State<StatisticsCourse> {
           children: [
             _dateHeader(stat),
             const SizedBox(height: 8),
-
-            _infoRow("Start", _formatDate(stat.startDate)),
-            _infoRow("End", _formatDate(stat.endDate)),
-            _infoRow("Duration", "${stat.duration} min"),
-
+            _infoRow(
+                (notifyData.currentLanguage == Constant.AppNameEN
+                    ? ConstantStatistics.CourseStatStartEN
+                    : ConstantStatistics.CourseStatStartFR),
+                _formatDate(stat.startDate)),
+            _infoRow(
+                (notifyData.currentLanguage == Constant.AppNameEN
+                    ? ConstantStatistics.CourseStatEndEN
+                    : ConstantStatistics.CourseStatEndFR),
+                _formatDate(stat.endDate)),
+            _infoRow(
+                (notifyData.currentLanguage == Constant.AppNameEN
+                    ? ConstantStatistics.CourseStatDurationEN
+                    : ConstantStatistics.CourseStatDurationFR),
+                (notifyData.currentLanguage == Constant.AppNameEN
+                        ? ConstantStatistics.CourseStatMinuteEN
+                        : ConstantStatistics.CourseStatMinuteFR)
+                    .replaceAll('{0}', stat.duration)),
             const Divider(),
-
-            _infoRow("Detail", stat.detail),
-
+            _infoRow(
+                (notifyData.currentLanguage == Constant.AppNameEN
+                    ? ConstantStatistics.CourseStatDetailEN
+                    : ConstantStatistics.CourseStatDetailFR),
+                stat.detail),
             const SizedBox(height: 8),
-
             _appreciationBadge(stat.appreciation),
           ],
         ),
@@ -133,10 +153,34 @@ class _StatisticsCourseState extends State<StatisticsCourse> {
   }
 
   /// APPRECIATION BADGE
-  Widget _appreciationBadge(String appreciation) {
+  Widget _appreciationBadge(String appreciation, NotifyData notifyData) {
     Color color;
 
-    switch (appreciation.toLowerCase()) {
+    if (ConstantStatistics.CourseStatExcellentEN.toLowerCase() ==
+            appreciation.toLowerCase() ||
+        ConstantStatistics.CourseStatExcellentFR.toLowerCase() ==
+            appreciation.toLowerCase()) {
+      color = Colors.green;
+    } else if (ConstantStatistics.CourseStatGoodEN.toLowerCase() ==
+            appreciation.toLowerCase() ||
+        ConstantStatistics.CourseStatGoodFR.toLowerCase() ==
+            appreciation.toLowerCase()) {
+      color = Colors.blue;
+    } else if (ConstantStatistics.CourseStatAverageEN.toLowerCase() ==
+            appreciation.toLowerCase() ||
+        ConstantStatistics.CourseStatAverageFR.toLowerCase() ==
+            appreciation.toLowerCase()) {
+      color = Colors.orange;
+    } else if (ConstantStatistics.CourseStatPoorEN.toLowerCase() ==
+            appreciation.toLowerCase() ||
+        ConstantStatistics.CourseStatPoorFR.toLowerCase() ==
+            appreciation.toLowerCase()) {
+      color = Colors.red;
+    } else {
+      color = Colors.grey;
+    }
+
+    /*switch (appreciation.toLowerCase()) {
       case "excellent":
         color = Colors.green;
         break;
@@ -151,7 +195,7 @@ class _StatisticsCourseState extends State<StatisticsCourse> {
         break;
       default:
         color = Colors.grey;
-    }
+    }*/
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),

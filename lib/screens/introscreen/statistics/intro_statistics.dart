@@ -28,49 +28,53 @@ class _IntroStatisticsState extends State<IntroStatistics> {
     super.initState();
 
     Future.microtask(() {
-      context
-          .read<StatisticsProvider>()
-          .getBasicInformation(widget.child);
+      context.read<StatisticsProvider>().getBasicInformation(widget.child);
     });
   }
 
   @override
   Widget build(BuildContext context) {
     final provider = context.watch<StatisticsProvider>();
+    final notifyData = context.read<NotifyData>();
 
     return AppScaffold(
       body: provider.isLoading
           ? const Center(child: CircularProgressIndicator())
-          : _buildBody(provider),
+          : _buildBody(provider, notifyData),
     );
   }
 
-  Widget _buildBody(StatisticsProvider provider) {
+  Widget _buildBody(StatisticsProvider provider, NotifyData notifyData) {
     return SingleChildScrollView(
       padding: const EdgeInsets.all(12),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _childHeader(),
+          _childHeader(notifyData),
           const SizedBox(height: 16),
-
-          _sectionTitle("Basic Information"),
-          _basicInfo(),
-
+          _sectionTitle((notifyData.currentLanguage == Constant.AppNameEN
+              ? ConstantStatistics.IntroStatTitleBasicInformationEN
+              : ConstantStatistics.IntroStatTitleBasicInformationFR)),
+          _basicInfo(notifyData),
           const SizedBox(height: 16),
-          _sectionTitle("Last Connection"),
+          _sectionTitle((notifyData.currentLanguage == Constant.AppNameEN
+              ? ConstantStatistics.IntroStatTitleLastConnectionEN
+              : ConstantStatistics.IntroStatTitleLastConnectionFR)),
           _connectionInfo(provider),
-
           const SizedBox(height: 16),
-          _sectionTitle("Courses Visited"),
+          _sectionTitle((notifyData.currentLanguage == Constant.AppNameEN
+              ? ConstantStatistics.IntroStatTitleCoursesVisitedEN
+              : ConstantStatistics.IntroStatTitleCoursesVisitedFR)),
           _coursesVisited(provider),
-
           const SizedBox(height: 16),
-          _sectionTitle("Courses Completed"),
+          _sectionTitle((notifyData.currentLanguage == Constant.AppNameEN
+              ? ConstantStatistics.IntroStatTitleCoursesCompletedEN
+              : ConstantStatistics.IntroStatTitleCoursesCompletedFR)),
           _coursesCompleted(provider),
-
           const SizedBox(height: 16),
-          _sectionTitle("Courses Never Done"),
+          _sectionTitle((notifyData.currentLanguage == Constant.AppNameEN
+              ? ConstantStatistics.IntroStatTitleCoursesNeverDoneEN
+              : ConstantStatistics.IntroStatTitleCoursesNeverDoneFR)),
           _coursesNeverDone(provider),
         ],
       ),
@@ -78,18 +82,20 @@ class _IntroStatisticsState extends State<IntroStatistics> {
   }
 
   /// HEADER
-  Widget _childHeader() {
+  Widget _childHeader(NotifyData notifyData) {
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       elevation: 4,
       child: ListTile(
         leading: CircleAvatar(
-          child: Text(widget.child.name.isNotEmpty
-              ? widget.child.name[0]
-              : "?"),
+          child:
+              Text(widget.child.name.isNotEmpty ? widget.child.name[0] : "?"),
         ),
         title: Text(widget.child.name),
-        subtitle: Text("Login: ${widget.child.login}"),
+        subtitle: Text((notifyData.currentLanguage == Constant.AppNameEN
+                ? ConstantStatistics.IntroStatLoginEN
+                : ConstantStatistics.IntroStatLoginFR)
+            .replaceAll('{1}', widget.child.login)),
         trailing: widget.isResponsible
             ? const Icon(Icons.star, color: Colors.orange)
             : null,
@@ -98,21 +104,43 @@ class _IntroStatisticsState extends State<IntroStatistics> {
   }
 
   /// BASIC INFO
-  Widget _basicInfo() {
+  Widget _basicInfo(NotifyData notifyData) {
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(12),
         child: Column(
           children: [
-            _infoRow("Age", "${widget.child.age ?? '-'}"),
-            _infoRow("Completed Tasks",
+            _infoRow(
+                (notifyData.currentLanguage == Constant.AppNameEN
+                    ? ConstantStatistics.IntroStatAgeEN
+                    : ConstantStatistics.IntroStatAgeFR),
+                "${widget.child.age ?? '-'}"),
+            _infoRow(
+                (notifyData.currentLanguage == Constant.AppNameEN
+                    ? ConstantStatistics.IntroStatCompletedTasksEN
+                    : ConstantStatistics.IntroStatCompletedTasksFR),
                 "${widget.child.completedTasks ?? 0}"),
-            _infoRow("Total Tasks",
+            _infoRow(
+                (notifyData.currentLanguage == Constant.AppNameEN
+                    ? ConstantStatistics.IntroStatTotalTasksEN
+                    : ConstantStatistics.IntroStatTotalTasksFR),
                 "${widget.child.totalTasks ?? 0}"),
-            _infoRow("Total Time",
-                "${widget.child.totalTimeMinutes ?? 0} min"),
-            _infoRow("Streak Days",
-                "${widget.child.streakDays ?? 0} days"),
+            _infoRow(
+                (notifyData.currentLanguage == Constant.AppNameEN
+                    ? ConstantStatistics.IntroStatTotalTimeEN
+                    : ConstantStatistics.IntroStatTotalTimeFR),
+                (notifyData.currentLanguage == Constant.AppNameEN
+                        ? ConstantStatistics.IntroStatMinuteEN
+                        : ConstantStatistics.IntroStatMinuteFR)
+                    .replaceAll('{0}', (widget.child.totalTimeMinutes ?? 0))),
+            _infoRow(
+                (notifyData.currentLanguage == Constant.AppNameEN
+                    ? ConstantStatistics.IntroStatStreakDaysEN
+                    : ConstantStatistics.IntroStatStreakDaysFR),
+                (notifyData.currentLanguage == Constant.AppNameEN
+                        ? ConstantStatistics.IntroStatDaysEN
+                        : ConstantStatistics.IntroStatDaysFR)
+                    .replaceAll('{0}', (widget.child.streakDays ?? 0))),
           ],
         ),
       ),
@@ -120,15 +148,21 @@ class _IntroStatisticsState extends State<IntroStatistics> {
   }
 
   /// CONNECTION INFO
-  Widget _connectionInfo(StatisticsProvider provider) {
+  Widget _connectionInfo(StatisticsProvider provider, NotifyData notifyData) {
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(12),
         child: Column(
           children: [
-            _infoRow("Last Connection",
+            _infoRow(
+                (notifyData.currentLanguage == Constant.AppNameEN
+                    ? ConstantStatistics.IntroStatLastConnectionEN
+                    : ConstantStatistics.IntroStatLastConnectionFR),
                 provider.lastConnectionTime ?? "-"),
-            _infoRow("Duration",
+            _infoRow(
+                (notifyData.currentLanguage == Constant.AppNameEN
+                    ? ConstantStatistics.IntroStatDurationEN
+                    : ConstantStatistics.IntroStatDurationFR),
                 provider.lastConnectionDuration ?? "-"),
           ],
         ),
@@ -137,9 +171,11 @@ class _IntroStatisticsState extends State<IntroStatistics> {
   }
 
   /// COURSES VISITED
-  Widget _coursesVisited(StatisticsProvider provider) {
+  Widget _coursesVisited(StatisticsProvider provider, NotifyData notifyData) {
     if (provider.visitedCourses.isEmpty) {
-      return const Text("No courses visited");
+      return const Text((notifyData.currentLanguage == Constant.AppNameEN
+          ? ConstantStatistics.IntroStatNoCoursesVisitedEN
+          : ConstantStatistics.IntroStatNoCoursesVisitedFR));
     }
 
     return Column(
@@ -150,7 +186,10 @@ class _IntroStatisticsState extends State<IntroStatistics> {
         return Card(
           child: ListTile(
             title: Text(course.name),
-            subtitle: Text("Time spent: $duration min"),
+            subtitle: Text((notifyData.currentLanguage == Constant.AppNameEN
+                    ? ConstantStatistics.IntroStatTimeSpentEN
+                    : ConstantStatistics.IntroStatTimeSpentFR)
+                .replaceAll('{0}', $duration)),
             leading: const Icon(Icons.visibility),
           ),
         );
@@ -159,9 +198,11 @@ class _IntroStatisticsState extends State<IntroStatistics> {
   }
 
   /// COURSES COMPLETED
-  Widget _coursesCompleted(StatisticsProvider provider) {
+  Widget _coursesCompleted(StatisticsProvider provider, NotifyData notifyData) {
     if (provider.completedCourses.isEmpty) {
-      return const Text("No completed courses");
+      return const Text((notifyData.currentLanguage == Constant.AppNameEN
+          ? ConstantStatistics.IntroStatNoCompletedCoursesEN
+          : ConstantStatistics.IntroStatNoCompletedCoursesFR));
     }
 
     return Column(
@@ -189,9 +230,11 @@ class _IntroStatisticsState extends State<IntroStatistics> {
   }
 
   /// COURSES NEVER DONE
-  Widget _coursesNeverDone(StatisticsProvider provider) {
+  Widget _coursesNeverDone(StatisticsProvider provider, NotifyData notifyData) {
     if (provider.neverDoneCourses.isEmpty) {
-      return const Text("No pending courses");
+      return const Text((notifyData.currentLanguage == Constant.AppNameEN
+          ? ConstantStatistics.IntroStatNoPendingCoursesEN
+          : ConstantStatistics.IntroStatNoPendingCoursesFR));
     }
 
     return Column(
@@ -202,7 +245,10 @@ class _IntroStatisticsState extends State<IntroStatistics> {
         return Card(
           child: ListTile(
             title: Text(course.name),
-            subtitle: Text("Picked on: ${_formatDate(date)}"),
+            subtitle: Text((notifyData.currentLanguage == Constant.AppNameEN
+                    ? ConstantStatistics.IntroStatPickedOnEN
+                    : ConstantStatistics.IntroStatPickedOnFR)
+                .replaceAll('{0}', _formatDate(date))),
             leading: const Icon(Icons.schedule, color: Colors.orange),
           ),
         );

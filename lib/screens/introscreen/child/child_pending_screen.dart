@@ -41,7 +41,10 @@ class _ChildPendingScreenState extends State<ChildPendingScreen> {
     }
 
     if (provider.pendingCourses.isEmpty) {
-      return Center(child: Text(notifyData.currentLanguage == Constant.AppNameEN? ConstantCourse.NoPendingCourseMsgEN:ConstantCourse.NoPendingCourseMsgFR));
+      return Center(
+          child: Text(notifyData.currentLanguage == Constant.AppNameEN
+              ? ConstantCourse.NoPendingCourseMsgEN
+              : ConstantCourse.NoPendingCourseMsgFR));
     }
 
     return Column(
@@ -49,9 +52,11 @@ class _ChildPendingScreenState extends State<ChildPendingScreen> {
         ElevatedButton(
           onPressed: () => {}, //context.read<SessionProvider>().login('child'),
           style: Constant.getTitle1ButtonStyle(),
-          child: Text("${widget.child.name} - Pending Courses" + (notifyData.currentLanguage == Constant.AppNameEN? ConstantCourse.PendingCourseTitleEN:ConstantCourse.PendingCourseTitleFR)),
+          child: Text("${widget.child.name} - " +
+              (notifyData.currentLanguage == Constant.AppNameEN
+                  ? ConstantCourse.PendingCourseTitleEN
+                  : ConstantCourse.PendingCourseTitleFR)),
         ),
-
         Expanded(
           // <-- Use Expanded
           child: ListView.builder(
@@ -59,34 +64,17 @@ class _ChildPendingScreenState extends State<ChildPendingScreen> {
             itemCount: provider.pendingCourses.length,
             itemBuilder: (context, index) {
               final course = provider.pendingCourses[index];
-              return _courseCard(course, provider);
+              return _courseCard(course, provider, notifyData);
             },
           ),
         ),
       ],
-    ); /*Column(
-      children: [
-        ElevatedButton(
-                onPressed: () => {}, //context.read<SessionProvider>().login('child'),
-                style: Constant.getTitle1ButtonStyle(),
-                child:  Text("${widget.child.name} - Pending Courses"),
-              ),
-            const SizedBox(height: 24),
-        ListView.builder(
-      padding: const EdgeInsets.all(12),
-      itemCount: provider.pendingCourses.length,
-      itemBuilder: (context, index) {
-        final course = provider.pendingCourses[index];
-        return _courseCard(course);
-      },
-    )
-      ],
-    );*/
+    );
   }
 
-  Widget _courseCard(Course course, CourseProvider courseProvider) {
-    final isExpiringSoon =
-        course.expiryDate != null &&
+  Widget _courseCard(
+      Course course, CourseProvider courseProvider, NotifyData notifyData) {
+    final isExpiringSoon = course.expiryDate != null &&
         course.expiryDate!.isBefore(
           DateTime.now().add(const Duration(days: 7)),
         );
@@ -102,26 +90,43 @@ class _ChildPendingScreenState extends State<ChildPendingScreen> {
           children: [
             _header(course),
             const SizedBox(height: 10),
-
-            _infoRow("Code", course.code),
-            _infoRow("Description", course.description),
-            _infoRow("Amount", "\$${course.amount.toStringAsFixed(2)}"),
-            _infoRow("Validity", course.validity),
-
+            _infoRow(
+                (notifyData.currentLanguage == Constant.AppNameEN
+                    ? ConstantCourse.PendingCourseCodeEN
+                    : ConstantCourse.PendingCourseCodeFR),
+                course.code),
+            _infoRow(
+                (notifyData.currentLanguage == Constant.AppNameEN
+                    ? ConstantCourse.PendingCourseDescriptionEN
+                    : ConstantCourse.PendingCourseDescriptionFR),
+                course.description),
+            _infoRow(
+                (notifyData.currentLanguage == Constant.AppNameEN
+                    ? ConstantCourse.PendingCourseAmountEN
+                    : ConstantCourse.PendingCourseAmountFR),
+                "\$${course.amount.toStringAsFixed(2)}"),
+            _infoRow(
+                (notifyData.currentLanguage == Constant.AppNameEN
+                    ? ConstantCourse.PendingCourseValidityEN
+                    : ConstantCourse.PendingCourseValidityFR),
+                course.validity),
             if (course.isRegistered && course.expiryDate != null)
               _infoRow(
-                "Expires",
+                (notifyData.currentLanguage == Constant.AppNameEN
+                    ? ConstantCourse.PendingCourseExpireEN
+                    : ConstantCourse.PendingCourseExpireFR),
                 _formatDate(course.expiryDate!),
                 highlight: isExpiringSoon,
               ),
-            _removeCourseButton(course, courseProvider),
+            _removeCourseButton(course, courseProvider, notifyData),
           ],
         ),
       ),
     );
   }
 
-  Widget _removeCourseButton(Course course, CourseProvider provider) {
+  Widget _removeCourseButton(
+      Course course, CourseProvider provider, NotifyData notifyData) {
     return Padding(
       padding: const EdgeInsets.only(top: 12),
       child: SizedBox(
@@ -140,7 +145,9 @@ class _ChildPendingScreenState extends State<ChildPendingScreen> {
                     color: Colors.white,
                   ),
                 )
-              : Text("Remove Course"),
+              : Text(notifyData.currentLanguage == Constant.AppNameEN
+                  ? ConstantCourse.PendingCourseRemoveCourseEN
+                  : ConstantCourse.PendingCourseRemoveCourseFR),
         ),
       ),
     );
@@ -149,6 +156,7 @@ class _ChildPendingScreenState extends State<ChildPendingScreen> {
   Future<void> _handleRemoveCourse(
     Course course,
     CourseProvider provider,
+    NotifyData notifyData,
   ) async {
     final confirm = await _showConfirmationCourseRemovalDialog(course);
 
@@ -164,40 +172,59 @@ class _ChildPendingScreenState extends State<ChildPendingScreen> {
     if (success) {
       _showSuccessCourseRemovalDialog();
     } else {
-      _showError(provider.errorMessage ?? "Course Removal failed");
+      _showError(provider.errorMessage ??
+          (notifyData.currentLanguage == Constant.AppNameEN
+              ? ConstantCourse.PendingCourseCourseRemovalFailedEN
+              : ConstantCourse.PendingCourseCourseRemovalFailedFR));
     }
   }
 
-  Future<bool?> _showConfirmationCourseRemovalDialog(Course course) {
+  Future<bool?> _showConfirmationCourseRemovalDialog(
+      Course course, NotifyData notifyData) {
     return showDialog<bool>(
       context: context,
       builder: (_) => AlertDialog(
-        title: const Text("Confirm Removal"),
-        content: Text("Do you want to remove the course: '${course.name}'?"),
+        title: const Text((notifyData.currentLanguage == Constant.AppNameEN
+            ? ConstantCourse.PendingCourseConfirmPaymentTitleEN
+            : ConstantCourse.PendingCourseConfirmPaymentTitleFR)),
+        content: Text((notifyData.currentLanguage == Constant.AppNameEN
+                ? ConstantCourse.PendingCourseRemovalMsgEN
+                : ConstantCourse.PendingCourseRemovalMsgFR)
+            .replaceAll('{0}', course.name)),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text("Cancel"),
+            child: const Text((notifyData.currentLanguage == Constant.AppNameEN
+                ? ConstantCourse.PendingCourseRemovalCancelBtnEN
+                : ConstantCourse.PendingCourseRemovalCancelBtnFR)),
           ),
           ElevatedButton(
             onPressed: () => Navigator.pop(context, true),
-            child: const Text("Confirm"),
+            child: const Text((notifyData.currentLanguage == Constant.AppNameEN
+                ? ConstantCourse.PendingCourseRemovalConfirmBtnEN
+                : ConstantCourse.PendingCourseRemovalConfirmBtnFR)),
           ),
         ],
       ),
     );
   }
 
-  void _showSuccessCourseRemovalDialog() {
+  void _showSuccessCourseRemovalDialog(NotifyData notifyData) {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        title: const Text("Removal Successful"),
-        content: const Text("Course Removal completed."),
+        title: const Text((notifyData.currentLanguage == Constant.AppNameEN
+            ? ConstantCourse.PendingCourseRemovalSuccessTitleEN
+            : ConstantCourse.PendingCourseRemovalSuccessTitleFR)),
+        content: const Text((notifyData.currentLanguage == Constant.AppNameEN
+            ? ConstantCourse.PendingCourseRemovalSuccessMsgEN
+            : ConstantCourse.PendingCourseRemovalSuccessMsgFR)),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text("OK"),
+            child: const Text((notifyData.currentLanguage == Constant.AppNameEN
+                ? ConstantCourse.PendingCourseRemovalSuccessOKEN
+                : ConstantCourse.PendingCourseRemovalSuccessOKFR)),
           ),
         ],
       ),
@@ -209,8 +236,7 @@ class _ChildPendingScreenState extends State<ChildPendingScreen> {
   }
 
   Widget _header(Course course) {
-    final isExpiringSoon =
-        course.expiryDate != null &&
+    final isExpiringSoon = course.expiryDate != null &&
         course.expiryDate!.isBefore(
           DateTime.now().add(const Duration(days: 7)),
         );
@@ -229,18 +255,25 @@ class _ChildPendingScreenState extends State<ChildPendingScreen> {
     );
   }
 
-  Widget _statusBadge(Course course, bool isExpiringSoon) {
+  Widget _statusBadge(
+      Course course, bool isExpiringSoon, NotifyData notifyData) {
     String text;
     Color color;
 
     if (!course.isRegistered) {
-      text = "Pending";
+      text = (notifyData.currentLanguage == Constant.AppNameEN
+          ? ConstantCourse.PendingCoursePaymentStatusPendingEN
+          : ConstantCourse.PendingCoursePaymentStatusPendingFR);
       color = Colors.orange;
     } else if (isExpiringSoon) {
-      text = "Expiring Soon";
+      text = (notifyData.currentLanguage == Constant.AppNameEN
+          ? ConstantCourse.PendingCoursePaymentStatusExpiringSoonEN
+          : ConstantCourse.PendingCoursePaymentStatusExpiringSoonFR);
       color = Colors.red;
     } else {
-      text = "Active";
+      text = (notifyData.currentLanguage == Constant.AppNameEN
+          ? ConstantCourse.PendingCoursePaymentStatusActiveEN
+          : ConstantCourse.PendingCoursePaymentStatusActiveFR);
       color = Colors.green;
     }
 
