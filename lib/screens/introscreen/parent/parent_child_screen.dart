@@ -7,7 +7,6 @@ import '../../../core/notify_data.dart';
 import '../../../models/child.dart';
 import '../../../providers/session_provider.dart';
 import '../../../widgets/app_scaffold.dart';
-import '../child/child_statistics.dart';
 import '../main_intro_screen_child.dart';
 import '../statistics/intro_statistics.dart';
 import 'parent_pending_screen.dart';

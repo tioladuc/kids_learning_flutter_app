@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../../core/constance_statistics.dart';
+import '../../../core/constances.dart';
+import '../../../core/notify_data.dart';
 import '../../../models/child.dart';
 import '../../../models/course.dart';
 import '../../../models/course_statistics.dart';
@@ -42,13 +45,13 @@ class _StatisticsCourseState extends State<StatisticsCourse> {
     return AppScaffold(
       body: provider.isLoading
           ? const Center(child: CircularProgressIndicator())
-          : _buildBody(provider),
+          : _buildBody(provider, notifyData),
     );
   }
 
   Widget _buildBody(StatisticsProvider provider, NotifyData notifyData) {
     if (provider.courseStatistics.isEmpty) {
-      return const Center(
+      return Center(
         child: Text((notifyData.currentLanguage == Constant.AppNameEN
             ? ConstantStatistics.CourseStatNoStatisticsAvailableEN
             : ConstantStatistics.CourseStatNoStatisticsAvailableFR)),
@@ -57,14 +60,14 @@ class _StatisticsCourseState extends State<StatisticsCourse> {
 
     return Column(
       children: [
-        _header(),
+        _header(notifyData),
         Expanded(
           child: ListView.builder(
             padding: const EdgeInsets.all(12),
             itemCount: provider.courseStatistics.length,
             itemBuilder: (context, index) {
               final stat = provider.courseStatistics[index];
-              return _statCard(stat);
+              return _statCard(stat, notifyData);
             },
           ),
         ),
@@ -120,7 +123,7 @@ class _StatisticsCourseState extends State<StatisticsCourse> {
                 (notifyData.currentLanguage == Constant.AppNameEN
                         ? ConstantStatistics.CourseStatMinuteEN
                         : ConstantStatistics.CourseStatMinuteFR)
-                    .replaceAll('{0}', stat.duration)),
+                    .replaceAll('{0}', stat.duration.toString())),
             const Divider(),
             _infoRow(
                 (notifyData.currentLanguage == Constant.AppNameEN
@@ -128,7 +131,7 @@ class _StatisticsCourseState extends State<StatisticsCourse> {
                     : ConstantStatistics.CourseStatDetailFR),
                 stat.detail),
             const SizedBox(height: 8),
-            _appreciationBadge(stat.appreciation),
+            _appreciationBadge(stat.appreciation, notifyData),
           ],
         ),
       ),
@@ -200,7 +203,7 @@ class _StatisticsCourseState extends State<StatisticsCourse> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.15),
+        color: color.withValues(alpha: 0.15),
         borderRadius: BorderRadius.circular(20),
       ),
       child: Text(

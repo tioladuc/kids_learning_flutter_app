@@ -88,7 +88,7 @@ class _ChildPendingScreenState extends State<ChildPendingScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _header(course),
+            _header(course, notifyData),
             const SizedBox(height: 10),
             _infoRow(
                 (notifyData.currentLanguage == Constant.AppNameEN
@@ -134,7 +134,7 @@ class _ChildPendingScreenState extends State<ChildPendingScreen> {
         child: ElevatedButton(
           onPressed: provider.isLoading
               ? null
-              : () => _handleRemoveCourse(course, provider),
+              : () => _handleRemoveCourse(course, provider, notifyData),
           style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
           child: provider.isLoading
               ? const SizedBox(
@@ -158,7 +158,7 @@ class _ChildPendingScreenState extends State<ChildPendingScreen> {
     CourseProvider provider,
     NotifyData notifyData,
   ) async {
-    final confirm = await _showConfirmationCourseRemovalDialog(course);
+    final confirm = await _showConfirmationCourseRemovalDialog(course, notifyData);
 
     if (confirm != true) return;
 
@@ -170,7 +170,7 @@ class _ChildPendingScreenState extends State<ChildPendingScreen> {
     if (!mounted) return;
 
     if (success) {
-      _showSuccessCourseRemovalDialog();
+      _showSuccessCourseRemovalDialog(notifyData);
     } else {
       _showError(provider.errorMessage ??
           (notifyData.currentLanguage == Constant.AppNameEN
@@ -184,7 +184,7 @@ class _ChildPendingScreenState extends State<ChildPendingScreen> {
     return showDialog<bool>(
       context: context,
       builder: (_) => AlertDialog(
-        title: const Text((notifyData.currentLanguage == Constant.AppNameEN
+        title: Text((notifyData.currentLanguage == Constant.AppNameEN
             ? ConstantCourse.PendingCourseConfirmPaymentTitleEN
             : ConstantCourse.PendingCourseConfirmPaymentTitleFR)),
         content: Text((notifyData.currentLanguage == Constant.AppNameEN
@@ -194,13 +194,13 @@ class _ChildPendingScreenState extends State<ChildPendingScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text((notifyData.currentLanguage == Constant.AppNameEN
+            child: Text((notifyData.currentLanguage == Constant.AppNameEN
                 ? ConstantCourse.PendingCourseRemovalCancelBtnEN
                 : ConstantCourse.PendingCourseRemovalCancelBtnFR)),
           ),
           ElevatedButton(
             onPressed: () => Navigator.pop(context, true),
-            child: const Text((notifyData.currentLanguage == Constant.AppNameEN
+            child: Text((notifyData.currentLanguage == Constant.AppNameEN
                 ? ConstantCourse.PendingCourseRemovalConfirmBtnEN
                 : ConstantCourse.PendingCourseRemovalConfirmBtnFR)),
           ),
@@ -213,16 +213,16 @@ class _ChildPendingScreenState extends State<ChildPendingScreen> {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        title: const Text((notifyData.currentLanguage == Constant.AppNameEN
+        title: Text((notifyData.currentLanguage == Constant.AppNameEN
             ? ConstantCourse.PendingCourseRemovalSuccessTitleEN
             : ConstantCourse.PendingCourseRemovalSuccessTitleFR)),
-        content: const Text((notifyData.currentLanguage == Constant.AppNameEN
+        content: Text((notifyData.currentLanguage == Constant.AppNameEN
             ? ConstantCourse.PendingCourseRemovalSuccessMsgEN
             : ConstantCourse.PendingCourseRemovalSuccessMsgFR)),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text((notifyData.currentLanguage == Constant.AppNameEN
+            child: Text((notifyData.currentLanguage == Constant.AppNameEN
                 ? ConstantCourse.PendingCourseRemovalSuccessOKEN
                 : ConstantCourse.PendingCourseRemovalSuccessOKFR)),
           ),
@@ -235,7 +235,7 @@ class _ChildPendingScreenState extends State<ChildPendingScreen> {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
   }
 
-  Widget _header(Course course) {
+  Widget _header(Course course, NotifyData notifyData) {
     final isExpiringSoon = course.expiryDate != null &&
         course.expiryDate!.isBefore(
           DateTime.now().add(const Duration(days: 7)),
@@ -250,7 +250,7 @@ class _ChildPendingScreenState extends State<ChildPendingScreen> {
             style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
         ),
-        _statusBadge(course, isExpiringSoon),
+        _statusBadge(course, isExpiringSoon, notifyData),
       ],
     );
   }

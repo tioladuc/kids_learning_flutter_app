@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../../core/constance_statistics.dart';
+import '../../../core/constances.dart';
+import '../../../core/notify_data.dart';
 import '../../../models/child.dart';
 import '../../../models/course.dart';
 import '../../../providers/statistics_provider.dart';
@@ -60,22 +63,22 @@ class _IntroStatisticsState extends State<IntroStatistics> {
           _sectionTitle((notifyData.currentLanguage == Constant.AppNameEN
               ? ConstantStatistics.IntroStatTitleLastConnectionEN
               : ConstantStatistics.IntroStatTitleLastConnectionFR)),
-          _connectionInfo(provider),
+          _connectionInfo(provider, notifyData),
           const SizedBox(height: 16),
           _sectionTitle((notifyData.currentLanguage == Constant.AppNameEN
               ? ConstantStatistics.IntroStatTitleCoursesVisitedEN
               : ConstantStatistics.IntroStatTitleCoursesVisitedFR)),
-          _coursesVisited(provider),
+          _coursesVisited(provider, notifyData),
           const SizedBox(height: 16),
           _sectionTitle((notifyData.currentLanguage == Constant.AppNameEN
               ? ConstantStatistics.IntroStatTitleCoursesCompletedEN
               : ConstantStatistics.IntroStatTitleCoursesCompletedFR)),
-          _coursesCompleted(provider),
+          _coursesCompleted(provider, notifyData),
           const SizedBox(height: 16),
           _sectionTitle((notifyData.currentLanguage == Constant.AppNameEN
               ? ConstantStatistics.IntroStatTitleCoursesNeverDoneEN
               : ConstantStatistics.IntroStatTitleCoursesNeverDoneFR)),
-          _coursesNeverDone(provider),
+          _coursesNeverDone(provider, notifyData),
         ],
       ),
     );
@@ -132,7 +135,7 @@ class _IntroStatisticsState extends State<IntroStatistics> {
                 (notifyData.currentLanguage == Constant.AppNameEN
                         ? ConstantStatistics.IntroStatMinuteEN
                         : ConstantStatistics.IntroStatMinuteFR)
-                    .replaceAll('{0}', (widget.child.totalTimeMinutes ?? 0))),
+                    .replaceAll('{0}', (widget.child.totalTimeMinutes ?? 0).toString())),
             _infoRow(
                 (notifyData.currentLanguage == Constant.AppNameEN
                     ? ConstantStatistics.IntroStatStreakDaysEN
@@ -140,7 +143,7 @@ class _IntroStatisticsState extends State<IntroStatistics> {
                 (notifyData.currentLanguage == Constant.AppNameEN
                         ? ConstantStatistics.IntroStatDaysEN
                         : ConstantStatistics.IntroStatDaysFR)
-                    .replaceAll('{0}', (widget.child.streakDays ?? 0))),
+                    .replaceAll('{0}', (widget.child.streakDays ?? 0).toString())),
           ],
         ),
       ),
@@ -173,7 +176,7 @@ class _IntroStatisticsState extends State<IntroStatistics> {
   /// COURSES VISITED
   Widget _coursesVisited(StatisticsProvider provider, NotifyData notifyData) {
     if (provider.visitedCourses.isEmpty) {
-      return const Text((notifyData.currentLanguage == Constant.AppNameEN
+      return Text((notifyData.currentLanguage == Constant.AppNameEN
           ? ConstantStatistics.IntroStatNoCoursesVisitedEN
           : ConstantStatistics.IntroStatNoCoursesVisitedFR));
     }
@@ -189,7 +192,7 @@ class _IntroStatisticsState extends State<IntroStatistics> {
             subtitle: Text((notifyData.currentLanguage == Constant.AppNameEN
                     ? ConstantStatistics.IntroStatTimeSpentEN
                     : ConstantStatistics.IntroStatTimeSpentFR)
-                .replaceAll('{0}', $duration)),
+                .replaceAll('{0}', duration.toString())),
             leading: const Icon(Icons.visibility),
           ),
         );
@@ -200,7 +203,7 @@ class _IntroStatisticsState extends State<IntroStatistics> {
   /// COURSES COMPLETED
   Widget _coursesCompleted(StatisticsProvider provider, NotifyData notifyData) {
     if (provider.completedCourses.isEmpty) {
-      return const Text((notifyData.currentLanguage == Constant.AppNameEN
+      return Text((notifyData.currentLanguage == Constant.AppNameEN
           ? ConstantStatistics.IntroStatNoCompletedCoursesEN
           : ConstantStatistics.IntroStatNoCompletedCoursesFR));
     }
@@ -232,7 +235,7 @@ class _IntroStatisticsState extends State<IntroStatistics> {
   /// COURSES NEVER DONE
   Widget _coursesNeverDone(StatisticsProvider provider, NotifyData notifyData) {
     if (provider.neverDoneCourses.isEmpty) {
-      return const Text((notifyData.currentLanguage == Constant.AppNameEN
+      return Text((notifyData.currentLanguage == Constant.AppNameEN
           ? ConstantStatistics.IntroStatNoPendingCoursesEN
           : ConstantStatistics.IntroStatNoPendingCoursesFR));
     }

@@ -7,11 +7,9 @@ import '../../core/constance_child.dart';
 import '../../core/notify_data.dart';
 import '../../widgets/app_scaffold.dart';
 import '../audio/audio_list_screen.dart';
-import 'child/child_statistics.dart';
 import 'logout_screen.dart';
 import 'child/child_pending_screen.dart';
 import 'child/child_pick_course.dart';
-import 'parent/parent_child_statistics.dart';
 import 'statistics/intro_statistics.dart';
 
 class MainIntroScreenChild extends StatefulWidget {
