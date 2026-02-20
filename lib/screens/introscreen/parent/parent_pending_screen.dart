@@ -48,7 +48,7 @@ class _ParentChildPendingScreenState extends State<ParentChildPendingScreen> {
 
     if (provider.pendingCourses.isEmpty) {
       return Center(
-          child: Text(notifyData.currentLanguage == Constant.AppNameEN
+          child: Text(notifyData.currentLanguage == Constant.languageEN
               ? ConstantCourse.NoPendingCourseMsgEN
               : ConstantCourse.NoPendingCourseMsgFR));
     }
@@ -59,7 +59,7 @@ class _ParentChildPendingScreenState extends State<ParentChildPendingScreen> {
           onPressed: () {},
           style: Constant.getTitle1ButtonStyle(),
           child: Text("${widget.child.name} - " +
-              (notifyData.currentLanguage == Constant.AppNameEN
+              (notifyData.currentLanguage == Constant.languageEN
                   ? ConstantCourse.PendingCourseTitleEN
                   : ConstantCourse.PendingCourseTitleFR)),
         ),
@@ -96,28 +96,28 @@ class _ParentChildPendingScreenState extends State<ParentChildPendingScreen> {
             _header(course, notifyData),
             const SizedBox(height: 10),
             _infoRow(
-                (notifyData.currentLanguage == Constant.AppNameEN
+                (notifyData.currentLanguage == Constant.languageEN
                     ? ConstantCourse.PendingCourseCodeEN
                     : ConstantCourse.PendingCourseCodeFR),
                 course.code),
             _infoRow(
-                (notifyData.currentLanguage == Constant.AppNameEN
+                (notifyData.currentLanguage == Constant.languageEN
                     ? ConstantCourse.PendingCourseDescriptionEN
                     : ConstantCourse.PendingCourseDescriptionFR),
                 course.description),
             _infoRow(
-                (notifyData.currentLanguage == Constant.AppNameEN
+                (notifyData.currentLanguage == Constant.languageEN
                     ? ConstantCourse.PendingCourseAmountEN
                     : ConstantCourse.PendingCourseAmountFR),
                 "\$${course.amount.toStringAsFixed(2)}"),
             _infoRow(
-                (notifyData.currentLanguage == Constant.AppNameEN
+                (notifyData.currentLanguage == Constant.languageEN
                     ? ConstantCourse.PendingCourseValidityEN
                     : ConstantCourse.PendingCourseValidityFR),
                 course.validity),
             if (course.isRegistered && course.expiryDate != null)
               _infoRow(
-                (notifyData.currentLanguage == Constant.AppNameEN
+                (notifyData.currentLanguage == Constant.languageEN
                     ? ConstantCourse.PendingCourseExpireEN
                     : ConstantCourse.PendingCourseExpireFR),
                 _formatDate(course.expiryDate!),
@@ -157,10 +157,10 @@ class _ParentChildPendingScreenState extends State<ParentChildPendingScreen> {
                   ),
                 )
               : Text(isRenew
-                  ? (notifyData.currentLanguage == Constant.AppNameEN
+                  ? (notifyData.currentLanguage == Constant.languageEN
                       ? ConstantCourse.PendingCourseRenewEN
                       : ConstantCourse.PendingCourseRenewFR)
-                  : (notifyData.currentLanguage == Constant.AppNameEN
+                  : (notifyData.currentLanguage == Constant.languageEN
                       ? ConstantCourse.PendingCoursePurchaseEN
                       : ConstantCourse.PendingCoursePurchaseFR)),
         ),
@@ -188,7 +188,7 @@ class _ParentChildPendingScreenState extends State<ParentChildPendingScreen> {
                     color: Colors.white,
                   ),
                 )
-              : Text((notifyData.currentLanguage == Constant.AppNameEN
+              : Text((notifyData.currentLanguage == Constant.languageEN
                   ? ConstantCourse.PendingCourseRemoveCourseEN
                   : ConstantCourse.PendingCourseRemoveCourseFR)),
         ),
@@ -213,7 +213,7 @@ class _ParentChildPendingScreenState extends State<ParentChildPendingScreen> {
       _showSuccessDialog(notifyData);
     } else {
       _showError(provider.errorMessage ??
-          (notifyData.currentLanguage == Constant.AppNameEN
+          (notifyData.currentLanguage == Constant.languageEN
               ? ConstantCourse.PendingCoursePaymentFailedEN
               : ConstantCourse.PendingCoursePaymentFailedFR));
     }
@@ -236,7 +236,7 @@ class _ParentChildPendingScreenState extends State<ParentChildPendingScreen> {
       _showSuccessCourseRemovalDialog(notifyData);
     } else {
       _showError(provider.errorMessage ??
-          (notifyData.currentLanguage == Constant.AppNameEN
+          (notifyData.currentLanguage == Constant.languageEN
               ? ConstantCourse.PendingCourseCourseRemovalFailedEN
               : ConstantCourse.PendingCourseCourseRemovalFailedFR));
     }
@@ -246,11 +246,11 @@ class _ParentChildPendingScreenState extends State<ParentChildPendingScreen> {
     return showDialog<bool>(
       context: context,
       builder: (_) => AlertDialog(
-        title: Text((notifyData.currentLanguage == Constant.AppNameEN
+        title: Text((notifyData.currentLanguage == Constant.languageEN
             ? ConstantCourse.PendingCourseConfirmPaymentTitleEN
             : ConstantCourse.PendingCourseConfirmPaymentTitleFR)),
         content: Text(
-          (notifyData.currentLanguage == Constant.AppNameEN
+          (notifyData.currentLanguage == Constant.languageEN
                   ? ConstantCourse.PendingCourseConfirmPaymentMsgEN
                   : ConstantCourse.PendingCourseConfirmPaymentMsgFR)
               .replaceAll('{0}', course.amount.toStringAsFixed(2))
@@ -259,13 +259,13 @@ class _ParentChildPendingScreenState extends State<ParentChildPendingScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: Text((notifyData.currentLanguage == Constant.AppNameEN
+            child: Text((notifyData.currentLanguage == Constant.languageEN
                 ? ConstantCourse.PendingCoursePaymentCancelBtnEN
                 : ConstantCourse.PendingCoursePaymentCancelBtnFR)),
           ),
           ElevatedButton(
             onPressed: () => Navigator.pop(context, true),
-            child: Text((notifyData.currentLanguage == Constant.AppNameEN
+            child: Text((notifyData.currentLanguage == Constant.languageEN
                 ? ConstantCourse.PendingCoursePaymentConfirmBtnEN
                 : ConstantCourse.PendingCoursePaymentConfirmBtnFR)),
           ),
@@ -279,23 +279,23 @@ class _ParentChildPendingScreenState extends State<ParentChildPendingScreen> {
     return showDialog<bool>(
       context: context,
       builder: (_) => AlertDialog(
-        title: Text((notifyData.currentLanguage == Constant.AppNameEN
+        title: Text((notifyData.currentLanguage == Constant.languageEN
             ? ConstantCourse.PendingCourseRemovalTitleEN
             : ConstantCourse.PendingCourseRemovalTitleFR)),
-        content: Text((notifyData.currentLanguage == Constant.AppNameEN
+        content: Text((notifyData.currentLanguage == Constant.languageEN
                 ? ConstantCourse.PendingCourseRemovalMsgEN
                 : ConstantCourse.PendingCourseRemovalMsgFR)
             .replaceAll('{0}', course.name)),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: Text((notifyData.currentLanguage == Constant.AppNameEN
+            child: Text((notifyData.currentLanguage == Constant.languageEN
                 ? ConstantCourse.PendingCourseRemovalCancelBtnEN
                 : ConstantCourse.PendingCourseRemovalCancelBtnFR)),
           ),
           ElevatedButton(
             onPressed: () => Navigator.pop(context, true),
-            child: Text((notifyData.currentLanguage == Constant.AppNameEN
+            child: Text((notifyData.currentLanguage == Constant.languageEN
                 ? ConstantCourse.PendingCourseRemovalConfirmBtnEN
                 : ConstantCourse.PendingCourseRemovalConfirmBtnFR)),
           ),
@@ -308,16 +308,16 @@ class _ParentChildPendingScreenState extends State<ParentChildPendingScreen> {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        title: Text((notifyData.currentLanguage == Constant.AppNameEN
+        title: Text((notifyData.currentLanguage == Constant.languageEN
             ? ConstantCourse.PendingCoursePaymentSuccessTitleEN
             : ConstantCourse.PendingCoursePaymentSuccessTitleFR)),
-        content: Text((notifyData.currentLanguage == Constant.AppNameEN
+        content: Text((notifyData.currentLanguage == Constant.languageEN
             ? ConstantCourse.PendingCoursePaymentSuccessMsgEN
             : ConstantCourse.PendingCoursePaymentSuccessMsgFR)),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text((notifyData.currentLanguage == Constant.AppNameEN
+            child: Text((notifyData.currentLanguage == Constant.languageEN
                 ? ConstantCourse.PendingCoursePaymentSuccessOKEN
                 : ConstantCourse.PendingCoursePaymentSuccessOKFR)),
           ),
@@ -330,16 +330,16 @@ class _ParentChildPendingScreenState extends State<ParentChildPendingScreen> {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        title: Text((notifyData.currentLanguage == Constant.AppNameEN
+        title: Text((notifyData.currentLanguage == Constant.languageEN
             ? ConstantCourse.PendingCourseRemovalSuccessTitleEN
             : ConstantCourse.PendingCourseRemovalSuccessTitleFR)),
-        content: Text((notifyData.currentLanguage == Constant.AppNameEN
+        content: Text((notifyData.currentLanguage == Constant.languageEN
             ? ConstantCourse.PendingCourseRemovalSuccessMsgEN
             : ConstantCourse.PendingCourseRemovalSuccessMsgFR)),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text((notifyData.currentLanguage == Constant.AppNameEN
+            child: Text((notifyData.currentLanguage == Constant.languageEN
                 ? ConstantCourse.PendingCourseRemovalSuccessOKEN
                 : ConstantCourse.PendingCourseRemovalSuccessOKFR)),
           ),
@@ -377,17 +377,17 @@ class _ParentChildPendingScreenState extends State<ParentChildPendingScreen> {
     Color color;
 
     if (!course.isRegistered) {
-      text = (notifyData.currentLanguage == Constant.AppNameEN
+      text = (notifyData.currentLanguage == Constant.languageEN
           ? ConstantCourse.PendingCoursePaymentStatusPendingEN
           : ConstantCourse.PendingCoursePaymentStatusPendingFR);
       color = Colors.orange;
     } else if (isExpiringSoon) {
-      text = (notifyData.currentLanguage == Constant.AppNameEN
+      text = (notifyData.currentLanguage == Constant.languageEN
           ? ConstantCourse.PendingCoursePaymentStatusExpiringSoonEN
           : ConstantCourse.PendingCoursePaymentStatusExpiringSoonFR);
       color = Colors.red;
     } else {
-      text = (notifyData.currentLanguage == Constant.AppNameEN
+      text = (notifyData.currentLanguage == Constant.languageEN
           ? ConstantCourse.PendingCoursePaymentStatusActiveEN
           : ConstantCourse.PendingCoursePaymentStatusActiveFR);
       color = Colors.green;

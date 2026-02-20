@@ -34,8 +34,8 @@ class ConstantStatistics {
   static String IntroStatNoCoursesVisitedEN = 'No courses visited';
   static String IntroStatNoCoursesVisitedFR = 'Aucun cours visité';
 
-  static String IntroStatTimeSpentEN = 'Time spent: {0} min';
-  static String IntroStatTimeSpentFR = 'Temps Écoulé: {0} min';
+  static String IntroStatTimeSpentEN = 'Time spent: {0} min (Date: {1})';
+  static String IntroStatTimeSpentFR = 'Temps Écoulé: {0} min (Date: {1})';
   static String IntroStatNoCompletedCoursesEN = 'No completed courses';
   static String IntroStatNoCompletedCoursesFR = 'Aucun cours terminé';
   static String IntroStatNoPendingCoursesEN = 'No pending courses';

@@ -59,7 +59,7 @@ class _ChildPickCourseState extends State<ChildPickCourse> {
           onPressed: () {},
           style: Constant.getTitle1ButtonStyle(),
           child: Text("${widget.child.name} - " + (
-              notifyData.currentLanguage == Constant.AppNameEN
+              notifyData.currentLanguage == Constant.languageEN
                   ? ConstantCourse.PickCoursePickACourseEN
                   : ConstantCourse.PickCoursePickACourseFR)),
         ),
@@ -92,22 +92,22 @@ class _ChildPickCourseState extends State<ChildPickCourse> {
             _header(course),
             const SizedBox(height: 10),
             _infoRow(
-                (notifyData.currentLanguage == Constant.AppNameEN
+                (notifyData.currentLanguage == Constant.languageEN
                     ? ConstantCourse.PendingCourseCodeEN
                     : ConstantCourse.PendingCourseCodeFR),
                 course.code),
             _infoRow(
-                (notifyData.currentLanguage == Constant.AppNameEN
+                (notifyData.currentLanguage == Constant.languageEN
                     ? ConstantCourse.PendingCourseDescriptionEN
                     : ConstantCourse.PendingCourseDescriptionFR),
                 course.description),
             _infoRow(
-                (notifyData.currentLanguage == Constant.AppNameEN
+                (notifyData.currentLanguage == Constant.languageEN
                     ? ConstantCourse.PendingCourseAmountEN
                     : ConstantCourse.PendingCourseAmountFR),
                 "\$${course.amount.toStringAsFixed(2)}"),
             _infoRow(
-                (notifyData.currentLanguage == Constant.AppNameEN
+                (notifyData.currentLanguage == Constant.languageEN
                     ? ConstantCourse.PendingCourseValidityEN
                     : ConstantCourse.PendingCourseValidityFR),
                 course.validity),
@@ -120,7 +120,7 @@ class _ChildPickCourseState extends State<ChildPickCourse> {
                   backgroundColor: Colors.blue,
                 ),
                 child: Text(
-                    (notifyData.currentLanguage == Constant.AppNameEN
+                    (notifyData.currentLanguage == Constant.languageEN
                         ? ConstantCourse.PickCoursePickACourseEN
                         : ConstantCourse.PickCoursePickACourseFR)),
               ),
@@ -193,22 +193,22 @@ class _ChildPickCourseState extends State<ChildPickCourse> {
     final confirm = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text((notifyData.currentLanguage == Constant.AppNameEN
+        title: Text((notifyData.currentLanguage == Constant.languageEN
             ? ConstantCourse.PickCourseConfirmTitleEN
             : ConstantCourse.PickCourseConfirmTitleFR)),
-        content: Text((notifyData.currentLanguage == Constant.AppNameEN
+        content: Text((notifyData.currentLanguage == Constant.languageEN
             ? ConstantCourse.PickCourseConfirmDescriptionEN
             : ConstantCourse.PickCourseConfirmDescriptionFR)),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: Text((notifyData.currentLanguage == Constant.AppNameEN
+            child: Text((notifyData.currentLanguage == Constant.languageEN
                 ? ConstantCourse.PickCoursePickCancelBtnEN
                 : ConstantCourse.PickCoursePickCancelBtnFR)),
           ),
           ElevatedButton(
             onPressed: () => Navigator.pop(context, true),
-            child: Text((notifyData.currentLanguage == Constant.AppNameEN
+            child: Text((notifyData.currentLanguage == Constant.languageEN
                 ? ConstantCourse.PickCoursePickConfirmBtnEN
                 : ConstantCourse.PickCoursePickConfirmBtnFR)),
           ),
@@ -235,17 +235,17 @@ class _ChildPickCourseState extends State<ChildPickCourse> {
       await showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: Text((notifyData.currentLanguage == Constant.AppNameEN
+          title: Text((notifyData.currentLanguage == Constant.languageEN
               ? ConstantCourse.PickCoursePickConfirmSuccessEN
               : ConstantCourse.PickCoursePickConfirmSuccessFR)),
-          content: Text((notifyData.currentLanguage == Constant.AppNameEN
+          content: Text((notifyData.currentLanguage == Constant.languageEN
               ? ConstantCourse.PickCoursePickConfirmSuccessMsgEN
               : ConstantCourse.PickCoursePickConfirmSuccessMsgFR)),
           actions: [
             ElevatedButton(
               onPressed: () => Navigator.pop(context),
               child: Text(
-                  (notifyData.currentLanguage == Constant.AppNameEN
+                  (notifyData.currentLanguage == Constant.languageEN
                       ? ConstantCourse.PickCoursePickConfirmSuccessOKEN
                       : ConstantCourse.PickCoursePickConfirmSuccessOKFR)),
             ),
@@ -261,7 +261,7 @@ class _ChildPickCourseState extends State<ChildPickCourse> {
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: Text((notifyData.currentLanguage == Constant.AppNameEN
+          title: Text((notifyData.currentLanguage == Constant.languageEN
               ? ConstantCourse.PickCoursePickConfirmSuccessErrorEN
               : ConstantCourse.PickCoursePickConfirmSuccessErrorFR)),
           content: Text(e.toString()),
@@ -269,7 +269,7 @@ class _ChildPickCourseState extends State<ChildPickCourse> {
             ElevatedButton(
               onPressed: () => Navigator.pop(context),
               child: Text(
-                  (notifyData.currentLanguage == Constant.AppNameEN
+                  (notifyData.currentLanguage == Constant.languageEN
                       ? ConstantCourse.PickCoursePickConfirmSuccessOKEN
                       : ConstantCourse.PickCoursePickConfirmSuccessOKFR)),
             ),

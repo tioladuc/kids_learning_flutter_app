@@ -80,25 +80,27 @@ class _ParentChildScreenState extends State<ParentChildScreen> {
   // -------------------------
   // DELETE CHILD
   // -------------------------
+ 
+
   void _deleteChild(NotifyData notifyData) {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
         title: Text(
-          notifyData.currentLanguage == Constant.AppNameEN
-              ? ConstantParent.detailedChildPageChildUpdateEN
-              : ConstantParent.detailedChildPageChildUpdateFR,
-        ),
-        content: Text(
-          notifyData.currentLanguage == Constant.AppNameEN
+          notifyData.currentLanguage == Constant.languageEN
               ? ConstantParent.childDeleteTitleEN
               : ConstantParent.childDeleteTitleFR,
+        ),
+        content: Text(
+          notifyData.currentLanguage == Constant.languageEN
+              ? ConstantParent.childDeleteContainEN
+              : ConstantParent.childDeleteContainFR,
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
             child: Text(
-              notifyData.currentLanguage == Constant.AppNameEN
+              notifyData.currentLanguage == Constant.languageEN
                   ? ConstantParent.childDeleteCancelButtonEN
                   : ConstantParent.childDeleteCancelButtonFR,
             ),
@@ -114,7 +116,7 @@ class _ParentChildScreenState extends State<ParentChildScreen> {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(
-                    notifyData.currentLanguage == Constant.AppNameEN
+                    notifyData.currentLanguage == Constant.languageEN
                         ? ConstantParent.childDeleteAlertMessageEN
                         : ConstantParent.childDeleteAlertMessageFR,
                   ),
@@ -122,7 +124,7 @@ class _ParentChildScreenState extends State<ParentChildScreen> {
               );
             },
             child: Text(
-              notifyData.currentLanguage == Constant.AppNameEN
+              notifyData.currentLanguage == Constant.languageEN
                   ? ConstantParent.childDeleteDeleteButtonEN
                   : ConstantParent.childDeleteDeleteButtonFR,
             ),
@@ -183,7 +185,7 @@ class _ParentChildScreenState extends State<ParentChildScreen> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
-          notifyData.currentLanguage == Constant.AppNameEN
+          notifyData.currentLanguage == Constant.languageEN
               ? ConstantParent.childParentWorkAsChildEN
               : ConstantParent.childParentWorkAsChildFR,
         ),
@@ -358,8 +360,8 @@ class _ParentChildScreenState extends State<ParentChildScreen> {
                   ListTile(
                     leading: const Icon(Icons.play_circle_fill),
                     title: Text(notifyData.currentLanguage == Constant.languageEN
-                          ? ConstantParent.labelChildDeleteChildDetailEN
-                          : ConstantParent.labelChildDeleteChildDetailFR),
+                          ? ConstantParent.labelChildWorkAsDetailEN
+                          : ConstantParent.labelChildWorkAsDetailFR),
                     onTap: (){_workAsChild(notifyData);},
                   ),
                   const Divider(height: 1),
@@ -367,8 +369,8 @@ class _ParentChildScreenState extends State<ParentChildScreen> {
                     leading: const Icon(Icons.delete, color: Colors.red),
                     title: Text(
                       notifyData.currentLanguage == Constant.languageEN
-                          ? ConstantParent.labelChildWorkAsDetailEN
-                          : ConstantParent.labelChildWorkAsDetailFR,
+                          ? ConstantParent.labelChildDeleteChildDetailEN
+                          : ConstantParent.labelChildDeleteChildDetailFR,
                     ),
                     onTap: () {
                       _deleteChild(notifyData);

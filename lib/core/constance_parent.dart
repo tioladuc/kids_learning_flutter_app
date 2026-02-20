@@ -58,11 +58,11 @@ static final String labelCancelButtonParentPwdChangeFR = 'Annuler';
   static final String childDeleteDeleteButtonFR = 'Supprimer';
   static final String childDeleteDeleteButtonEN = 'Delete';
 
-  static final String childDeleteCancelButtonFR = 'Mise a jour';
-  static final String childDeleteCancelButtonEN = 'Update';
+  static final String childDeleteCancelButtonFR = 'Annuler';
+  static final String childDeleteCancelButtonEN = 'Cancel';
 
-  static final String childDeleteAlertMessageFR = 'Enfant mis a jour';
-  static final String childDeleteAlertMessageEN = 'Child updated';
+  static final String childDeleteAlertMessageFR = 'Suppression de l`enfant';
+  static final String childDeleteAlertMessageEN = 'Deletion of the child';
 
   static final String childParentWorkAsChildFR = 'Nous sommes passés en mode enfant';
   static final String childParentWorkAsChildEN = 'Switched to child mode';

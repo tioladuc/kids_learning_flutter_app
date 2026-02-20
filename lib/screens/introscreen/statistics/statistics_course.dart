@@ -6,7 +6,6 @@ import '../../../core/notify_data.dart';
 import '../../../models/child.dart';
 import '../../../models/course.dart';
 import '../../../models/course_statistics.dart';
-import '../../../providers/course_provider.dart';
 import '../../../providers/statistics_provider.dart';
 import '../../../widgets/app_scaffold.dart';
 
@@ -31,8 +30,8 @@ class _StatisticsCourseState extends State<StatisticsCourse> {
 
     Future.microtask(() {
       context.read<StatisticsProvider>().loadCourseStatistics(
-            widget.child.id,
-            widget.course.code,
+            widget.child,
+            widget.course,
           );
     });
   }
@@ -40,7 +39,7 @@ class _StatisticsCourseState extends State<StatisticsCourse> {
   @override
   Widget build(BuildContext context) {
     final provider = context.watch<StatisticsProvider>();
-    final notifyData = context.read<NotifyData>();
+    final notifyData = context.watch<NotifyData>();
 
     return AppScaffold(
       body: provider.isLoading
@@ -52,7 +51,7 @@ class _StatisticsCourseState extends State<StatisticsCourse> {
   Widget _buildBody(StatisticsProvider provider, NotifyData notifyData) {
     if (provider.courseStatistics.isEmpty) {
       return Center(
-        child: Text((notifyData.currentLanguage == Constant.AppNameEN
+        child: Text((notifyData.currentLanguage == Constant.languageEN
             ? ConstantStatistics.CourseStatNoStatisticsAvailableEN
             : ConstantStatistics.CourseStatNoStatisticsAvailableFR)),
       );
@@ -83,7 +82,7 @@ class _StatisticsCourseState extends State<StatisticsCourse> {
       child: ListTile(
         leading: const Icon(Icons.bar_chart, size: 40),
         title: Text(widget.course.name),
-        subtitle: Text((notifyData.currentLanguage == Constant.AppNameEN
+        subtitle: Text((notifyData.currentLanguage == Constant.languageEN
                 ? ConstantStatistics.CourseStatChildEN
                 : ConstantStatistics.CourseStatChildFR)
             .replaceAll('{0}', widget.child.name)),
@@ -107,26 +106,26 @@ class _StatisticsCourseState extends State<StatisticsCourse> {
             _dateHeader(stat),
             const SizedBox(height: 8),
             _infoRow(
-                (notifyData.currentLanguage == Constant.AppNameEN
+                (notifyData.currentLanguage == Constant.languageEN
                     ? ConstantStatistics.CourseStatStartEN
                     : ConstantStatistics.CourseStatStartFR),
                 _formatDate(stat.startDate)),
             _infoRow(
-                (notifyData.currentLanguage == Constant.AppNameEN
+                (notifyData.currentLanguage == Constant.languageEN
                     ? ConstantStatistics.CourseStatEndEN
                     : ConstantStatistics.CourseStatEndFR),
                 _formatDate(stat.endDate)),
             _infoRow(
-                (notifyData.currentLanguage == Constant.AppNameEN
+                (notifyData.currentLanguage == Constant.languageEN
                     ? ConstantStatistics.CourseStatDurationEN
                     : ConstantStatistics.CourseStatDurationFR),
-                (notifyData.currentLanguage == Constant.AppNameEN
+                (notifyData.currentLanguage == Constant.languageEN
                         ? ConstantStatistics.CourseStatMinuteEN
                         : ConstantStatistics.CourseStatMinuteFR)
                     .replaceAll('{0}', stat.duration.toString())),
             const Divider(),
             _infoRow(
-                (notifyData.currentLanguage == Constant.AppNameEN
+                (notifyData.currentLanguage == Constant.languageEN
                     ? ConstantStatistics.CourseStatDetailEN
                     : ConstantStatistics.CourseStatDetailFR),
                 stat.detail),
@@ -182,23 +181,6 @@ class _StatisticsCourseState extends State<StatisticsCourse> {
     } else {
       color = Colors.grey;
     }
-
-    /*switch (appreciation.toLowerCase()) {
-      case "excellent":
-        color = Colors.green;
-        break;
-      case "good":
-        color = Colors.blue;
-        break;
-      case "average":
-        color = Colors.orange;
-        break;
-      case "poor":
-        color = Colors.red;
-        break;
-      default:
-        color = Colors.grey;
-    }*/
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),

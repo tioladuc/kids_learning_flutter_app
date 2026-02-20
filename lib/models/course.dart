@@ -22,8 +22,9 @@ class Course {
 class VisitedCourse {
   final Course course;
   final int timeSpent;
+  final DateTime lastDateConnection;
 
-  VisitedCourse(this.course, this.timeSpent);
+  VisitedCourse(this.course, this.timeSpent, this.lastDateConnection);
 }
 
 class NeverDoneCourse {
