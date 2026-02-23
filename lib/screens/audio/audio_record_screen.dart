@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:just_audio/just_audio.dart' hide AudioSource;
 import 'package:provider/provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../../core/constances.dart';
 import '../../core/notify_data.dart';
@@ -58,12 +59,23 @@ class _RecordAudioScreenState extends State<RecordAudioScreen> {
     });
   }
 
+  Future<bool> requestMicPermission() async {
+    var status = await Permission.microphone.request();
+    return status == PermissionStatus.granted;
+  }
+
   Future<void> _initRecorder() async {
     await _recorder.openRecorder();
   }
 
   // 🎤 START
   Future<void> _startRecording() async {
+    bool hasPermission = await requestMicPermission();
+    if (!hasPermission) {
+      print("Microphone permission denied");
+      return;
+    }
+
     await _recorder.openRecorder();
     Codec codec = kIsWeb ? Codec.opusWebM : Codec.aacADTS;
     await _recorder.startRecorder(

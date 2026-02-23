@@ -20,6 +20,7 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
   double currentSpeed = 1.0;
   int position = 0;
 
+
   @override
   void initState() {
     super.initState();

@@ -5,6 +5,7 @@
 list(APPEND FLUTTER_PLUGIN_LIST
   connectivity_plus
   flutter_sound
+  permission_handler_windows
   record_windows
 )
 
