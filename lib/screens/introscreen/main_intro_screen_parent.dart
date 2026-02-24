@@ -37,14 +37,16 @@ class _MainIntroScreenParent extends State<MainIntroScreenParent> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            
             // Title
             Center(
-              child: Text(
-                notifyData.currentLanguage == Constant.languageEN
+              child: ElevatedButton(
+          onPressed: () {},
+          style: Constant.getTitle1ButtonStyle(),
+          child: Text(notifyData.currentLanguage == Constant.languageEN
                     ? ConstantParent.menuTitrePageIntroParentEN
-                    : ConstantParent.menuTitrePageIntroParentFR,
-                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-              ),
+                    : ConstantParent.menuTitrePageIntroParentFR),
+        ),
             ),
 
             const SizedBox(height: 16),

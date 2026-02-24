@@ -12,11 +12,11 @@ class IntroStatisticsForParent extends StatefulWidget {
   const IntroStatisticsForParent({super.key});
 
   @override
-  State<IntroStatisticsForParent> createState() => _IntroStatisticsForParentState();
+  State<IntroStatisticsForParent> createState() =>
+      _IntroStatisticsForParentState();
 }
 
 class _IntroStatisticsForParentState extends State<IntroStatisticsForParent> {
-
   @override
   void initState() {
     super.initState();
@@ -39,30 +39,38 @@ class _IntroStatisticsForParentState extends State<IntroStatisticsForParent> {
       body: Padding(
         padding: const EdgeInsets.all(12),
         child: Column(
+  children: [
+    ElevatedButton(
+          onPressed: () {},
+          style: Constant.getTitle1ButtonStyle(),
+          child: Text("Children Accounts Statistics"),
+        ),
+
+    Expanded( // ✅ gives available space
+      child: _buildContent(session, children),
+    ),
+  ],
+)/*_buildContent(session, children)*/ /*Column(
           children: [
             ElevatedButton(
           onPressed: () {},
           style: Constant.getTitle1ButtonStyle(),
-          child: Text("hildren Accounts Statistics" ),
+          child: Text("Children Accounts Statistics" ),
         ),
             _buildContent(session, children)
           ],
-        ),
+        ),*/,
       ),
     );
   }
 
   Widget _buildContent(SessionProvider session, List children) {
     if (session.isLoadingChildren) {
-      return const Center(
-        child: CircularProgressIndicator(),
-      );
+      return const Center(child: CircularProgressIndicator());
     }
 
     if (children.isEmpty) {
-      return const Center(
-        child: Text("No children registered."),
-      );
+      return const Center(child: Text("No children registered."));
     }
 
     return ListView.builder(
@@ -83,26 +91,56 @@ class _IntroStatisticsForParentState extends State<IntroStatisticsForParent> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-
                 /// Name
                 Row(
                   children: [
-                    IconButton(onPressed: (){
-                      Navigator.push(
-      context,
-      MaterialPageRoute(builder: (_) => IntroStatistics(child: child, isResponsible: child.parentResponsible??false, isViewParent: true,)),
-    );
-                    }, icon: const Icon(Icons.person, size: 20, )),
+                    IconButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => IntroStatistics(
+                              child: child,
+                              isResponsible: child.parentResponsible ?? false,
+                              isViewParent: true,
+                            ),
+                          ),
+                        );
+                      },
+                      icon: const Icon(Icons.person, size: 20),
+                    ),
                     const SizedBox(width: 8),
                     Text(
                       child.name,
 
                       style: const TextStyle(
-                        fontSize: 16,
+                        fontSize: 20,
                         fontWeight: FontWeight.bold,
+                        color: Colors.blue,
                       ),
                     ),
-                    
+                    const SizedBox(width: 8),
+                    IconButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => IntroStatistics(
+                              child: child,
+                              isResponsible: child.parentResponsible ?? false,
+                              isViewParent: true,
+                            ),
+                          ),
+                        );
+                      },
+                      
+                      style: IconButton.styleFrom(
+    backgroundColor: Colors.blue,   // ✅ blue background
+    foregroundColor: Colors.white,  // ✅ icon color
+    padding: const EdgeInsets.all(12),
+  ),
+                      icon: const Icon(Icons.arrow_forward_ios, size: 20),
+                    ),
                   ],
                 ),
 

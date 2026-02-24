@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../core/constances.dart';
 import '../../models/payment_model.dart';
 import '../../providers/session_provider.dart';
+import '../../widgets/app_scaffold.dart';
 
 class Payment extends StatefulWidget {
   const Payment({super.key});
@@ -25,10 +27,10 @@ class _PaymentState extends State<Payment> {
   Widget build(BuildContext context) {
     final session = context.watch<SessionProvider>();
 
-    return Scaffold(
-      appBar: AppBar(
+    return AppScaffold(
+      /*appBar: AppBar(
         title: const Text("Payments"),
-      ),
+      ),*/
       body: Padding(
         padding: const EdgeInsets.all(12),
         child: _buildContent(session),
@@ -45,7 +47,12 @@ class _PaymentState extends State<Payment> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-
+          Center( child: ElevatedButton(
+          onPressed: () {},
+          style: Constant.getTitle1ButtonStyle(),
+          child: Text("Payments Dashboard"),
+        ),),
+        const SizedBox(height: 10),
           /// ============================
           /// PAID PAYMENTS
           /// ============================

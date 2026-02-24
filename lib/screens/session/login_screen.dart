@@ -139,6 +139,7 @@ class _LoginScreen extends State<LoginScreen> {
                     _sessionProvider.setChild(null);
                     _sessionProvider.setParent(_sessionProvider.tmpParent);
                   }
+                  notifyData.setCurrentBottomPosition(1);
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(

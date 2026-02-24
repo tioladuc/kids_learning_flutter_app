@@ -80,11 +80,6 @@ class _AppFooter  extends State<AppFooter>  {//class AppFooter extends Stateless
                 }
               }
               
-                Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(builder: (_) => _pages[index]),
-                  (Route<dynamic> route) => false,
-                );
               /*if(session.isLoggedIn) {
                 print('top top top top = ' + index.toString());
                 notifyData.setCurrentBottomPosition(index); 

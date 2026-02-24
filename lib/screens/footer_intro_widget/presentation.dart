@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kids_learning_flutter_app/core/notify_data.dart';
 import 'package:provider/provider.dart';
-import '../../core/constance_course.dart';
 import '../../core/constances.dart';
 import '../../providers/session_provider.dart';
 import '../../widgets/app_scaffold.dart';
@@ -82,17 +81,20 @@ class _PresentationState extends State<Presentation> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ElevatedButton(
+            Center(
+              child: ElevatedButton(
           onPressed: () {},
           style: Constant.getTitle1ButtonStyle(),
           child: Text("Learn4Kids"),
         ),
+            ),
+        const SizedBox(height: 10),
             /// ===============================
             /// 1. PRESENTATION SECTION
             /// ===============================
             const Text(
               "Welcome to Learn4Kids",
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold,  color: Colors.blue),
             ),
             const SizedBox(height: 10),
 
@@ -109,12 +111,12 @@ class _PresentationState extends State<Presentation> {
             /// ===============================
             const Text(
               "Latest News",
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.blue),
             ),
             const SizedBox(height: 10),
 
             if (newsList.isEmpty)
-              const Text("No news available")
+              const Text("No news available", style:TextStyle( color: Colors.blue))
             else
               ListView.builder(
                 shrinkWrap: true,
@@ -125,7 +127,7 @@ class _PresentationState extends State<Presentation> {
                   return Card(
                     margin: const EdgeInsets.symmetric(vertical: 8),
                     child: ListTile(
-                      title: Text(news.title),
+                      title: Text(news.title, style: TextStyle(fontWeight: FontWeight.bold),),
                       subtitle: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -133,7 +135,7 @@ class _PresentationState extends State<Presentation> {
                           const SizedBox(height: 5),
                           Text(
                             news.date.toString(),
-                            style: const TextStyle(fontSize: 12),
+                            style: const TextStyle(fontSize: 12, fontStyle: FontStyle.italic, fontWeight: FontWeight.bold),
                           ),
                         ],
                       ),
@@ -149,7 +151,7 @@ class _PresentationState extends State<Presentation> {
             /// ===============================
             const Text(
               "Contact Us",
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.blue),
             ),
             const SizedBox(height: 10),
 
@@ -210,6 +212,7 @@ class _PresentationState extends State<Presentation> {
                   /// Send Button
                   ElevatedButton(
                     onPressed: _sendRequest,
+                    style: Constant.getTitle3ButtonStyle(),
                     child: const Text("Send"),
                   ),
                 ],

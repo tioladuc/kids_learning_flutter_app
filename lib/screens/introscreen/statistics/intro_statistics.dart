@@ -59,6 +59,13 @@ class _IntroStatisticsState extends State<IntroStatistics> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Center(
+              child: ElevatedButton(
+          onPressed: () {},
+          style: Constant.getTitle1ButtonStyle(),
+          child: Text("Child Statistics"),
+        ),
+            ),
           _childHeader(notifyData),
           const SizedBox(height: 16),
           _sectionTitle((notifyData.currentLanguage == Constant.languageEN
@@ -104,7 +111,7 @@ class _IntroStatisticsState extends State<IntroStatistics> {
         subtitle: Text((notifyData.currentLanguage == Constant.languageEN
                 ? ConstantStatistics.IntroStatLoginEN
                 : ConstantStatistics.IntroStatLoginFR)
-            .replaceAll('{1}', child!.login)),
+            .replaceAll('{0}', child!.login)),
         trailing: widget.isResponsible
             ? const Icon(Icons.star, color: Colors.orange)
             : null,
@@ -301,6 +308,7 @@ class _IntroStatisticsState extends State<IntroStatistics> {
         style: const TextStyle(
           fontSize: 18,
           fontWeight: FontWeight.bold,
+          color: Colors.blue
         ),
       ),
     );
