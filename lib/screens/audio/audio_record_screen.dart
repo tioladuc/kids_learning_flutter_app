@@ -227,8 +227,8 @@ class _RecordAudioScreenState extends State<RecordAudioScreen> {
                           ? Constant.recordStopEN
                           : Constant.recordStopFR)
                     : (notifyData.currentLanguage == Constant.languageEN
-                          ? Constant.recordStopEN
-                          : Constant.recordStopFR),
+                          ? Constant.recordStartEN
+                          : Constant.recordStartFR),
               ),
             ),
 

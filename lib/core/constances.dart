@@ -37,6 +37,8 @@ class Constant {
   static final String recordRecordEN = 'Record';
   static final String recordStopFR = 'Arrêter';
   static final String recordStopEN = 'Stop';
+  static final String recordStartFR = 'Enregistrer';
+  static final String recordStartEN = 'Record';
   static final String recordSaveAndUploadFR = 'Enregistrer & Téléverser';
   static final String recordSaveAndUploadEN = 'Save & Upload';
 

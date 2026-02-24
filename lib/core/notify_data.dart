@@ -7,6 +7,7 @@ class NotifyData extends ChangeNotifier {
   
   String? _role = '';
   String? get role => _role;
+  int currentBottomPosition = 0;
   
   void changeLanguage(String language) {
     _currentLanguage = language;
@@ -15,6 +16,11 @@ class NotifyData extends ChangeNotifier {
 
   void setRoleXX(String? currentRole) {
     _role = currentRole;
+    notifyListeners();
+  }
+
+  void setCurrentBottomPosition(int currBottomPosition) {
+    currentBottomPosition = currBottomPosition;
     notifyListeners();
   }
 

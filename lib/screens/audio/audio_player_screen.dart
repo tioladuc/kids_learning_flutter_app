@@ -19,6 +19,8 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
   final double speedPace = 0.25;
   double currentSpeed = 1.0;
   int position = 0;
+  Duration _duration = Duration.zero;
+  Duration _position = Duration.zero;
 
 
   @override
@@ -26,6 +28,13 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
     super.initState();
     player.setUrl(widget.audio.audioUrl);
     player.setSpeed(currentSpeed);
+
+    player.positionStream.listen((pos) {
+      setState(() => _position = pos);
+    });
+    player.durationStream.listen((dur) {
+      if (dur != null) setState(() => _duration = dur);
+    });
   }
 
   @override
@@ -53,7 +62,9 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
 
     return AppScaffold(
       //appBar: const AppHeader(),
-      body: Column(
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+        child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           ElevatedButton(
@@ -75,7 +86,24 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
             style: Constant.getTextSimpleStyle(),
           ),
           const SizedBox(height: 24),
-
+          Slider(
+                    min: 0,
+                    max: _duration.inSeconds.toDouble(),
+                    value: _position.inSeconds
+                        .clamp(0, _duration.inSeconds)
+                        .toDouble(),
+                    onChanged: (value) {
+                      player.seek(Duration(seconds: value.toInt()));
+                    },
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(_format(_position)),
+                      Text(_format(_duration)),
+                    ],
+                  ),
+                  const SizedBox(height: 24),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -146,6 +174,15 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
           Text(widget.audio.description, style: Constant.getTextStyle()),
         ],
       ),
-    );
+    
+      )
+      );
+  }
+
+  // ⏱ FORMAT
+  String _format(Duration d) {
+    final m = d.inMinutes.remainder(60).toString().padLeft(2, '0');
+    final s = d.inSeconds.remainder(60).toString().padLeft(2, '0');
+    return "$m:$s";
   }
 }
