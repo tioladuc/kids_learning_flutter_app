@@ -29,7 +29,7 @@ class _IntroStatisticsForParentState extends State<IntroStatisticsForParent> {
   @override
   Widget build(BuildContext context) {
     final session = context.watch<SessionProvider>();
-    final notifyData = context.watch<NotifyData>();
+    final NotifyData notifyData = context.watch<NotifyData>();
     final children = session.children;
 
     return AppScaffold(
@@ -39,18 +39,20 @@ class _IntroStatisticsForParentState extends State<IntroStatisticsForParent> {
       body: Padding(
         padding: const EdgeInsets.all(12),
         child: Column(
-  children: [
-    ElevatedButton(
-          onPressed: () {},
-          style: Constant.getTitle1ButtonStyle(),
-          child: Text("Children Accounts Statistics"),
-        ),
-
-    Expanded( // ✅ gives available space
-      child: _buildContent(session, children),
-    ),
-  ],
-)/*_buildContent(session, children)*/ /*Column(
+          children: [
+            ElevatedButton(
+              onPressed: () {},
+              style: Constant.getTitle1ButtonStyle(),
+              child: Text(notifyData.currentLanguage == Constant.languageEN
+                  ? ConstantStatistics.ChildrenAccountsStatisticsEN
+                  : ConstantStatistics.ChildrenAccountsStatisticsFR),
+            ),
+            Expanded(
+              // ✅ gives available space
+              child: _buildContent(session, children, notifyData),
+            ),
+          ],
+        ) /*_buildContent(session, children)*/ /*Column(
           children: [
             ElevatedButton(
           onPressed: () {},
@@ -59,18 +61,23 @@ class _IntroStatisticsForParentState extends State<IntroStatisticsForParent> {
         ),
             _buildContent(session, children)
           ],
-        ),*/,
+        ),*/
+        ,
       ),
     );
   }
 
-  Widget _buildContent(SessionProvider session, List children) {
+  Widget _buildContent(
+      SessionProvider session, List children, NotifyData notifyData) {
     if (session.isLoadingChildren) {
       return const Center(child: CircularProgressIndicator());
     }
 
     if (children.isEmpty) {
-      return const Center(child: Text("No children registered."));
+      return const Center(
+          child: Text(notifyData.currentLanguage == Constant.languageEN
+              ? ConstantStatistics.NoChildrenRegisteredEN
+              : ConstantStatistics.NoChildrenRegisteredFR));
     }
 
     return ListView.builder(
@@ -80,14 +87,12 @@ class _IntroStatisticsForParentState extends State<IntroStatisticsForParent> {
 
         return Card(
           elevation: 3,
-
           margin: const EdgeInsets.symmetric(vertical: 8),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
           child: Padding(
             padding: const EdgeInsets.all(12),
-
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -112,7 +117,6 @@ class _IntroStatisticsForParentState extends State<IntroStatisticsForParent> {
                     const SizedBox(width: 8),
                     Text(
                       child.name,
-
                       style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -133,12 +137,11 @@ class _IntroStatisticsForParentState extends State<IntroStatisticsForParent> {
                           ),
                         );
                       },
-                      
                       style: IconButton.styleFrom(
-    backgroundColor: Colors.blue,   // ✅ blue background
-    foregroundColor: Colors.white,  // ✅ icon color
-    padding: const EdgeInsets.all(12),
-  ),
+                        backgroundColor: Colors.blue, // ✅ blue background
+                        foregroundColor: Colors.white, // ✅ icon color
+                        padding: const EdgeInsets.all(12),
+                      ),
                       icon: const Icon(Icons.arrow_forward_ios, size: 20),
                     ),
                   ],
@@ -151,7 +154,10 @@ class _IntroStatisticsForParentState extends State<IntroStatisticsForParent> {
                   children: [
                     const Icon(Icons.account_circle, size: 18),
                     const SizedBox(width: 8),
-                    Text("Login: ${child.login}"),
+                    Text((notifyData.currentLanguage == Constant.languageEN
+                            ? ConstantStatistics.StatisticLoginEN
+                            : ConstantStatistics.StatisticLoginFR) +
+                        ": ${child.login}"),
                   ],
                 ),
 
@@ -162,7 +168,10 @@ class _IntroStatisticsForParentState extends State<IntroStatisticsForParent> {
                   children: [
                     const Icon(Icons.lock, size: 18),
                     const SizedBox(width: 8),
-                    Text("Password: ${child.password}"),
+                    Text((notifyData.currentLanguage == Constant.languageEN
+                            ? ConstantStatistics.StatisticPasswordEN
+                            : ConstantStatistics.StatisticPasswordFR) +
+                        ": ${child.password}"),
                   ],
                 ),
 
@@ -182,8 +191,12 @@ class _IntroStatisticsForParentState extends State<IntroStatisticsForParent> {
                     const SizedBox(width: 8),
                     Text(
                       child.parentResponsible!
-                          ? "Financial Owner"
-                          : "Not Financial Owner",
+                          ? (notifyData.currentLanguage == Constant.languageEN
+                              ? ConstantStatistics.FinancialOwnerEN
+                              : ConstantStatistics.FinancialOwnerFR)
+                          : (notifyData.currentLanguage == Constant.languageEN
+                              ? ConstantStatistics.NotFinancialOwnerEN
+                              : ConstantStatistics.NotFinancialOwnerFR),
                       style: TextStyle(
                         color: child.parentResponsible!
                             ? Colors.green

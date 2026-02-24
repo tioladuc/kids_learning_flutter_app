@@ -29,24 +29,22 @@ class _MainIntroScreenParent extends State<MainIntroScreenParent> {
   Widget build(BuildContext context) {
     SessionProvider session = context.watch<SessionProvider>();
     final notifyData = context.watch<NotifyData>();
-    print('dododododododdo');
+
     return AppScaffold(
-      
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            
             // Title
             Center(
               child: ElevatedButton(
-          onPressed: () {},
-          style: Constant.getTitle1ButtonStyle(),
-          child: Text(notifyData.currentLanguage == Constant.languageEN
+                onPressed: () {},
+                style: Constant.getTitle1ButtonStyle(),
+                child: Text(notifyData.currentLanguage == Constant.languageEN
                     ? ConstantParent.menuTitrePageIntroParentEN
                     : ConstantParent.menuTitrePageIntroParentFR),
-        ),
+              ),
             ),
 
             const SizedBox(height: 16),
@@ -105,13 +103,11 @@ class _MainIntroScreenParent extends State<MainIntroScreenParent> {
                                 const SizedBox(width: 16),
                                 Container(
                                   decoration: BoxDecoration(
-                                    color:
-                                        (session.parent?.currentChild != null &&
+                                    color: (session.parent?.currentChild !=
+                                                null &&
                                             item.id ==
                                                 session
-                                                    .parent
-                                                    ?.currentChild
-                                                    ?.id)
+                                                    .parent?.currentChild?.id)
                                         ? Colors.blue
                                         : Colors.grey, // The background color
                                     shape: BoxShape
@@ -123,17 +119,15 @@ class _MainIntroScreenParent extends State<MainIntroScreenParent> {
                                     ),
                                     color:
                                         (session.parent?.currentChild != null &&
-                                            item.id ==
-                                                session
-                                                    .parent
-                                                    ?.currentChild
-                                                    ?.id)
-                                        ? Colors.white
-                                        : Colors.black,
+                                                item.id ==
+                                                    session.parent?.currentChild
+                                                        ?.id)
+                                            ? Colors.white
+                                            : Colors.black,
                                     onPressed: () {
                                       // Handle button press
                                       session.setCurrentChildAsParent(item);
-                                      //print(item!.name + ' ===== ' + session.parent!.currentChild!.name);
+
                                       Navigator.pushReplacement(
                                         context,
                                         MaterialPageRoute(
@@ -144,7 +138,6 @@ class _MainIntroScreenParent extends State<MainIntroScreenParent> {
                                     },
                                   ),
                                 ),
-
                                 const SizedBox(width: 16),
                                 const Icon(Icons.arrow_forward_ios, size: 16),
                               ],
@@ -251,10 +244,10 @@ class _MainIntroScreenParent extends State<MainIntroScreenParent> {
                   controllerName.text.isNotEmpty &&
                   controllerPassword.text.isNotEmpty) {
                 context.read<SessionProvider>().addChild(
-                  controllerLogin.text,
-                  controllerName.text,
-                  controllerPassword.text,
-                );
+                      controllerLogin.text,
+                      controllerName.text,
+                      controllerPassword.text,
+                    );
                 Navigator.pop(context);
               }
             },
@@ -325,9 +318,9 @@ class _MainIntroScreenParent extends State<MainIntroScreenParent> {
               if (controllerName.text.isNotEmpty &&
                   controllerPassword.text.isNotEmpty) {
                 context.read<SessionProvider>().changeParentPassword(
-                  controllerName.text,
-                  controllerPassword.text,
-                );
+                      controllerName.text,
+                      controllerPassword.text,
+                    );
                 Navigator.pop(context);
               }
             },

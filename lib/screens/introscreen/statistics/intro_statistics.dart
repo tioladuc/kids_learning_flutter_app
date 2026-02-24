@@ -31,13 +31,18 @@ class _IntroStatisticsState extends State<IntroStatistics> {
   void initState() {
     super.initState();
 
-    Future.microtask(() async{
-      child = await context.read<StatisticsProvider>().getBasicInformation(widget.child);
+    Future.microtask(() async {
+      child = await context
+          .read<StatisticsProvider>()
+          .getBasicInformation(widget.child);
 
       await context.read<StatisticsProvider>().loadVisitedCourses(widget.child);
-      await context.read<StatisticsProvider>().loadCompletedCourses(widget.child);
-      await context.read<StatisticsProvider>().loadNeverDoneCourses(widget.child);
-      
+      await context
+          .read<StatisticsProvider>()
+          .loadCompletedCourses(widget.child);
+      await context
+          .read<StatisticsProvider>()
+          .loadNeverDoneCourses(widget.child);
     });
   }
 
@@ -60,12 +65,14 @@ class _IntroStatisticsState extends State<IntroStatistics> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Center(
-              child: ElevatedButton(
-          onPressed: () {},
-          style: Constant.getTitle1ButtonStyle(),
-          child: Text("Child Statistics"),
-        ),
+            child: ElevatedButton(
+              onPressed: () {},
+              style: Constant.getTitle1ButtonStyle(),
+              child: Text((notifyData.currentLanguage == Constant.languageEN
+                  ? ConstantStatistics.ChildStatTitleEN
+                  : ConstantStatistics.ChildStatTitleFR)),
             ),
+          ),
           _childHeader(notifyData),
           const SizedBox(height: 16),
           _sectionTitle((notifyData.currentLanguage == Constant.languageEN
@@ -148,7 +155,8 @@ class _IntroStatisticsState extends State<IntroStatistics> {
                 (notifyData.currentLanguage == Constant.languageEN
                         ? ConstantStatistics.IntroStatMinuteEN
                         : ConstantStatistics.IntroStatMinuteFR)
-                    .replaceAll('{0}', (child!.totalTimeMinutes ?? 0).toString())),
+                    .replaceAll(
+                        '{0}', (child!.totalTimeMinutes ?? 0).toString())),
             _infoRow(
                 (notifyData.currentLanguage == Constant.languageEN
                     ? ConstantStatistics.IntroStatStreakDaysEN
@@ -209,12 +217,16 @@ class _IntroStatisticsState extends State<IntroStatistics> {
                 .replaceAll('{0}', duration.toString())
                 .replaceAll('{1}', _formatDate(lastDateConnection))),
             leading: const Icon(Icons.visibility),
-            onTap: (){
+            onTap: () {
               setState(() {
                 Navigator.push(
-        context,
-        MaterialPageRoute(builder: (_) => StatisticsCourse(child: child!, course: item.course,)),
-      );
+                  context,
+                  MaterialPageRoute(
+                      builder: (_) => StatisticsCourse(
+                            child: child!,
+                            course: item.course,
+                          )),
+                );
               });
             },
           ),
@@ -306,10 +318,7 @@ class _IntroStatisticsState extends State<IntroStatistics> {
       child: Text(
         title,
         style: const TextStyle(
-          fontSize: 18,
-          fontWeight: FontWeight.bold,
-          color: Colors.blue
-        ),
+            fontSize: 18, fontWeight: FontWeight.bold, color: Colors.blue),
       ),
     );
   }

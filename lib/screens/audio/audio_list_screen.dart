@@ -28,15 +28,13 @@ class _AudioListScreenState extends State<AudioListScreen> {
 
     return AppScaffold(
       body: Column(
-        //mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const SizedBox(height: 24),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               ElevatedButton(
-                onPressed:
-                    () {}, //context.read<SessionProvider>().login('child'),
+                onPressed: () {},
                 style: Constant.getTitle1ButtonStyle(),
                 child: notifyData.currentLanguage == Constant.languageEN
                     ? Text(Constant.listingAudioTitleEN)
@@ -45,7 +43,7 @@ class _AudioListScreenState extends State<AudioListScreen> {
               const SizedBox(width: 24),
               IconButton(
                 style: Constant.getButtonSimpleSelectedStyle(),
-                icon: const Icon(Icons.mic), //keyboard_double_arrow_left
+                icon: const Icon(Icons.mic),
                 onPressed: () {
                   Navigator.push(
                     context,
@@ -57,7 +55,6 @@ class _AudioListScreenState extends State<AudioListScreen> {
               ),
             ],
           ),
-
           Expanded(
             child: ListView.builder(
               itemCount: audios.length,

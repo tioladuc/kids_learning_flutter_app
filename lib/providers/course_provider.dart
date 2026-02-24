@@ -6,90 +6,8 @@ class CourseProvider with ChangeNotifier {
   bool isLoading = false;
   String? errorMessage;
 
-  //List<Course> pendingCourses = [];
-  //List<Course> pickCourses = [];
-  List<Course> pendingCourses = [
-    Course(
-      code: "C001CCC",
-      name: "Mathematics",
-      amount: 50,
-      validity: "1 Month",
-      isRegistered: false,
-      description:
-          'rap the ListView with an Expanded or Flexible widget to allow it to fill the remaining available space within the C',
-    ),
-    Course(
-      code: "C002",
-      name: "Reading",
-      amount: 30,
-      validity: "1 Term",
-      isRegistered: true,
-      expiryDate: DateTime.now().add(const Duration(days: 5)),
-      description:
-          'rap the ListView with an Expanded or Flexible widget to allow it to fill the remaining available space within the C',
-    ),
-
-    Course(
-      code: "C003",
-      name: "Mathematics++",
-      amount: 50,
-      validity: "1 Month",
-      isRegistered: false,
-      description:
-          'rap the ListView with an Expanded or Flexible widget to allow it to fill the remaining available space within the C',
-    ),
-    Course(
-      code: "C004",
-      name: "Reading++",
-      amount: 30,
-      validity: "1 Term",
-      isRegistered: true,
-      expiryDate: DateTime.now().add(const Duration(days: 5)),
-      description:
-          'rap the ListView with an Expanded or Flexible widget to allow it to fill the remaining available space within the C',
-    ),
-  ];
-  List<Course> pickCourses = [
-    Course(
-      code: "C001",
-      name: "Mathematics",
-      amount: 50,
-      validity: "1 Month",
-      isRegistered: false,
-      description:
-          'rap the ListView with an Expanded or Flexible widget to allow it to fill the remaining available space within the C',
-    ),
-    Course(
-      code: "C002",
-      name: "Reading",
-      amount: 30,
-      validity: "1 Term",
-      isRegistered: true,
-      expiryDate: DateTime.now().add(const Duration(days: 5)),
-      description:
-          'rap the ListView with an Expanded or Flexible widget to allow it to fill the remaining available space within the C',
-    ),
-
-    Course(
-      code: "C003",
-      name: "Mathematics++",
-      amount: 50,
-      validity: "1 Month",
-      isRegistered: false,
-      description:
-          'rap the ListView with an Expanded or Flexible widget to allow it to fill the remaining available space within the C',
-    ),
-    Course(
-      code: "C004",
-      name: "Reading++",
-      amount: 30,
-      validity: "1 Term",
-      isRegistered: true,
-      expiryDate: DateTime.now().add(const Duration(days: 5)),
-      description:
-          'rap the ListView with an Expanded or Flexible widget to allow it to fill the remaining available space within the C',
-    ),
-  ];
+  List<Course> pendingCourses = [];
+  List<Course> pickCourses = [];
 
   Future<void> loadChildPendingCourses(String childId) async {
     isLoading = true;
@@ -98,6 +16,46 @@ class CourseProvider with ChangeNotifier {
     try {
       // TODO: Replace with API
       await Future.delayed(const Duration(seconds: 2));
+      pendingCourses = [
+        Course(
+          code: "C001CCC",
+          name: "Mathematics",
+          amount: 50,
+          validity: "1 Month",
+          isRegistered: false,
+          description:
+              'rap the ListView with an Expanded or Flexible widget to allow it to fill the remaining available space within the C',
+        ),
+        Course(
+          code: "C002",
+          name: "Reading",
+          amount: 30,
+          validity: "1 Term",
+          isRegistered: true,
+          expiryDate: DateTime.now().add(const Duration(days: 5)),
+          description:
+              'rap the ListView with an Expanded or Flexible widget to allow it to fill the remaining available space within the C',
+        ),
+        Course(
+          code: "C003",
+          name: "Mathematics++",
+          amount: 50,
+          validity: "1 Month",
+          isRegistered: false,
+          description:
+              'rap the ListView with an Expanded or Flexible widget to allow it to fill the remaining available space within the C',
+        ),
+        Course(
+          code: "C004",
+          name: "Reading++",
+          amount: 30,
+          validity: "1 Term",
+          isRegistered: true,
+          expiryDate: DateTime.now().add(const Duration(days: 5)),
+          description:
+              'rap the ListView with an Expanded or Flexible widget to allow it to fill the remaining available space within the C',
+        ),
+      ];
     } catch (e) {
       errorMessage = "Failed to load courses";
     } finally {
@@ -113,6 +71,46 @@ class CourseProvider with ChangeNotifier {
     try {
       // TODO: Replace with API
       await Future.delayed(const Duration(seconds: 2));
+      pickCourses = [
+        Course(
+          code: "C001",
+          name: "Mathematics",
+          amount: 50,
+          validity: "1 Month",
+          isRegistered: false,
+          description:
+              'rap the ListView with an Expanded or Flexible widget to allow it to fill the remaining available space within the C',
+        ),
+        Course(
+          code: "C002",
+          name: "Reading",
+          amount: 30,
+          validity: "1 Term",
+          isRegistered: true,
+          expiryDate: DateTime.now().add(const Duration(days: 5)),
+          description:
+              'rap the ListView with an Expanded or Flexible widget to allow it to fill the remaining available space within the C',
+        ),
+        Course(
+          code: "C003",
+          name: "Mathematics++",
+          amount: 50,
+          validity: "1 Month",
+          isRegistered: false,
+          description:
+              'rap the ListView with an Expanded or Flexible widget to allow it to fill the remaining available space within the C',
+        ),
+        Course(
+          code: "C004",
+          name: "Reading++",
+          amount: 30,
+          validity: "1 Term",
+          isRegistered: true,
+          expiryDate: DateTime.now().add(const Duration(days: 5)),
+          description:
+              'rap the ListView with an Expanded or Flexible widget to allow it to fill the remaining available space within the C',
+        ),
+      ];
     } catch (e) {
       errorMessage = "Failed to load courses";
     } finally {

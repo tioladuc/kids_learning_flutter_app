@@ -3,20 +3,26 @@ class Child {
   String name;
   final String login;
   String password;
-//////////////////////////////////////////
-///final int age;
-   int? completedTasks;
-   int? totalTasks;
-   int? totalTimeMinutes;
-   int? streakDays;
+
+  int? completedTasks;
+  int? totalTasks;
+  int? totalTimeMinutes;
+  int? streakDays;
   int? age;
 
   bool? parentResponsible = false;
 
-  Child({required this.id, required this.name, required this.login, required this.password});
+  Child(
+      {required this.id,
+      required this.name,
+      required this.login,
+      required this.password});
 
   static Child copy(Child child) {
-    return Child(id: child.id, name: child.name, login: child.login, password: child.password);
+    return Child(
+        id: child.id,
+        name: child.name,
+        login: child.login,
+        password: child.password);
   }
-
 }

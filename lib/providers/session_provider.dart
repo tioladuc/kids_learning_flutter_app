@@ -8,34 +8,9 @@ import '../models/payment_model.dart';
 class SessionProvider extends ChangeNotifier {
   String? role = null; // parent | child   NOT Used
 
-  Child? child = Child(
-    id: 'child01',
-    name: 'Child Main Principale',
-    login: '01',
-    password: '',
-  );
-  Parent? parent = Parent(
-    id: 'parent',
-    name: 'Parent Main Principale',
-    login: '11',
-    password: '',
-    children: [
-      Child(id: 'child01', name: 'Child Other 01', login: '01', password: ''),
-      Child(id: 'child02', name: 'Child Other 02', login: '02', password: ''),
-      Child(id: 'child03', name: 'Child Other 03', login: '03', password: ''),
-      Child(id: 'child04', name: 'Child Other 04', login: '04', password: ''),
-      Child(id: 'child05', name: 'Child Other 05', login: '05', password: ''),
-      Child(id: 'child06', name: 'Child Other 06', login: '06', password: ''),
-    ],
-  );
-
-  SessionProvider() {
-    tmpParent = Parent.copy(parent!);
-    tmpChild = Child.copy(child!);
-  }
   Child? tmpChild;
   Parent? tmpParent;
-  bool get isLoggedIn => role != null;
+  bool get isLoggedIn => (role != null && (child != null || parent != null));
 
   List<News> latestNews = [];
 
@@ -46,8 +21,41 @@ class SessionProvider extends ChangeNotifier {
   List<PaymentModel> upcomingPayments = [];
   bool isLoadingPayments = false;
 
-  Future<void> loadChildren() async{
-    children = parent?.children??[];
+  Child? child;
+  Parent? parent;
+
+  bool isLoading = false;
+  bool isActivationCodeSending = false;
+  String? errorMessage;
+
+  SessionProvider() {
+    child = Child(
+      id: 'child01',
+      name: 'Child Main Principale',
+      login: '01',
+      password: '',
+    );
+    parent = Parent(
+      id: 'parent',
+      name: 'Parent Main Principale',
+      login: '11',
+      password: '',
+      children: [
+        Child(id: 'child01', name: 'Child Other 01', login: '01', password: ''),
+        Child(id: 'child02', name: 'Child Other 02', login: '02', password: ''),
+        Child(id: 'child03', name: 'Child Other 03', login: '03', password: ''),
+        Child(id: 'child04', name: 'Child Other 04', login: '04', password: ''),
+        Child(id: 'child05', name: 'Child Other 05', login: '05', password: ''),
+        Child(id: 'child06', name: 'Child Other 06', login: '06', password: ''),
+      ],
+    );
+
+    tmpParent = Parent.copy(parent!);
+    tmpChild = Child.copy(child!);
+  }
+
+  Future<void> loadChildren() async {
+    children = parent?.children ?? [];
   }
 
   void setCurrentChildAsParent(Child? child) {
@@ -125,10 +133,6 @@ class SessionProvider extends ChangeNotifier {
 
   ///////////////////////////////////////////////////////////////////
 
-  bool isLoading = false;
-  bool isActivationCodeSending = false;
-  String? errorMessage;
-
   /// CREATE ACCOUNT
   Future<bool> createParentAccount({
     required String firstName,
@@ -180,10 +184,7 @@ class SessionProvider extends ChangeNotifier {
   }
 
   /// RESEND ACTIVATION CODE ACCOUNT
-  Future<bool> resendActivationCode({
-    required String email
-  }) async {
-    
+  Future<bool> resendActivationCode({required String email}) async {
     isActivationCodeSending = true;
     errorMessage = null;
     notifyListeners();
@@ -231,15 +232,16 @@ class SessionProvider extends ChangeNotifier {
   }
 
   /// RESET PASSWORD
-  Future<bool> setParentAsReponsibleOfChild({
-    required bool isResponsible, required Child child
-  }) async {
+  Future<bool> setParentAsReponsibleOfChild(
+      {required bool isResponsible, required Child child}) async {
     _start();
 
     try {
       // TODO: API call
       await Future.delayed(const Duration(seconds: 2));
-      parent?.children.firstWhere((element) => element.id == child.id).parentResponsible = isResponsible;
+      parent?.children
+          .firstWhere((element) => element.id == child.id)
+          .parentResponsible = isResponsible;
       notifyListeners();
       return true;
     } catch (e) {
@@ -249,6 +251,7 @@ class SessionProvider extends ChangeNotifier {
       _end();
     }
   }
+
   /// RESET PASSWORD
   Future<bool> resetPassword({
     required String email,
@@ -269,36 +272,41 @@ class SessionProvider extends ChangeNotifier {
       _end();
     }
   }
+
   ///////////////////////////////////////////////////////////////////
   Future<void> getLatestNews() async {
     // fetch from API
     latestNews = [
-  News(
-    title: "New Math Course Available",
-    description: "We have added a new interactive math course for children aged 6-8.",
-    date: DateTime(2026, 2, 20),
-  ),
-  News(
-    title: "Platform Update",
-    description: "A new design has been released to improve user experience.",
-    date: DateTime(2026, 2, 18),
-  ),
-  News(
-    title: "Parent Dashboard Improved",
-    description: "Parents can now track their children's progress more easily.",
-    date: DateTime(2026, 2, 15),
-  ),
-  News(
-    title: "New Games Added",
-    description: "Educational games have been added to make learning more fun.",
-    date: DateTime(2026, 2, 10),
-  ),
-  News(
-    title: "Bug Fixes",
-    description: "We fixed several bugs to improve app stability.",
-    date: DateTime(2026, 2, 5),
-  ),
-];
+      News(
+        title: "New Math Course Available",
+        description:
+            "We have added a new interactive math course for children aged 6-8.",
+        date: DateTime(2026, 2, 20),
+      ),
+      News(
+        title: "Platform Update",
+        description:
+            "A new design has been released to improve user experience.",
+        date: DateTime(2026, 2, 18),
+      ),
+      News(
+        title: "Parent Dashboard Improved",
+        description:
+            "Parents can now track their children's progress more easily.",
+        date: DateTime(2026, 2, 15),
+      ),
+      News(
+        title: "New Games Added",
+        description:
+            "Educational games have been added to make learning more fun.",
+        date: DateTime(2026, 2, 10),
+      ),
+      News(
+        title: "Bug Fixes",
+        description: "We fixed several bugs to improve app stability.",
+        date: DateTime(2026, 2, 5),
+      ),
+    ];
     notifyListeners();
   }
 
@@ -311,130 +319,130 @@ class SessionProvider extends ChangeNotifier {
   }
 
   Future<void> loadPayments() async {
-  isLoadingPayments = true;
-  notifyListeners();
+    isLoadingPayments = true;
+    notifyListeners();
 
-  // simulate API
-  await Future.delayed(const Duration(seconds: 1));
-  paidPayments = [
-  PaymentModel(
-    amount: 50,
-    courseName: "Mathematics Level 1",
-    childName: "Alice",
-    date: DateTime(2026, 2, 10),
-    isPaid: true,
-  ),
-  PaymentModel(
-    amount: 40,
-    courseName: "Reading Basics",
-    childName: "Alice",
-    date: DateTime(2026, 2, 5),
-    isPaid: true,
-  ),
-  PaymentModel(
-    amount: 60,
-    courseName: "Science Discovery",
-    childName: "Bob",
-    date: DateTime(2026, 1, 28),
-    isPaid: true,
-  ),
-  PaymentModel(
-    amount: 30,
-    courseName: "Drawing for Kids",
-    childName: "Emma",
-    date: DateTime(2026, 1, 20),
-    isPaid: true,
-  ),
-  PaymentModel(
-    amount: 45,
-    courseName: "English Level 1",
-    childName: "Noah",
-    date: DateTime(2026, 1, 15),
-    isPaid: true,
-  ),
-  PaymentModel(
-    amount: 55,
-    courseName: "Mathematics Level 2",
-    childName: "Alice",
-    date: DateTime(2026, 1, 10),
-    isPaid: true,
-  ),
-  PaymentModel(
-    amount: 35,
-    courseName: "Basic Coding",
-    childName: "Lucas",
-    date: DateTime(2026, 1, 5),
-    isPaid: true,
-  ),
-  PaymentModel(
-    amount: 25,
-    courseName: "Music Fundamentals",
-    childName: "Emma",
-    date: DateTime(2025, 12, 20),
-    isPaid: true,
-  ),
-];
+    // simulate API
+    await Future.delayed(const Duration(seconds: 1));
+    paidPayments = [
+      PaymentModel(
+        amount: 50,
+        courseName: "Mathematics Level 1",
+        childName: "Alice",
+        date: DateTime(2026, 2, 10),
+        isPaid: true,
+      ),
+      PaymentModel(
+        amount: 40,
+        courseName: "Reading Basics",
+        childName: "Alice",
+        date: DateTime(2026, 2, 5),
+        isPaid: true,
+      ),
+      PaymentModel(
+        amount: 60,
+        courseName: "Science Discovery",
+        childName: "Bob",
+        date: DateTime(2026, 1, 28),
+        isPaid: true,
+      ),
+      PaymentModel(
+        amount: 30,
+        courseName: "Drawing for Kids",
+        childName: "Emma",
+        date: DateTime(2026, 1, 20),
+        isPaid: true,
+      ),
+      PaymentModel(
+        amount: 45,
+        courseName: "English Level 1",
+        childName: "Noah",
+        date: DateTime(2026, 1, 15),
+        isPaid: true,
+      ),
+      PaymentModel(
+        amount: 55,
+        courseName: "Mathematics Level 2",
+        childName: "Alice",
+        date: DateTime(2026, 1, 10),
+        isPaid: true,
+      ),
+      PaymentModel(
+        amount: 35,
+        courseName: "Basic Coding",
+        childName: "Lucas",
+        date: DateTime(2026, 1, 5),
+        isPaid: true,
+      ),
+      PaymentModel(
+        amount: 25,
+        courseName: "Music Fundamentals",
+        childName: "Emma",
+        date: DateTime(2025, 12, 20),
+        isPaid: true,
+      ),
+    ];
 
-upcomingPayments = [
-  PaymentModel(
-    amount: 75,
-    courseName: "English Level 2",
-    childName: "Bob",
-    date: DateTime(2026, 3, 1),
-    isPaid: false,
-  ),
-  PaymentModel(
-    amount: 50,
-    courseName: "Mathematics Level 2",
-    childName: "Alice",
-    date: DateTime(2026, 3, 5),
-    isPaid: false,
-  ),
-  PaymentModel(
-    amount: 40,
-    courseName: "Reading Advanced",
-    childName: "Emma",
-    date: DateTime(2026, 3, 8),
-    isPaid: false,
-  ),
-  PaymentModel(
-    amount: 65,
-    courseName: "Science Experiments",
-    childName: "Lucas",
-    date: DateTime(2026, 3, 12),
-    isPaid: false,
-  ),
-  PaymentModel(
-    amount: 30,
-    courseName: "Art & Creativity",
-    childName: "Noah",
-    date: DateTime(2026, 3, 15),
-    isPaid: false,
-  ),
-  PaymentModel(
-    amount: 55,
-    courseName: "Coding for Kids",
-    childName: "Lucas",
-    date: DateTime(2026, 3, 18),
-    isPaid: false,
-  ),
-  PaymentModel(
-    amount: 45,
-    courseName: "English Conversation",
-    childName: "Alice",
-    date: DateTime(2026, 3, 20),
-    isPaid: false,
-  ),
-  PaymentModel(
-    amount: 35,
-    courseName: "Music Practice",
-    childName: "Emma",
-    date: DateTime(2026, 3, 25),
-    isPaid: false,
-  ),
-];
+    upcomingPayments = [
+      PaymentModel(
+        amount: 75,
+        courseName: "English Level 2",
+        childName: "Bob",
+        date: DateTime(2026, 3, 1),
+        isPaid: false,
+      ),
+      PaymentModel(
+        amount: 50,
+        courseName: "Mathematics Level 2",
+        childName: "Alice",
+        date: DateTime(2026, 3, 5),
+        isPaid: false,
+      ),
+      PaymentModel(
+        amount: 40,
+        courseName: "Reading Advanced",
+        childName: "Emma",
+        date: DateTime(2026, 3, 8),
+        isPaid: false,
+      ),
+      PaymentModel(
+        amount: 65,
+        courseName: "Science Experiments",
+        childName: "Lucas",
+        date: DateTime(2026, 3, 12),
+        isPaid: false,
+      ),
+      PaymentModel(
+        amount: 30,
+        courseName: "Art & Creativity",
+        childName: "Noah",
+        date: DateTime(2026, 3, 15),
+        isPaid: false,
+      ),
+      PaymentModel(
+        amount: 55,
+        courseName: "Coding for Kids",
+        childName: "Lucas",
+        date: DateTime(2026, 3, 18),
+        isPaid: false,
+      ),
+      PaymentModel(
+        amount: 45,
+        courseName: "English Conversation",
+        childName: "Alice",
+        date: DateTime(2026, 3, 20),
+        isPaid: false,
+      ),
+      PaymentModel(
+        amount: 35,
+        courseName: "Music Practice",
+        childName: "Emma",
+        date: DateTime(2026, 3, 25),
+        isPaid: false,
+      ),
+    ];
 
-  isLoadingPayments = false;
-  notifyListeners();
-}
+    isLoadingPayments = false;
+    notifyListeners();
+  }
 }

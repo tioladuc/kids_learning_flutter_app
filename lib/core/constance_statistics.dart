@@ -1,4 +1,7 @@
 class ConstantStatistics {
+  static String ChildStatTitleEN = 'Child Statistics';
+  static String ChildStatTitleFR = 'Statistique Enfant';
+
   static String IntroStatTitleBasicInformationEN = 'Basic Information';
   static String IntroStatTitleBasicInformationFR = 'Information Basique';
   static String IntroStatTitleLastConnectionEN = 'Last Connection';
@@ -77,4 +80,20 @@ class ConstantStatistics {
 
   static String CourseStatPoorEN = 'poor';
   static String CourseStatPoorFR = 'faible';
+
+  static String ChildrenAccountsStatisticsEN = "Children Accounts Statistics";
+  static String ChildrenAccountsStatisticsFR =
+      'Statistiques des Comptes Enfants';
+  static String NoChildrenRegisteredEN = "No children registered.";
+  static String NoChildrenRegisteredFR = 'Aucun enfant enregistré';
+
+  static String StatisticLoginEN = "Login";
+  static String StatisticLoginFR = 'Login';
+  static String StatisticPasswordEN = "Password";
+  static String StatisticPasswordFR = 'Mot de passe';
+
+  static String FinancialOwnerEN = "Financial Owner";
+  static String FinancialOwnerFR = 'Responsable Financier';
+  static String NotFinancialOwnerEN = "Not Financial Owner";
+  static String NotFinancialOwnerFR = 'Pas Responsable Financier';
 }

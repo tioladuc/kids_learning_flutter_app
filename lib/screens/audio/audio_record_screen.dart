@@ -116,7 +116,6 @@ class _RecordAudioScreenState extends State<RecordAudioScreen> {
       setState(() => _isPlaying = true);
       await _player.play();
     }
-    print('tiotsop = ' + _isPlaying.toString());
   }
 
   // 🔄 RE-RECORD
@@ -132,13 +131,11 @@ class _RecordAudioScreenState extends State<RecordAudioScreen> {
   }
 
   // 💾 SAVE + UPLOAD
-  Future<void> _save() async {
-    print('duclair tiotsop lambou');
-    //if (_audioBytes == null || _titleController.text.isEmpty) return;
-
+  Future<void> _save(NotifyData notifyData) async {
     setState(() => _isUploading = true);
 
     try {
+      //ToDo
       String data = "Hello, world!";
       List<int> encodedData = utf8.encode(data);
       Uint8List bytes = Uint8List.fromList(encodedData);
@@ -146,13 +143,15 @@ class _RecordAudioScreenState extends State<RecordAudioScreen> {
       await Provider.of<AudioProvider>(context, listen: false).uploadBytesAudio(
         title: _titleController.text,
         description: _descriptionController.text,
-        audioBytes: bytes, //_audioBytes!,
+        audioBytes: bytes,
       );
 
       Navigator.pop(context);
     } catch (e) {
-      /*ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text('Upload failed')));*/
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text(notifyData.currentLanguage == Constant.languageEN
+              ? Constant.UploadFailedEN
+              : Constant.UploadFailedFR)));
     } finally {
       setState(() => _isUploading = false);
     }
@@ -194,7 +193,6 @@ class _RecordAudioScreenState extends State<RecordAudioScreen> {
                   : Text(Constant.recordMainTitleFR),
             ),
             const SizedBox(height: 24),
-
             TextField(
               controller: _titleController,
               decoration: InputDecoration(
@@ -203,9 +201,7 @@ class _RecordAudioScreenState extends State<RecordAudioScreen> {
                     : Constant.recordTitleFR,
               ),
             ),
-
             const SizedBox(height: 10),
-
             TextField(
               controller: _descriptionController,
               maxLines: 2,
@@ -215,25 +211,21 @@ class _RecordAudioScreenState extends State<RecordAudioScreen> {
                     : Constant.recordDescriptionFR,
               ),
             ),
-
             const SizedBox(height: 24),
-
             ElevatedButton.icon(
               onPressed: _isRecording ? _stopRecording : _startRecording,
               icon: Icon(_isRecording ? Icons.stop : Icons.mic),
               label: Text(
                 _isRecording
                     ? (notifyData.currentLanguage == Constant.languageEN
-                          ? Constant.recordStopEN
-                          : Constant.recordStopFR)
+                        ? Constant.recordStopEN
+                        : Constant.recordStopFR)
                     : (notifyData.currentLanguage == Constant.languageEN
-                          ? Constant.recordStartEN
-                          : Constant.recordStartFR),
+                        ? Constant.recordStartEN
+                        : Constant.recordStartFR),
               ),
             ),
-
             const SizedBox(height: 24),
-
             if (_filePath != null)
               Column(
                 children: [
@@ -247,7 +239,6 @@ class _RecordAudioScreenState extends State<RecordAudioScreen> {
                       _player.seek(Duration(seconds: value.toInt()));
                     },
                   ),
-
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -255,7 +246,6 @@ class _RecordAudioScreenState extends State<RecordAudioScreen> {
                       Text(_format(_duration)),
                     ],
                   ),
-
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -271,12 +261,12 @@ class _RecordAudioScreenState extends State<RecordAudioScreen> {
                   ),
                 ],
               ),
-
             const Spacer(),
-
             ElevatedButton(
               style: Constant.getTitle3ButtonStyle(),
-              onPressed: _isUploading ? null : _save,
+              onPressed: () {
+                _isUploading ? null : _save(notifyData);
+              },
               child: _isUploading
                   ? const CircularProgressIndicator()
                   : Text(

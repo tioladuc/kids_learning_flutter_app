@@ -18,14 +18,29 @@ class _PresentationState extends State<Presentation> {
   final TextEditingController _subjectController = TextEditingController();
   final TextEditingController _contentController = TextEditingController();
 
-  String _selectedCategory = 'Request Information';
+  String _selectedCategory = '';
 
-  final List<String> _categories = [
-    'Request Information',
-    'Complain',
-    'Suggestion',
-    'Other'
-  ];
+  List<String> _categories = [];
+
+  void changeCategoryInialise(NotifyData notifyData) {
+    if (notifyData.currentLanguage == Constant.languageEN) {
+      _categories = [
+        ConstantPresentation.CategoryRequestInformationEN,
+        ConstantPresentation.CategoryComplainEN,
+        ConstantPresentation.CategorySuggestionEN,
+        ConstantPresentation.CategoryOtherEN
+      ];
+      _selectedCategory = ConstantPresentation.CategoryRequestInformationEN;
+    } else {
+      _categories = [
+        ConstantPresentation.CategoryRequestInformationFR,
+        ConstantPresentation.CategoryComplainFR,
+        ConstantPresentation.CategorySuggestionFR,
+        ConstantPresentation.CategoryOtherFR
+      ];
+      _selectedCategory = ConstantPresentation.CategoryRequestInformationFR;
+    }
+  }
 
   @override
   void initState() {
@@ -48,6 +63,7 @@ class _PresentationState extends State<Presentation> {
     if (!_formKey.currentState!.validate()) return;
 
     final session = context.read<SessionProvider>();
+    final notifyData = context.watch<NotifyData>();
 
     await session.sendEmail(
       subject: _subjectController.text,
@@ -56,13 +72,18 @@ class _PresentationState extends State<Presentation> {
     );
 
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text("Message sent successfully")),
+      const SnackBar(
+          content: Text((notifyData.currentLanguage == Constant.languageEN
+              ? ConstantPresentation.EmailSentEN
+              : ConstantPresentation.EmailSentFR))),
     );
 
     _subjectController.clear();
     _contentController.clear();
     setState(() {
-      _selectedCategory = 'Request Information';
+      _selectedCategory = notifyData.currentLanguage == Constant.languageEN
+          ? ConstantPresentation.CategoryRequestInformationEN
+          : ConstantPresentation.CategoryRequestInformationFR;
     });
   }
 
@@ -71,11 +92,9 @@ class _PresentationState extends State<Presentation> {
     final session = context.watch<SessionProvider>();
     final notifyData = context.watch<NotifyData>();
     final newsList = session.latestNews;
+    changeCategoryInialise(notifyData);
 
     return AppScaffold(
-      /*appBar: AppBar(
-        title: const Text("Learn4Kids"),
-      ),*/
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -83,24 +102,33 @@ class _PresentationState extends State<Presentation> {
           children: [
             Center(
               child: ElevatedButton(
-          onPressed: () {},
-          style: Constant.getTitle1ButtonStyle(),
-          child: Text("Learn4Kids"),
-        ),
+                onPressed: () {},
+                style: Constant.getTitle1ButtonStyle(),
+                child: Text((notifyData.currentLanguage == Constant.languageEN
+                    ? ConstantPresentation.Learn4KidsEN
+                    : ConstantPresentation.Learn4KidsFR)),
+              ),
             ),
-        const SizedBox(height: 10),
+            const SizedBox(height: 10),
+
             /// ===============================
             /// 1. PRESENTATION SECTION
             /// ===============================
             const Text(
-              "Welcome to Learn4Kids",
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold,  color: Colors.blue),
+              (notifyData.currentLanguage == Constant.languageEN
+                  ? ConstantPresentation.Welcome2Learn4KidsEN
+                  : ConstantPresentation.Welcome2Learn4KidsFR),
+              style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.blue),
             ),
             const SizedBox(height: 10),
 
             const Text(
-              "Learn4Kids is an educational platform designed to help children learn through interactive lessons, games, and activities. "
-              "Parents can monitor progress, while children enjoy a fun and engaging learning experience.",
+              (notifyData.currentLanguage == Constant.languageEN
+                  ? ConstantPresentation.WelcomeMessageEN
+                  : ConstantPresentation.WelcomeMessageFR),
               style: TextStyle(fontSize: 16),
             ),
 
@@ -110,13 +138,22 @@ class _PresentationState extends State<Presentation> {
             /// 2. LATEST NEWS
             /// ===============================
             const Text(
-              "Latest News",
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.blue),
+              (notifyData.currentLanguage == Constant.languageEN
+                  ? ConstantPresentation.LatestNewsEN
+                  : ConstantPresentation.LatestNewsFR),
+              style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.blue),
             ),
             const SizedBox(height: 10),
 
             if (newsList.isEmpty)
-              const Text("No news available", style:TextStyle( color: Colors.blue))
+              const Text(
+                  (notifyData.currentLanguage == Constant.languageEN
+                      ? ConstantPresentation.NoNewsAvailableEN
+                      : ConstantPresentation.NoNewsAvailableFR),
+                  style: TextStyle(color: Colors.blue))
             else
               ListView.builder(
                 shrinkWrap: true,
@@ -127,7 +164,10 @@ class _PresentationState extends State<Presentation> {
                   return Card(
                     margin: const EdgeInsets.symmetric(vertical: 8),
                     child: ListTile(
-                      title: Text(news.title, style: TextStyle(fontWeight: FontWeight.bold),),
+                      title: Text(
+                        news.title,
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
                       subtitle: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -135,7 +175,10 @@ class _PresentationState extends State<Presentation> {
                           const SizedBox(height: 5),
                           Text(
                             news.date.toString(),
-                            style: const TextStyle(fontSize: 12, fontStyle: FontStyle.italic, fontWeight: FontWeight.bold),
+                            style: const TextStyle(
+                                fontSize: 12,
+                                fontStyle: FontStyle.italic,
+                                fontWeight: FontWeight.bold),
                           ),
                         ],
                       ),
@@ -150,8 +193,13 @@ class _PresentationState extends State<Presentation> {
             /// 3. CONTACT / REQUEST FORM
             /// ===============================
             const Text(
-              "Contact Us",
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.blue),
+              (notifyData.currentLanguage == Constant.languageEN
+                  ? ConstantPresentation.ContactUsEN
+                  : ConstantPresentation.ContactUsFR),
+              style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.blue),
             ),
             const SizedBox(height: 10),
 
@@ -159,16 +207,21 @@ class _PresentationState extends State<Presentation> {
               key: _formKey,
               child: Column(
                 children: [
-
                   /// Subject
                   TextFormField(
                     controller: _subjectController,
                     decoration: const InputDecoration(
-                      labelText: "Subject",
+                      labelText:
+                          (notifyData.currentLanguage == Constant.languageEN
+                              ? ConstantPresentation.SubjectEN
+                              : ConstantPresentation.SubjectFR),
                       border: OutlineInputBorder(),
                     ),
-                    validator: (value) =>
-                        value!.isEmpty ? "Enter subject" : null,
+                    validator: (value) => value!.isEmpty
+                        ? (notifyData.currentLanguage == Constant.languageEN
+                            ? ConstantPresentation.EnterSubjectEN
+                            : ConstantPresentation.EnterSubjectFR)
+                        : null,
                   ),
 
                   const SizedBox(height: 10),
@@ -177,7 +230,10 @@ class _PresentationState extends State<Presentation> {
                   DropdownButtonFormField<String>(
                     value: _selectedCategory,
                     decoration: const InputDecoration(
-                      labelText: "Category",
+                      labelText:
+                          (notifyData.currentLanguage == Constant.languageEN
+                              ? ConstantPresentation.CategoryEN
+                              : ConstantPresentation.CategoryEN),
                       border: OutlineInputBorder(),
                     ),
                     items: _categories.map((c) {
@@ -200,11 +256,17 @@ class _PresentationState extends State<Presentation> {
                     controller: _contentController,
                     maxLines: 5,
                     decoration: const InputDecoration(
-                      labelText: "Content",
+                      labelText:
+                          (notifyData.currentLanguage == Constant.languageEN
+                              ? ConstantPresentation.ContentEN
+                              : ConstantPresentation.ContentFR),
                       border: OutlineInputBorder(),
                     ),
-                    validator: (value) =>
-                        value!.isEmpty ? "Enter message" : null,
+                    validator: (value) => value!.isEmpty
+                        ? (notifyData.currentLanguage == Constant.languageEN
+                            ? ConstantPresentation.EnterMessageEN
+                            : ConstantPresentation.EnterMessageFR)
+                        : null,
                   ),
 
                   const SizedBox(height: 15),
@@ -213,7 +275,10 @@ class _PresentationState extends State<Presentation> {
                   ElevatedButton(
                     onPressed: _sendRequest,
                     style: Constant.getTitle3ButtonStyle(),
-                    child: const Text("Send"),
+                    child: const Text(
+                        (notifyData.currentLanguage == Constant.languageEN
+                            ? ConstantPresentation.SendEN
+                            : ConstantPresentation.SendFR)),
                   ),
                 ],
               ),

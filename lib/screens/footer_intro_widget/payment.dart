@@ -13,7 +13,6 @@ class Payment extends StatefulWidget {
 }
 
 class _PaymentState extends State<Payment> {
-
   @override
   void initState() {
     super.initState();
@@ -26,6 +25,7 @@ class _PaymentState extends State<Payment> {
   @override
   Widget build(BuildContext context) {
     final session = context.watch<SessionProvider>();
+    final NotifyData notifyData = context.watch<NotifyData>();
 
     return AppScaffold(
       /*appBar: AppBar(
@@ -33,12 +33,12 @@ class _PaymentState extends State<Payment> {
       ),*/
       body: Padding(
         padding: const EdgeInsets.all(12),
-        child: _buildContent(session),
+        child: _buildContent(session, notifyData),
       ),
     );
   }
 
-  Widget _buildContent(SessionProvider session) {
+  Widget _buildContent(SessionProvider session, NotifyData notifyData) {
     if (session.isLoadingPayments) {
       return const Center(child: CircularProgressIndicator());
     }
@@ -47,24 +47,33 @@ class _PaymentState extends State<Payment> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Center( child: ElevatedButton(
-          onPressed: () {},
-          style: Constant.getTitle1ButtonStyle(),
-          child: Text("Payments Dashboard"),
-        ),),
-        const SizedBox(height: 10),
+          Center(
+            child: ElevatedButton(
+              onPressed: () {},
+              style: Constant.getTitle1ButtonStyle(),
+              child: Text((notifyData.currentLanguage == Constant.languageEN
+                  ? ConstantPayment.PaymentsDashboardTitleEN
+                  : ConstantPayment.PaymentsDashboardTitleFR)),
+            ),
+          ),
+          const SizedBox(height: 10),
+
           /// ============================
           /// PAID PAYMENTS
           /// ============================
           const Text(
-            "Paid Payments",
+            (notifyData.currentLanguage == Constant.languageEN
+                ? ConstantPayment.PaidPaymentsTitleEN
+                : ConstantPayment.PaidPaymentsTitleFR),
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
 
           const SizedBox(height: 10),
 
           if (session.paidPayments.isEmpty)
-            const Text("No payments done.")
+            const Text((notifyData.currentLanguage == Constant.languageEN
+                ? ConstantPayment.NoPaymentsDoneEN
+                : ConstantPayment.NoPaymentsDoneFR))
           else
             _buildPaymentList(session.paidPayments, isPaid: true),
 
@@ -74,22 +83,28 @@ class _PaymentState extends State<Payment> {
           /// UPCOMING PAYMENTS
           /// ============================
           const Text(
-            "Upcoming Payments",
+            (notifyData.currentLanguage == Constant.languageEN
+                ? ConstantPayment.UpcomingPaymentsTitleEN
+                : ConstantPayment.UpcomingPaymentsTitleFR),
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
 
           const SizedBox(height: 10),
 
           if (session.upcomingPayments.isEmpty)
-            const Text("No upcoming payments.")
+            const Text((notifyData.currentLanguage == Constant.languageEN
+                ? ConstantPayment.NoUpcomingPaymentsEN
+                : ConstantPayment.NoUpcomingPaymentsFR))
           else
-            _buildPaymentList(session.upcomingPayments, isPaid: false),
+            _buildPaymentList(session.upcomingPayments, notifyData,
+                isPaid: false),
         ],
       ),
     );
   }
 
-  Widget _buildPaymentList(List<PaymentModel> payments, {required bool isPaid}) {
+  Widget _buildPaymentList(List<PaymentModel> payments, NotifyData notifyData,
+      {required bool isPaid}) {
     return ListView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
@@ -97,12 +112,13 @@ class _PaymentState extends State<Payment> {
       itemBuilder: (context, index) {
         final payment = payments[index];
 
-        return _buildPaymentCard(payment, isPaid);
+        return _buildPaymentCard(payment, isPaid, notifyData);
       },
     );
   }
 
-  Widget _buildPaymentCard(PaymentModel payment, bool isPaid) {
+  Widget _buildPaymentCard(
+      PaymentModel payment, bool isPaid, NotifyData notifyData) {
     return Card(
       elevation: 3,
       margin: const EdgeInsets.symmetric(vertical: 8),
@@ -118,7 +134,6 @@ class _PaymentState extends State<Payment> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-
             /// Amount
             Row(
               children: [
@@ -145,7 +160,10 @@ class _PaymentState extends State<Payment> {
               children: [
                 const Icon(Icons.book, size: 18),
                 const SizedBox(width: 8),
-                Text("Course: ${payment.courseName}"),
+                Text((notifyData.currentLanguage == Constant.languageEN
+                        ? ConstantPayment.CourseTitleEN
+                        : ConstantPayment.CourseTitleFR) +
+                    " ${payment.courseName}"),
               ],
             ),
 
@@ -156,7 +174,10 @@ class _PaymentState extends State<Payment> {
               children: [
                 const Icon(Icons.person, size: 18),
                 const SizedBox(width: 8),
-                Text("Child: ${payment.childName}"),
+                Text((notifyData.currentLanguage == Constant.languageEN
+                        ? ConstantPayment.ChildTitleEN
+                        : ConstantPayment.ChildTitleFR) +
+                    " ${payment.childName}"),
               ],
             ),
 
@@ -182,7 +203,13 @@ class _PaymentState extends State<Payment> {
                 ),
                 const SizedBox(width: 8),
                 Text(
-                  isPaid ? "Paid" : "To Pay",
+                  isPaid
+                      ? (notifyData.currentLanguage == Constant.languageEN
+                          ? ConstantPayment.StatutPaidEN
+                          : ConstantPayment.StatutPaidFR)
+                      : (notifyData.currentLanguage == Constant.languageEN
+                          ? ConstantPayment.StatutToPayEN
+                          : ConstantPayment.StatutToPayFR),
                   style: TextStyle(
                     color: isPaid ? Colors.green : Colors.orange,
                     fontWeight: FontWeight.w600,

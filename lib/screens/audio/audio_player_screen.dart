@@ -22,7 +22,6 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
   Duration _duration = Duration.zero;
   Duration _position = Duration.zero;
 
-
   @override
   void initState() {
     super.initState();
@@ -61,21 +60,19 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
     final notifyData = context.watch<NotifyData>();
 
     return AppScaffold(
-      //appBar: const AppHeader(),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0),
-        child: Column(
+        body: Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           ElevatedButton(
-            onPressed: () {}, //context.read<SessionProvider>().login('child'),
+            onPressed: () {},
             style: Constant.getTitle1ButtonStyle(),
             child: notifyData.currentLanguage == Constant.languageEN
                 ? Text(Constant.readingAudioTitleEN)
                 : Text(Constant.readingAudioTitleFR),
           ),
           const SizedBox(height: 24),
-
           Text(widget.audio.title, style: Constant.getTitleStyle()),
           const SizedBox(height: 5),
           Text(
@@ -87,33 +84,30 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
           ),
           const SizedBox(height: 24),
           Slider(
-                    min: 0,
-                    max: _duration.inSeconds.toDouble(),
-                    value: _position.inSeconds
-                        .clamp(0, _duration.inSeconds)
-                        .toDouble(),
-                    onChanged: (value) {
-                      player.seek(Duration(seconds: value.toInt()));
-                    },
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(_format(_position)),
-                      Text(_format(_duration)),
-                    ],
-                  ),
-                  const SizedBox(height: 24),
+            min: 0,
+            max: _duration.inSeconds.toDouble(),
+            value: _position.inSeconds.clamp(0, _duration.inSeconds).toDouble(),
+            onChanged: (value) {
+              player.seek(Duration(seconds: value.toInt()));
+            },
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(_format(_position)),
+              Text(_format(_duration)),
+            ],
+          ),
+          const SizedBox(height: 24),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               IconButton(
                 icon: const Icon(
                   Icons.keyboard_double_arrow_left,
-                ), //keyboard_double_arrow_left
+                ),
                 onPressed: () => setSpeed(false),
               ),
-
               IconButton(
                 icon: const Icon(Icons.replay_10),
                 onPressed: () =>
@@ -161,11 +155,10 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
                 onPressed: () =>
                     player.seek(player.position + const Duration(seconds: 10)),
               ),
-
               IconButton(
                 icon: const Icon(
                   Icons.keyboard_double_arrow_right,
-                ), //keyboard_double_arrow_right
+                ),
                 onPressed: () => setSpeed(true),
               ),
             ],
@@ -174,9 +167,7 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
           Text(widget.audio.description, style: Constant.getTextStyle()),
         ],
       ),
-    
-      )
-      );
+    ));
   }
 
   // ⏱ FORMAT

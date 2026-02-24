@@ -80,7 +80,6 @@ class _ParentChildScreenState extends State<ParentChildScreen> {
   // -------------------------
   // DELETE CHILD
   // -------------------------
- 
 
   void _deleteChild(NotifyData notifyData) {
     showDialog(
@@ -141,7 +140,12 @@ class _ParentChildScreenState extends State<ParentChildScreen> {
     // TODO: navigate to statistics screen
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (_) => IntroStatistics(child: widget.child, isViewParent: true, isResponsible: widget.child.parentResponsible!,)),
+      MaterialPageRoute(
+          builder: (_) => IntroStatistics(
+                child: widget.child,
+                isViewParent: true,
+                isResponsible: widget.child.parentResponsible!,
+              )),
     );
   }
 
@@ -152,7 +156,11 @@ class _ParentChildScreenState extends State<ParentChildScreen> {
     // TODO: navigate to statistics screen
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (_) => ParentChildPendingScreen(child: widget.child, isResponsible: widget.child.parentResponsible! ,)),
+      MaterialPageRoute(
+          builder: (_) => ParentChildPendingScreen(
+                child: widget.child,
+                isResponsible: widget.child.parentResponsible!,
+              )),
     );
   }
 
@@ -160,7 +168,8 @@ class _ParentChildScreenState extends State<ParentChildScreen> {
   // SETTING THE RESPONSIBLE OF THE CHILD
   // -------------------------
   void setParentAsResponsible(SessionProvider session) {
-    session.setParentAsReponsibleOfChild(isResponsible: !widget.child.parentResponsible!, child: widget.child);
+    session.setParentAsReponsibleOfChild(
+        isResponsible: !widget.child.parentResponsible!, child: widget.child);
   }
 
   // -------------------------
@@ -171,11 +180,7 @@ class _ParentChildScreenState extends State<ParentChildScreen> {
 
     // TODO: implement child login
     session.setCurrentChildAsParent(widget.child);
-    //print(item!.name + ' ===== ' + session.parent!.currentChild!.name);
-    /*Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (_) => const MainIntroScreenChild()),
-    );*/
+
     Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(builder: (context) => MainIntroScreenChild()),
@@ -199,25 +204,18 @@ class _ParentChildScreenState extends State<ParentChildScreen> {
     final session = context.watch<SessionProvider>();
 
     return AppScaffold(
-      /*appBar: AppBar(
-        title: const Text("Child Details"),
-        centerTitle: true,
-      ),*/
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
             ElevatedButton(
-              onPressed:
-                  () {}, //context.read<SessionProvider>().login('child'),
+              onPressed: () {},
               style: Constant.getTitle1ButtonStyle(),
               child: Text(
                 notifyData.currentLanguage == Constant.languageEN
                     ? ConstantParent.labelTitleChildIdDetailEN
                     : ConstantParent.labelTitleChildIdDetailFR,
-              ) /*notifyData.currentLanguage == Constant.languageEN
-                ? Text(Constant.readingAudioTitleEN)
-                : Text(Constant.readingAudioTitleFR)*/,
+              ),
             ),
             // -------------------------
             // CHILD INFO CARD
@@ -250,8 +248,8 @@ class _ParentChildScreenState extends State<ParentChildScreen> {
                       decoration: InputDecoration(
                         labelText:
                             notifyData.currentLanguage == Constant.languageEN
-                            ? ConstantParent.labelChildNameDetailEN
-                            : ConstantParent.labelChildNameDetailFR,
+                                ? ConstantParent.labelChildNameDetailEN
+                                : ConstantParent.labelChildNameDetailFR,
                         border: const OutlineInputBorder(),
                       ),
                     ),
@@ -267,8 +265,8 @@ class _ParentChildScreenState extends State<ParentChildScreen> {
                       decoration: InputDecoration(
                         labelText:
                             notifyData.currentLanguage == Constant.languageEN
-                            ? ConstantParent.labelChildLoginDetailEN
-                            : ConstantParent.labelChildLoginDetailFR,
+                                ? ConstantParent.labelChildLoginDetailEN
+                                : ConstantParent.labelChildLoginDetailFR,
                         border: OutlineInputBorder(),
                       ),
                     ),
@@ -282,8 +280,8 @@ class _ParentChildScreenState extends State<ParentChildScreen> {
                       decoration: InputDecoration(
                         labelText:
                             notifyData.currentLanguage == Constant.languageEN
-                            ? ConstantParent.labelChildPasswordDetailEN
-                            : ConstantParent.labelChildPasswordDetailFR,
+                                ? ConstantParent.labelChildPasswordDetailEN
+                                : ConstantParent.labelChildPasswordDetailFR,
                         border: OutlineInputBorder(),
                       ),
                     ),
@@ -292,17 +290,16 @@ class _ParentChildScreenState extends State<ParentChildScreen> {
 
                     // Save button
                     ElevatedButton.icon(
-                      onPressed: () {
-                        _saveChanges(notifyData);
-                      },
-                      icon: const Icon(Icons.save),
-                      label: Text(
-                        notifyData.currentLanguage == Constant.languageEN
-                            ? ConstantParent.labelChildSaveChangesDetailEN
-                            : ConstantParent.labelChildSaveChangesDetailFR,
-                      ),
-                      style: Constant.getTitle3ButtonStyle()
-                    ),
+                        onPressed: () {
+                          _saveChanges(notifyData);
+                        },
+                        icon: const Icon(Icons.save),
+                        label: Text(
+                          notifyData.currentLanguage == Constant.languageEN
+                              ? ConstantParent.labelChildSaveChangesDetailEN
+                              : ConstantParent.labelChildSaveChangesDetailFR,
+                        ),
+                        style: Constant.getTitle3ButtonStyle()),
                   ],
                 ),
               ),
@@ -318,51 +315,62 @@ class _ParentChildScreenState extends State<ParentChildScreen> {
                 children: [
                   ListTile(
                     leading: const Icon(Icons.timer),
-                    title: Text(notifyData.currentLanguage == Constant.languageEN
-                          ? ConstantParent.labelChildPendingCourseDetailEN
-                          : ConstantParent.labelChildPendingCourseDetailFR),
+                    title: Text(
+                        notifyData.currentLanguage == Constant.languageEN
+                            ? ConstantParent.labelChildPendingCourseDetailEN
+                            : ConstantParent.labelChildPendingCourseDetailFR),
                     onTap: _viewPendingCourses,
                   ),
-                  if(widget.child.parentResponsible!) 
+                  if (widget.child.parentResponsible!)
                     ListTile(
-                    leading: const Icon(Icons.money_off_csred_outlined),
-                    title: Text(notifyData.currentLanguage == Constant.languageEN
+                      leading: const Icon(Icons.money_off_csred_outlined),
+                      title: Text(notifyData.currentLanguage ==
+                              Constant.languageEN
                           ? ConstantParent.labelChildRemoveFinancialAuthorityEN
-                          : ConstantParent.labelChildRemoveFinancialAuthorityFR),
-                    onTap: (){
-                      setState(() {
-                        session.setParentAsReponsibleOfChild(isResponsible: false, child: widget.child);
-                      });
-                    },
-                  ),
-                  if(!widget.child.parentResponsible!) 
+                          : ConstantParent
+                              .labelChildRemoveFinancialAuthorityFR),
+                      onTap: () {
+                        setState(() {
+                          session.setParentAsReponsibleOfChild(
+                              isResponsible: false, child: widget.child);
+                        });
+                      },
+                    ),
+                  if (!widget.child.parentResponsible!)
                     ListTile(
-                    leading: const Icon(Icons.monetization_on_outlined),
-                    title: Text(notifyData.currentLanguage == Constant.languageEN
-                          ? ConstantParent.labelChildAcquisitionFinancialAuthorityEN
-                          : ConstantParent.labelChildAcquisitionFinancialAuthorityFR),
-                    onTap: (){
-                      setState(() {
-                        session.setParentAsReponsibleOfChild(isResponsible: false, child: widget.child);
-                      });
-                    },
-                  ),
-                  
+                      leading: const Icon(Icons.monetization_on_outlined),
+                      title: Text(
+                          notifyData.currentLanguage == Constant.languageEN
+                              ? ConstantParent
+                                  .labelChildAcquisitionFinancialAuthorityEN
+                              : ConstantParent
+                                  .labelChildAcquisitionFinancialAuthorityFR),
+                      onTap: () {
+                        setState(() {
+                          session.setParentAsReponsibleOfChild(
+                              isResponsible: false, child: widget.child);
+                        });
+                      },
+                    ),
                   const Divider(height: 1),
                   ListTile(
                     leading: const Icon(Icons.bar_chart),
-                    title: Text(notifyData.currentLanguage == Constant.languageEN
-                          ? ConstantParent.labelChildViewStatsDetailEN
-                          : ConstantParent.labelChildViewStatsDetailFR),
+                    title: Text(
+                        notifyData.currentLanguage == Constant.languageEN
+                            ? ConstantParent.labelChildViewStatsDetailEN
+                            : ConstantParent.labelChildViewStatsDetailFR),
                     onTap: _viewStatistics,
                   ),
                   const Divider(height: 1),
                   ListTile(
                     leading: const Icon(Icons.play_circle_fill),
-                    title: Text(notifyData.currentLanguage == Constant.languageEN
-                          ? ConstantParent.labelChildWorkAsDetailEN
-                          : ConstantParent.labelChildWorkAsDetailFR),
-                    onTap: (){_workAsChild(notifyData);},
+                    title: Text(
+                        notifyData.currentLanguage == Constant.languageEN
+                            ? ConstantParent.labelChildWorkAsDetailEN
+                            : ConstantParent.labelChildWorkAsDetailFR),
+                    onTap: () {
+                      _workAsChild(notifyData);
+                    },
                   ),
                   const Divider(height: 1),
                   ListTile(

@@ -11,10 +11,6 @@ class AudioProvider extends ChangeNotifier {
   List<AudioItem> audios = [];
 
   Future<void> loadAudios() async {
-    /*final data = await ApiClient.get('/selfdictation');
-    audios = (data as List)
-        .map((e) => AudioItem.fromJson(e))
-        .toList();*/
     audios = sampleAudioJson.map((e) => AudioItem.fromJson(e)).toList();
 
     notifyListeners();
@@ -80,7 +76,6 @@ class AudioProvider extends ChangeNotifier {
     required String description,
     required Uint8List audioBytes,
   }) async {
-    print('ahahah ahahaha');
     AudioItem audio = AudioItem(
       id: DateTime.now().toString(),
       title: title,
