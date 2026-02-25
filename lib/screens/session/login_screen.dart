@@ -26,17 +26,11 @@ class _LoginScreen extends State<LoginScreen> {
   NotifyData _notifyData = NotifyData();
   SessionProvider _sessionProvider = SessionProvider();
 
-  //final ChoiceChild = 'child';
-  //final ChoiceParent = 'parent';
   String selectedProfile = "";
 
   void chooseLoginChoice(String choice) {
     setState(() {
-      //_isVisible = !_isVisible;
       selectedProfile = choice;
-      //_notifyData.setRole(selectedProfile);
-      print('XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX ' + selectedProfile);
-      //_sessionProvider.setRole(selectedProfile);
     });
   }
 
@@ -45,12 +39,9 @@ class _LoginScreen extends State<LoginScreen> {
     final notifyData = context.watch<NotifyData>();
     final sessionProvider = context.watch<SessionProvider>();
     _sessionProvider = sessionProvider;
-    //final session = context.watch<SessionProvider>();
     _notifyData = notifyData;
 
     return AppScaffold(
-      //appBar: const AppHeader(),
-      //bottomNavigationBar: const AppFooter(),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -59,20 +50,19 @@ class _LoginScreen extends State<LoginScreen> {
               ElevatedButton(
                 onPressed: () => chooseLoginChoice(
                   '',
-                ), //context.read<SessionProvider>().login('child'),
+                ),
                 style: Constant.getTitle1ButtonStyle(),
                 child: notifyData.currentLanguage == Constant.languageEN
                     ? Text(ConstantSession.ReturnLoginChoicesEN)
                     : Text(ConstantSession.ReturnLoginChoicesFR),
               ),
             if (selectedProfile != '') const SizedBox(height: 24),
-
             if (selectedProfile == '' ||
                 selectedProfile == ConstantSession.ChoiceChild)
               ElevatedButton(
                 onPressed: () => chooseLoginChoice(
                   ConstantSession.ChoiceChild,
-                ), //context.read<SessionProvider>().login('child'),
+                ),
                 style: selectedProfile == ConstantSession.ChoiceChild
                     ? Constant.getTitle1ButtonStyleWhite()
                     : Constant.getTitle1ButtonStyleBlack(),
@@ -83,7 +73,6 @@ class _LoginScreen extends State<LoginScreen> {
             if (selectedProfile == '' ||
                 selectedProfile == ConstantSession.ChoiceChild)
               const SizedBox(height: 24),
-
             if (selectedProfile == '' ||
                 selectedProfile == ConstantSession.ChoiceParent)
               ElevatedButton(
@@ -91,7 +80,7 @@ class _LoginScreen extends State<LoginScreen> {
                     chooseLoginChoice(ConstantSession.ChoiceParent),
                 style: selectedProfile == ConstantSession.ChoiceParent
                     ? Constant.getTitle1ButtonStyleWhite()
-                    : Constant.getTitle1ButtonStyleBlack(), //context.read<SessionProvider>().login('parent'),
+                    : Constant.getTitle1ButtonStyleBlack(),
                 child: notifyData.currentLanguage == Constant.languageEN
                     ? Text(ConstantSession.LoginAsParentEN)
                     : Text(ConstantSession.LoginAsParentFR),
@@ -99,7 +88,6 @@ class _LoginScreen extends State<LoginScreen> {
             if (selectedProfile == '' ||
                 selectedProfile == ConstantSession.ChoiceParent)
               const SizedBox(height: 24),
-
             if (selectedProfile == ConstantSession.ChoiceParent ||
                 selectedProfile == ConstantSession.ChoiceChild)
               TextField(
@@ -111,7 +99,6 @@ class _LoginScreen extends State<LoginScreen> {
             if (selectedProfile == ConstantSession.ChoiceParent ||
                 selectedProfile == ConstantSession.ChoiceChild)
               const SizedBox(height: 24),
-
             if (selectedProfile == ConstantSession.ChoiceParent ||
                 selectedProfile == ConstantSession.ChoiceChild)
               TextField(
@@ -125,7 +112,6 @@ class _LoginScreen extends State<LoginScreen> {
             if (selectedProfile == ConstantSession.ChoiceParent ||
                 selectedProfile == ConstantSession.ChoiceChild)
               const SizedBox(height: 24),
-
             if (selectedProfile == ConstantSession.ChoiceParent ||
                 selectedProfile == ConstantSession.ChoiceChild)
               ElevatedButton(
@@ -145,8 +131,8 @@ class _LoginScreen extends State<LoginScreen> {
                     MaterialPageRoute(
                       builder: (_) =>
                           _sessionProvider.role == ConstantSession.ChoiceChild
-                          ? const MainIntroScreenChild()
-                          : const MainIntroScreenParent(),
+                              ? const MainIntroScreenChild()
+                              : const MainIntroScreenParent(),
                     ),
                   );
                 },
@@ -154,38 +140,35 @@ class _LoginScreen extends State<LoginScreen> {
                     ? Text(ConstantSession.LoginButtonEN)
                     : Text(ConstantSession.LoginButtonFR),
               ),
-
             if (selectedProfile == '' ||
                 selectedProfile == ConstantSession.ChoiceParent)
-                FractionallySizedBox(
-              widthFactor: 0.5, // 50% of the parent width
-              child: Divider(
-                color: Colors.blue,
-                thickness: 5.0,
-                indent: 20.0,
-                endIndent: 20.0,
-                height: 30.0,
+              FractionallySizedBox(
+                widthFactor: 0.5, // 50% of the parent width
+                child: Divider(
+                  color: Colors.blue,
+                  thickness: 5.0,
+                  indent: 20.0,
+                  endIndent: 20.0,
+                  height: 30.0,
+                ),
               ),
-            ),
-
             if (selectedProfile == '' ||
                 selectedProfile == ConstantSession.ChoiceParent)
               const SizedBox(height: 24),
-
             if (selectedProfile == '' ||
                 selectedProfile == ConstantSession.ChoiceParent)
               ElevatedButton(
-                onPressed: () =>{
+                onPressed: () => {
                   Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => CreateParentAccount(),
-                ),
-              )
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => CreateParentAccount(),
+                    ),
+                  )
                 },
                 style: selectedProfile == ConstantSession.ChoiceParent
                     ? Constant.getTitle1ButtonStyleForResetCreate()
-                    : Constant.getTitle1ButtonStyleForResetCreate(), //context.read<SessionProvider>().login('parent'),
+                    : Constant.getTitle1ButtonStyleForResetCreate(),
                 child: notifyData.currentLanguage == Constant.languageEN
                     ? Text(ConstantSession.CreateParentAccountEN)
                     : Text(ConstantSession.CreateParentAccountFR),
@@ -193,21 +176,20 @@ class _LoginScreen extends State<LoginScreen> {
             if (selectedProfile == '' ||
                 selectedProfile == ConstantSession.ChoiceParent)
               const SizedBox(height: 24),
-
             if (selectedProfile == '' ||
                 selectedProfile == ConstantSession.ChoiceParent)
               ElevatedButton(
-                onPressed: () =>{
+                onPressed: () => {
                   Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => ParentReset(),
-                ),
-              )
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => ParentReset(),
+                    ),
+                  )
                 },
                 style: selectedProfile == ConstantSession.ChoiceParent
                     ? Constant.getTitle1ButtonStyleForResetCreate()
-                    : Constant.getTitle1ButtonStyleForResetCreate(), //context.read<SessionProvider>().login('parent'),
+                    : Constant.getTitle1ButtonStyleForResetCreate(),
                 child: notifyData.currentLanguage == Constant.languageEN
                     ? Text(ConstantSession.ResetParentAccountEN)
                     : Text(ConstantSession.ResetParentAccountFR),

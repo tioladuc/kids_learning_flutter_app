@@ -16,7 +16,7 @@ class _ParentResetState extends State<ParentReset> {
   final _formKey = GlobalKey<FormState>();
   final emailCtrl = TextEditingController();
 
-  Future<void> _sendCode() async {
+  Future<void> _sendCode(NotifyData notifyData) async {
     if (!_formKey.currentState!.validate()) return;
 
     final session = context.read<SessionProvider>();
@@ -28,13 +28,13 @@ class _ParentResetState extends State<ParentReset> {
     if (!mounted) return;
 
     if (success) {
-      _showSuccess();
+      _showSuccess(notifyData);
     } else {
       _showError(session.errorMessage ?? "Error");
     }
   }
 
-  void _showSuccess() {
+  void _showSuccess(NotifyData notifyData) {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
@@ -78,6 +78,7 @@ class _ParentResetState extends State<ParentReset> {
   @override
   Widget build(BuildContext context) {
     final session = context.watch<SessionProvider>();
+    final notifyData = context.watch<NotifyData>();
 
     return AppScaffold(
       //appBar: AppBar(title: const Text("Reset Password")),
@@ -88,18 +89,17 @@ class _ParentResetState extends State<ParentReset> {
           child: Column(
             children: [
               ElevatedButton(
-                onPressed: () {}, //context.read<SessionProvider>().login('child'),
+                onPressed:
+                    () {}, //context.read<SessionProvider>().login('child'),
                 style: Constant.getTitle1ButtonStyle(),
                 child: Text("Reset Password: Received Reset Code"),
               ),
-            const SizedBox(height: 24),
+              const SizedBox(height: 24),
               const Text(
                 "Enter your email to receive a reset code",
                 textAlign: TextAlign.center,
               ),
-
               const SizedBox(height: 20),
-
               TextFormField(
                 controller: emailCtrl,
                 validator: (v) =>
@@ -111,14 +111,14 @@ class _ParentResetState extends State<ParentReset> {
                   ),
                 ),
               ),
-
               const SizedBox(height: 20),
-
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
                   style: Constant.getTitle3ButtonStyle(),
-                  onPressed: session.isLoading ? null : _sendCode,
+                  onPressed: () {
+                    session.isLoading ? null : _sendCode(notifyData);
+                  },
                   child: session.isLoading
                       ? const CircularProgressIndicator()
                       : const Text("Send Reset Code"),

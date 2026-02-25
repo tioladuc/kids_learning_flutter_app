@@ -13,8 +13,7 @@ class ParentResetPassword extends StatefulWidget {
   });
 
   @override
-  State<ParentResetPassword> createState() =>
-      _ParentResetPasswordState();
+  State<ParentResetPassword> createState() => _ParentResetPasswordState();
 }
 
 class _ParentResetPasswordState extends State<ParentResetPassword> {
@@ -31,7 +30,7 @@ class _ParentResetPasswordState extends State<ParentResetPassword> {
     emailCtrl = TextEditingController(text: widget.email);
   }
 
-  Future<void> _resetPassword() async {
+  Future<void> _resetPassword(NotifyData notifyData) async {
     if (!_formKey.currentState!.validate()) return;
 
     if (passwordCtrl.text != confirmCtrl.text) {
@@ -50,13 +49,13 @@ class _ParentResetPasswordState extends State<ParentResetPassword> {
     if (!mounted) return;
 
     if (success) {
-      _showSuccess();
+      _showSuccess(notifyData);
     } else {
       _showError(session.errorMessage ?? "Error");
     }
   }
 
-  void _showSuccess() {
+  void _showSuccess(NotifyData notifyData) {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
@@ -96,6 +95,7 @@ class _ParentResetPasswordState extends State<ParentResetPassword> {
   @override
   Widget build(BuildContext context) {
     final session = context.watch<SessionProvider>();
+    final notifyData = context.watch<NotifyData>();
 
     return AppScaffold(
       //appBar: AppBar(title: const Text("Reset Password")),
@@ -106,31 +106,30 @@ class _ParentResetPasswordState extends State<ParentResetPassword> {
           child: Column(
             children: [
               ElevatedButton(
-                onPressed: () {}, //context.read<SessionProvider>().login('child'),
+                onPressed:
+                    () {}, //context.read<SessionProvider>().login('child'),
                 style: Constant.getTitle1ButtonStyle(),
                 child: Text("Reset Password"),
               ),
-            const SizedBox(height: 24),
+              const SizedBox(height: 24),
               const Text(
                 "Enter your email, reset code and new password",
                 textAlign: TextAlign.center,
               ),
-
               const SizedBox(height: 20),
-
               _field(emailCtrl, "Email",
                   keyboardType: TextInputType.emailAddress),
               _field(codeCtrl, "Reset Code"),
               _field(passwordCtrl, "New Password", obscure: true),
               _field(confirmCtrl, "Confirm Password", obscure: true),
-
               const SizedBox(height: 20),
-
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
                   style: Constant.getTitle3ButtonStyle(),
-                  onPressed: session.isLoading ? null : _resetPassword,
+                  onPressed: () {
+                    session.isLoading ? null : _resetPassword(notifyData);
+                  },
                   child: session.isLoading
                       ? const CircularProgressIndicator()
                       : const Text("Reset Password"),

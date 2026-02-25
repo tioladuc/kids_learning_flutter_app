@@ -32,6 +32,131 @@ class ConstantSession {
   static final LogoutTitleEN = 'Log out from application';
   static final LogoutTitleFR = "Se déconnecter de l'application";
 
-  static final LogoutMessageEN = 'Do you really want to sign out of your account?';
+  static final LogoutMessageEN =
+      'Do you really want to sign out of your account?';
   static final LogoutMessageFR = "Voulez vous vraiment vous deconnecter ?";
+
+  ////////////////////////////Activate Parent Account//////////////////////////////////////////////
+  static final ActivationSuccessMessageEN =
+      "Your account has been activated successfully. You can now login!";
+  static final ActivationSuccessMessageFR =
+      "Your account has been activated successfully. You can now login!";
+  static final ActivationErrorMessageEN = "Error";
+  static final ActivationErrorMessageFR = "Error";
+  static final ResendActivationCodeEN =
+      "Activation code has been sent into your mailbox.";
+  static final ResendActivationCodeFR =
+      "Activation code has been sent into your mailbox.";
+  static final ResendActivationErrorMessageEN = "Error";
+  static final ResendActivationErrorMessageFR = "Error";
+  static final SuccessMessageEN = "Success";
+  static final SuccessMessageFR = "Success";
+  static final ContinueMessageEN = "Continue";
+  static final ContinueMessageFR = "Success";
+  static final ActivateAccountEN = "Activate Account";
+  static final ActivateAccountFR = "Activate Account";
+  static final EnterActivationCodeEN =
+      "Enter the activation code sent by email";
+  static final EnterActivationCodeFR =
+      "Enter the activation code sent by email";
+  static final ActivationCodeEN = "Activation Code";
+  static final ActivationCodeFR = "Activation Code";
+  static final ActivateAccountEN = "Activate Account";
+  static final ActivateAccountFR = "Activate Account";
+  static final ResendActivationCodeEN = "Resend Activation Code";
+  static final ResendActivationCodeFR = "Resend Activation Code";
+  static final RequiredEN = "Required";
+  static final RequiredFR = "Required";
+
+  /////////////////////////////////Create Parent Account/////////////////////////////////////////
+  static final CreateParentAccountErrorMessageEN = "Error";
+  static final CreateParentAccountErrorMessageFR = "Error";
+  static final CreateParentAccountCreatedEN = "Account Created";
+  static final CreateParentAccountCreatedFR = "Account Created";
+  static final CreateParentAccountValidationMsgEN =
+      "A validation code has been sent to your email.";
+  static final CreateParentAccountValidationMsgFR =
+      "A validation code has been sent to your email.";
+  static final CreateParentAccountActivateEN = "Activate";
+  static final CreateParentAccountActivateFR = "Activate";
+
+  static final CreateParentAccountCreateParentAccountEN =
+      "Create Parent Account";
+  static final CreateParentAccountCreateParentAccountFR =
+      "Create Parent Account";
+  static final CreateParentAccountFirstNameEN = "First Name";
+  static final CreateParentAccountFirstNameFR = "First Name";
+  static final CreateParentAccountLastNameEN = "Last Name";
+  static final CreateParentAccountLastNameFR = "Last Name";
+  static final CreateParentAccountLoginEN = "Login";
+  static final CreateParentAccountLoginFR = "Login";
+  static final CreateParentAccountEmailEN = "Email";
+  static final CreateParentAccountEmailFR = "Email";
+  static final CreateParentAccountPasswordEN = "Password";
+  static final CreateParentAccountPasswordFR = "Password";
+  static final CreateParentAccountCreateAccountEN = "Create Account";
+  static final CreateParentAccountCreateAccountFR = "Create Account";
+  static final CreateParentAccountRequiredEN = "Required";
+  static final CreateParentAccountRequiredFR = "Required";
+
+  ///////////////////////////////// Parent Reset password/////////////////////////////////////////
+  static final ParentResetPasswordPasswordsNotMatchEN =
+      "Passwords do not match";
+  static final ParentResetPasswordPasswordsNotMatchFR =
+      "Passwords do not match";
+  static final ParentResetPasswordErrorEN = "Error";
+  static final ParentResetPasswordErrorFR = "Error";
+  static final ParentResetPasswordSuccessEN = "Success";
+  static final ParentResetPasswordSuccessFR = "Success";
+  static final ParentResetPasswordPasswordResetSuccessfullyEN =
+      "Password reset successfully.";
+  static final ParentResetPasswordPasswordResetSuccessfullyFR =
+      "Password reset successfully.";
+  static final ParentResetPasswordContinueEN = "Continue";
+  static final ParentResetPasswordContinueFR = "Continue";
+  static final ParentResetPasswordResetPasswordEN = "Reset Password";
+  static final ParentResetPasswordResetPasswordFR = "Reset Password";
+  static final ParentResetPasswordEnterYourEmailEN =
+      "Enter your email, reset code and new password";
+  static final ParentResetPasswordEnterYourEmailFR =
+      "Enter your email, reset code and new password";
+  static final ParentResetPasswordEmailEN = "Email";
+  static final ParentResetPasswordEmailFR = "Email";
+  static final ParentResetPasswordResetCodeEN = "Reset Code";
+  static final ParentResetPasswordResetCodeFR = "Reset Code";
+  static final ParentResetPasswordNewPasswordEN = "New Password";
+  static final ParentResetPasswordNewPasswordFR = "New Password";
+  static final ParentResetPasswordConfirmPasswordEN = "Confirm Password";
+  static final ParentResetPasswordConfirmPasswordFR = "Confirm Password";
+  static final ParentResetPasswordResetPasswordBtnEN = "Reset Password";
+  static final ParentResetPasswordResetPasswordBtnFR = "Reset Password";
+  static final ParentResetPasswordRequiredEN = "Required";
+  static final ParentResetPasswordRequiredFR = "Required";
+  static final ParentResetPasswordEN = "Required";
+  static final ParentResetPasswordFR = "Required";
+  ///////////////////////////////// Parent Reset/////////////////////////////////////////
+  static final ParentResetErrorMsgEN = "Error";
+  static final ParentResetErrorMsgFR = "Error";
+  static final ParentResetEmailSentEN = "Email Sent";
+  static final ParentResetEmailSentFR = "Email Sent";
+  static final ParentResetEmailSentMsgEN =
+      "A reset code has been sent to your email.";
+  static final ParentResetEmailSentMsgFR =
+      "A reset code has been sent to your email.";
+  static final ParentResetContinueEN = "Continue";
+  static final ParentResetContinueFR = "Continue";
+  static final ParentResetResetPasswordReceivedResetCodeEN =
+      "Reset Password: Received Reset Code";
+  static final ParentResetResetPasswordReceivedResetCodeFR =
+      "Reset Password: Received Reset Code";
+  static final ParentResetEnterYourEmailEN =
+      "Enter your email to receive a reset code";
+  static final ParentResetEnterYourEmailFR =
+      "Enter your email to receive a reset code";
+  static final ParentResetEmailRequiredEN = "Email required";
+  static final ParentResetEmailRequiredFR = "Email required";
+  static final ParentResetEmailEN = "Email";
+  static final ParentResetEmailFR = "Email";
+  static final ParentResetSendResetCodeBtnEN = "Send Reset Code";
+  static final ParentResetSendResetCodeBtnFR = "Send Reset Code";
 }

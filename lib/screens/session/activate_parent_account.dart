@@ -13,12 +13,10 @@ class ActivateParentAccount extends StatefulWidget {
   });
 
   @override
-  State<ActivateParentAccount> createState() =>
-      _ActivateParentAccountState();
+  State<ActivateParentAccount> createState() => _ActivateParentAccountState();
 }
 
-class _ActivateParentAccountState
-    extends State<ActivateParentAccount> {
+class _ActivateParentAccountState extends State<ActivateParentAccount> {
   final _formKey = GlobalKey<FormState>();
 
   late TextEditingController emailCtrl;
@@ -30,7 +28,7 @@ class _ActivateParentAccountState
     emailCtrl = TextEditingController(text: widget.email);
   }
 
-  Future<void> _activate() async {
+  Future<void> _activate(NotifyData notifyData) async {
     if (!_formKey.currentState!.validate()) return;
 
     final session = context.read<SessionProvider>();
@@ -43,13 +41,17 @@ class _ActivateParentAccountState
     if (!mounted) return;
 
     if (success) {
-      _showSuccess( message: "Your account has been activated successfully. You can now login!", returnLogin: true);
+      _showSuccess(
+        notifyData: notifyData,
+          message:
+              "Your account has been activated successfully. You can now login!",
+          returnLogin: true);
     } else {
       _showError(session.errorMessage ?? "Error");
     }
   }
 
-  Future<void> _resendActivationCode() async {
+  Future<void> _resendActivationCode(NotifyData notifyData) async {
     if (!_formKey.currentState!.validate()) return;
 
     final session = context.read<SessionProvider>();
@@ -61,14 +63,16 @@ class _ActivateParentAccountState
     if (!mounted) return;
 
     if (success) {
-      _showSuccess( message: "Activation code has been sent into your mailbox.", returnLogin: false);
+      _showSuccess(
+        notifyData: notifyData,
+          message: "Activation code has been sent into your mailbox.",
+          returnLogin: false);
     } else {
       _showError(session.errorMessage ?? "Error");
     }
   }
 
-  void _showSuccess({String message = '', 
-  bool returnLogin = true}) {
+  void _showSuccess(NotifyData notifyData, {String message = '', bool returnLogin = true}) {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
@@ -79,14 +83,13 @@ class _ActivateParentAccountState
             onPressed: () {
               Navigator.pop(context);
 
-              if(returnLogin) {
+              if (returnLogin) {
                 // back to login/home
-              Navigator.pop(context);
+                Navigator.pop(context);
 
-              // back to login/home
-              Navigator.pop(context);
+                // back to login/home
+                Navigator.pop(context);
               }
-              
             },
             child: const Text("Continue"),
           )
@@ -111,6 +114,7 @@ class _ActivateParentAccountState
   @override
   Widget build(BuildContext context) {
     final session = context.watch<SessionProvider>();
+    final NotifyData notifyData = context.watch<NotifyData>();
 
     return AppScaffold(
       //appBar: AppBar(title: const Text("Activate Account")),
@@ -121,42 +125,46 @@ class _ActivateParentAccountState
           child: Column(
             children: [
               ElevatedButton(
-                onPressed: () {}, //context.read<SessionPro_resendActivationCodevider>().login('child'),
+                onPressed:
+                    () {}, //context.read<SessionPro_resendActivationCodevider>().login('child'),
                 style: Constant.getTitle1ButtonStyle(),
                 child: Text("Activate Account"),
               ),
-            const SizedBox(height: 24),
+              const SizedBox(height: 24),
               const Text(
                 "Enter the activation code sent by email",
                 textAlign: TextAlign.center,
               ),
-
               const SizedBox(height: 20),
-
-              _field(emailCtrl, "Email",
-                  keyboardType: TextInputType.emailAddress),
-              _field(codeCtrl, "Activation Code", keyboardType:TextInputType.text, addValidator: false),
-
+              _field(
+                  notifyData,
+                  emailCtrl,
+                  "Email",
+                  keyboardType: TextInputType.emailAddress,
+                  notifyData),
+              _field(notifyData, codeCtrl, "Activation Code",
+                  keyboardType: TextInputType.text, addValidator: false),
               const SizedBox(height: 20),
-
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
                   style: Constant.getTitle3ButtonStyle(),
-                  onPressed: session.isLoading ? null : _activate,
+                  onPressed: (){session.isLoading ? null : _activate(notifyData)},
                   child: session.isLoading
                       ? const CircularProgressIndicator()
                       : const Text("Activate Account"),
                 ),
               ),
-
               const SizedBox(height: 20),
-
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
                   style: Constant.getTitle3ButtonRedStyle(),
-                  onPressed: session.isActivationCodeSending ? null : _resendActivationCode,
+                  onPressed: () {
+                    session.isActivationCodeSending
+                        ? null
+                        : _resendActivationCode(notifyData);
+                  },
                   child: session.isActivationCodeSending
                       ? const CircularProgressIndicator()
                       : const Text("Resend Activation Code"),
@@ -170,6 +178,7 @@ class _ActivateParentAccountState
   }
 
   Widget _field(
+    NotifyData notifyData,
     TextEditingController ctrl,
     String label, {
     TextInputType keyboardType = TextInputType.text,
@@ -180,7 +189,8 @@ class _ActivateParentAccountState
       child: TextFormField(
         controller: ctrl,
         keyboardType: keyboardType,
-        validator: (v) => addValidator ? (v == null || v.isEmpty ? "Required" : null) : null,
+        validator: (v) =>
+            addValidator ? (v == null || v.isEmpty ? "Required" : null) : null,
         decoration: InputDecoration(
           labelText: label,
           border: OutlineInputBorder(

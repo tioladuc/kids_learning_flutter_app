@@ -22,7 +22,7 @@ class _CreateParentAccountState extends State<CreateParentAccount> {
   final passwordCtrl = TextEditingController();
   final emailCtrl = TextEditingController();
 
-  Future<void> _submit() async {
+  Future<void> _submit(NotifyData notifyData) async {
     if (!_formKey.currentState!.validate()) return;
 
     final session = context.read<SessionProvider>();
@@ -38,13 +38,13 @@ class _CreateParentAccountState extends State<CreateParentAccount> {
     if (!mounted) return;
 
     if (success) {
-      _showSuccessDialog();
+      _showSuccessDialog(notifyData);
     } else {
       _showError(session.errorMessage ?? "Error");
     }
   }
 
-  void _showSuccessDialog() {
+  void _showSuccessDialog(NotifyData notifyData) {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
@@ -92,7 +92,7 @@ class _CreateParentAccountState extends State<CreateParentAccount> {
   @override
   Widget build(BuildContext context) {
     final session = context.watch<SessionProvider>();
-    final notifyData = context.watch<NotifyData>();
+    final NotifyData notifyData = context.watch<NotifyData>();
 
     return AppScaffold(
       //appBar: AppBar(title: const Text("Create Parent Account")),
@@ -103,27 +103,26 @@ class _CreateParentAccountState extends State<CreateParentAccount> {
           child: Column(
             children: [
               ElevatedButton(
-                onPressed: () {}, //context.read<SessionProvider>().login('child'),
+                onPressed:
+                    () {}, //context.read<SessionProvider>().login('child'),
                 style: Constant.getTitle1ButtonStyle(),
                 child: Text("Create Parent Account"),
               ),
-            const SizedBox(height: 24),
-              _field(firstNameCtrl, "First Name"),
-              _field(lastNameCtrl, "Last Name"),
-              _field(loginCtrl, "Login"),
-              _field(emailCtrl, "Email",
+              const SizedBox(height: 24),
+              _field(notifyData, firstNameCtrl, "First Name"),
+              _field(notifyData, lastNameCtrl, "Last Name"),
+              _field(notifyData, loginCtrl, "Login"),
+              _field(notifyData, emailCtrl, "Email",
                   keyboardType: TextInputType.emailAddress),
-              _field(passwordCtrl, "Password", obscure: true),
-
-              
-
+              _field(notifyData, passwordCtrl, "Password", obscure: true),
               const SizedBox(height: 20),
-
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
                   style: Constant.getTitle3ButtonStyle(),
-                  onPressed: session.isLoading ? null : _submit,
+                  onPressed: () {
+                    session.isLoading ? null : _submit(notifyData);
+                  },
                   child: session.isLoading
                       ? const CircularProgressIndicator()
                       : const Text("Create Account"),
@@ -137,6 +136,7 @@ class _CreateParentAccountState extends State<CreateParentAccount> {
   }
 
   Widget _field(
+    NotifyData notifyData,
     TextEditingController ctrl,
     String label, {
     bool obscure = false,
