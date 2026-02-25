@@ -40,7 +40,10 @@ class _CreateParentAccountState extends State<CreateParentAccount> {
     if (success) {
       _showSuccessDialog(notifyData);
     } else {
-      _showError(session.errorMessage ?? "Error");
+      _showError(session.errorMessage ??
+          (notifyData.currentLanguage == Constant.languageEN
+              ? ConstantSession.CreateParentAccountErrorMessageEN
+              : ConstantSession.CreateParentAccountErrorMessageFR));
     }
   }
 
@@ -48,9 +51,13 @@ class _CreateParentAccountState extends State<CreateParentAccount> {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        title: const Text("Account Created"),
+        title: const Text((notifyData.currentLanguage == Constant.languageEN
+            ? ConstantSession.CreateParentAccountCreatedEN
+            : ConstantSession.CreateParentAccountCreatedFR)),
         content: const Text(
-          "A validation code has been sent to your email.",
+          (notifyData.currentLanguage == Constant.languageEN
+              ? ConstantSession.CreateParentAccountValidationMsgEN
+              : ConstantSession.CreateParentAccountValidationMsgFR),
         ),
         actions: [
           TextButton(
@@ -66,7 +73,9 @@ class _CreateParentAccountState extends State<CreateParentAccount> {
                 ),
               );
             },
-            child: const Text("Activate"),
+            child: const Text((notifyData.currentLanguage == Constant.languageEN
+                ? ConstantSession.CreateParentAccountActivateEN
+                : ConstantSession.CreateParentAccountActivateFR)),
           )
         ],
       ),
@@ -106,15 +115,44 @@ class _CreateParentAccountState extends State<CreateParentAccount> {
                 onPressed:
                     () {}, //context.read<SessionProvider>().login('child'),
                 style: Constant.getTitle1ButtonStyle(),
-                child: Text("Create Parent Account"),
+                child: Text((notifyData.currentLanguage == Constant.languageEN
+                    ? ConstantSession.CreateParentAccountCreateParentAccountEN
+                    : ConstantSession
+                        .CreateParentAccountCreateParentAccountFR)),
               ),
               const SizedBox(height: 24),
-              _field(notifyData, firstNameCtrl, "First Name"),
-              _field(notifyData, lastNameCtrl, "Last Name"),
-              _field(notifyData, loginCtrl, "Login"),
-              _field(notifyData, emailCtrl, "Email",
+              _field(
+                  notifyData,
+                  firstNameCtrl,
+                  (notifyData.currentLanguage == Constant.languageEN
+                      ? ConstantSession.CreateParentAccountFirstNameEN
+                      : ConstantSession.CreateParentAccountFirstNameFR)),
+              _field(
+                  notifyData,
+                  lastNameCtrl,
+                  (notifyData.currentLanguage == Constant.languageEN
+                      ? ConstantSession.CreateParentAccountLastNameEN
+                      : ConstantSession.CreateParentAccountLastNameFR)),
+              _field(
+                  notifyData,
+                  loginCtrl,
+                  (notifyData.currentLanguage == Constant.languageEN
+                      ? ConstantSession.CreateParentAccountLoginEN
+                      : ConstantSession.CreateParentAccountLoginFR)),
+              _field(
+                  notifyData,
+                  emailCtrl,
+                  (notifyData.currentLanguage == Constant.languageEN
+                      ? ConstantSession.CreateParentAccountEmailEN
+                      : ConstantSession.CreateParentAccountEmailFR),
                   keyboardType: TextInputType.emailAddress),
-              _field(notifyData, passwordCtrl, "Password", obscure: true),
+              _field(
+                  notifyData,
+                  passwordCtrl,
+                  (notifyData.currentLanguage == Constant.languageEN
+                      ? ConstantSession.CreateParentAccountPasswordEN
+                      : ConstantSession.CreateParentAccountPasswordFR),
+                  obscure: true),
               const SizedBox(height: 20),
               SizedBox(
                 width: double.infinity,
@@ -125,7 +163,11 @@ class _CreateParentAccountState extends State<CreateParentAccount> {
                   },
                   child: session.isLoading
                       ? const CircularProgressIndicator()
-                      : const Text("Create Account"),
+                      : const Text((notifyData.currentLanguage ==
+                              Constant.languageEN
+                          ? ConstantSession.CreateParentAccountCreateAccountEN
+                          : ConstantSession
+                              .CreateParentAccountCreateAccountFR)),
                 ),
               ),
             ],
@@ -148,7 +190,11 @@ class _CreateParentAccountState extends State<CreateParentAccount> {
         controller: ctrl,
         obscureText: obscure,
         keyboardType: keyboardType,
-        validator: (v) => v == null || v.isEmpty ? "Required" : null,
+        validator: (v) => v == null || v.isEmpty
+            ? (notifyData.currentLanguage == Constant.languageEN
+                ? ConstantSession.CreateParentAccountRequiredEN
+                : ConstantSession.CreateParentAccountRequiredFR)
+            : null,
         decoration: InputDecoration(
           labelText: label,
           border: OutlineInputBorder(

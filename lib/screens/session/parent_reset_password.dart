@@ -34,7 +34,9 @@ class _ParentResetPasswordState extends State<ParentResetPassword> {
     if (!_formKey.currentState!.validate()) return;
 
     if (passwordCtrl.text != confirmCtrl.text) {
-      _showError("Passwords do not match");
+      _showError((notifyData.currentLanguage == Constant.languageEN
+          ? ConstantSession.ParentResetPasswordPasswordsNotMatchEN
+          : ConstantSession.ParentResetPasswordPasswordsNotMatchFR));
       return;
     }
 
@@ -51,7 +53,10 @@ class _ParentResetPasswordState extends State<ParentResetPassword> {
     if (success) {
       _showSuccess(notifyData);
     } else {
-      _showError(session.errorMessage ?? "Error");
+      _showError(session.errorMessage ??
+          (notifyData.currentLanguage == Constant.languageEN
+              ? ConstantSession.ParentResetPasswordErrorEN
+              : ConstantSession.ParentResetPasswordErrorFR));
     }
   }
 
@@ -59,8 +64,12 @@ class _ParentResetPasswordState extends State<ParentResetPassword> {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        title: const Text("Success"),
-        content: const Text("Password reset successfully."),
+        title: const Text((notifyData.currentLanguage == Constant.languageEN
+            ? ConstantSession.ParentResetPasswordSuccessEN
+            : ConstantSession.ParentResetPasswordSuccessFR)),
+        content: const Text((notifyData.currentLanguage == Constant.languageEN
+            ? ConstantSession.ParentResetPasswordPasswordResetSuccessfullyEN
+            : ConstantSession.ParentResetPasswordPasswordResetSuccessfullyFR)),
         actions: [
           TextButton(
             onPressed: () {
@@ -70,7 +79,9 @@ class _ParentResetPasswordState extends State<ParentResetPassword> {
               Navigator.pop(context);
               Navigator.pop(context);
             },
-            child: const Text("Continue"),
+            child: const Text((notifyData.currentLanguage == Constant.languageEN
+                ? ConstantSession.ParentResetPasswordContinueEN
+                : ConstantSession.ParentResetPasswordContinueFR)),
           )
         ],
       ),
@@ -109,19 +120,41 @@ class _ParentResetPasswordState extends State<ParentResetPassword> {
                 onPressed:
                     () {}, //context.read<SessionProvider>().login('child'),
                 style: Constant.getTitle1ButtonStyle(),
-                child: Text("Reset Password"),
+                child: Text((notifyData.currentLanguage == Constant.languageEN
+                    ? ConstantSession.ParentResetPasswordResetPasswordEN
+                    : ConstantSession.ParentResetPasswordResetPasswordFR)),
               ),
               const SizedBox(height: 24),
               const Text(
-                "Enter your email, reset code and new password",
+                (notifyData.currentLanguage == Constant.languageEN
+                    ? ConstantSession.ParentResetPasswordEnterYourEmailEN
+                    : ConstantSession.ParentResetPasswordEnterYourEmailFR),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 20),
-              _field(emailCtrl, "Email",
+              _field(
+                  emailCtrl,
+                  (notifyData.currentLanguage == Constant.languageEN
+                      ? ConstantSession.ParentResetPasswordEmailEN
+                      : ConstantSession.ParentResetPasswordEmailFR),
                   keyboardType: TextInputType.emailAddress),
-              _field(codeCtrl, "Reset Code"),
-              _field(passwordCtrl, "New Password", obscure: true),
-              _field(confirmCtrl, "Confirm Password", obscure: true),
+              _field(
+                  codeCtrl,
+                  (notifyData.currentLanguage == Constant.languageEN
+                      ? ConstantSession.ParentResetPasswordResetCodeEN
+                      : ConstantSession.ParentResetPasswordResetCodeFR)),
+              _field(
+                  passwordCtrl,
+                  (notifyData.currentLanguage == Constant.languageEN
+                      ? ConstantSession.ParentResetPasswordNewPasswordEN
+                      : ConstantSession.ParentResetPasswordNewPasswordFR),
+                  obscure: true),
+              _field(
+                  confirmCtrl,
+                  (notifyData.currentLanguage == Constant.languageEN
+                      ? ConstantSession.ParentResetPasswordConfirmPasswordEN
+                      : ConstantSession.ParentResetPasswordConfirmPasswordFR),
+                  obscure: true),
               const SizedBox(height: 20),
               SizedBox(
                 width: double.infinity,
@@ -132,7 +165,12 @@ class _ParentResetPasswordState extends State<ParentResetPassword> {
                   },
                   child: session.isLoading
                       ? const CircularProgressIndicator()
-                      : const Text("Reset Password"),
+                      : const Text(
+                          (notifyData.currentLanguage == Constant.languageEN
+                              ? ConstantSession
+                                  .ParentResetPasswordResetPasswordBtnEN
+                              : ConstantSession
+                                  .ParentResetPasswordResetPasswordBtnFR)),
                 ),
               ),
             ],
@@ -154,7 +192,11 @@ class _ParentResetPasswordState extends State<ParentResetPassword> {
         controller: ctrl,
         obscureText: obscure,
         keyboardType: keyboardType,
-        validator: (v) => v == null || v.isEmpty ? "Required" : null,
+        validator: (v) => v == null || v.isEmpty
+            ? (notifyData.currentLanguage == Constant.languageEN
+                ? ConstantSession.ParentResetPasswordRequiredEN
+                : ConstantSession.ParentResetPasswordRequiredFR)
+            : null,
         decoration: InputDecoration(
           labelText: label,
           border: OutlineInputBorder(

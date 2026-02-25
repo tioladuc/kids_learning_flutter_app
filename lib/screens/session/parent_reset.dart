@@ -30,7 +30,10 @@ class _ParentResetState extends State<ParentReset> {
     if (success) {
       _showSuccess(notifyData);
     } else {
-      _showError(session.errorMessage ?? "Error");
+      _showError(session.errorMessage ??
+          (notifyData.currentLanguage == Constant.languageEN
+              ? ConstantSession.ParentResetErrorMsgEN
+              : ConstantSession.ParentResetErrorMsgFR));
     }
   }
 
@@ -38,9 +41,13 @@ class _ParentResetState extends State<ParentReset> {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        title: const Text("Email Sent"),
+        title: const Text((notifyData.currentLanguage == Constant.languageEN
+            ? ConstantSession.ParentResetEmailSentEN
+            : ConstantSession.ParentResetEmailSentFR)),
         content: const Text(
-          "A reset code has been sent to your email.",
+          (notifyData.currentLanguage == Constant.languageEN
+              ? ConstantSession.ParentResetEmailSentMsgEN
+              : ConstantSession.ParentResetEmailSentMsgFR),
         ),
         actions: [
           TextButton(
@@ -56,7 +63,9 @@ class _ParentResetState extends State<ParentReset> {
                 ),
               );
             },
-            child: const Text("Continue"),
+            child: const Text((notifyData.currentLanguage == Constant.languageEN
+                ? ConstantSession.ParentResetContinueEN
+                : ConstantSession.ParentResetContinueFR)),
           )
         ],
       ),
@@ -92,20 +101,31 @@ class _ParentResetState extends State<ParentReset> {
                 onPressed:
                     () {}, //context.read<SessionProvider>().login('child'),
                 style: Constant.getTitle1ButtonStyle(),
-                child: Text("Reset Password: Received Reset Code"),
+                child: Text((notifyData.currentLanguage == Constant.languageEN
+                    ? ConstantSession
+                        .ParentResetResetPasswordReceivedResetCodeEN
+                    : ConstantSession
+                        .ParentResetResetPasswordReceivedResetCodeFR)),
               ),
               const SizedBox(height: 24),
               const Text(
-                "Enter your email to receive a reset code",
+                (notifyData.currentLanguage == Constant.languageEN
+                    ? ConstantSession.ParentResetEnterYourEmailEN
+                    : ConstantSession.ParentResetEnterYourEmailFR),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 20),
               TextFormField(
                 controller: emailCtrl,
-                validator: (v) =>
-                    v == null || v.isEmpty ? "Email required" : null,
+                validator: (v) => v == null || v.isEmpty
+                    ? (notifyData.currentLanguage == Constant.languageEN
+                        ? ConstantSession.ParentResetEmailRequiredEN
+                        : ConstantSession.ParentResetEmailRequiredFR)
+                    : null,
                 decoration: InputDecoration(
-                  labelText: "Email",
+                  labelText: (notifyData.currentLanguage == Constant.languageEN
+                      ? ConstantSession.ParentResetEmailEN
+                      : ConstantSession.ParentResetEmailFR),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
@@ -121,7 +141,10 @@ class _ParentResetState extends State<ParentReset> {
                   },
                   child: session.isLoading
                       ? const CircularProgressIndicator()
-                      : const Text("Send Reset Code"),
+                      : const Text(
+                          (notifyData.currentLanguage == Constant.languageEN
+                              ? ConstantSession.ParentResetSendResetCodeBtnEN
+                              : ConstantSession.ParentResetSendResetCodeBtnFR)),
                 ),
               ),
             ],

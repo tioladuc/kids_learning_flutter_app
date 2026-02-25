@@ -44,10 +44,14 @@ class _ActivateParentAccountState extends State<ActivateParentAccount> {
       _showSuccess(
         notifyData: notifyData,
           message:
-              "Your account has been activated successfully. You can now login!",
+              (notifyData.currentLanguage == Constant.languageEN
+                    ? ConstantSession.ActivationSuccessMessageEN
+                    : ConstantSession.ActivationSuccessMessageFR),
           returnLogin: true);
     } else {
-      _showError(session.errorMessage ?? "Error");
+      _showError(session.errorMessage ?? (notifyData.currentLanguage == Constant.languageEN
+                    ? ConstantSession.ActivationErrorMessageEN
+                    : ConstantSession.ActivationErrorMessageFR));
     }
   }
 
@@ -65,10 +69,14 @@ class _ActivateParentAccountState extends State<ActivateParentAccount> {
     if (success) {
       _showSuccess(
         notifyData: notifyData,
-          message: "Activation code has been sent into your mailbox.",
+          message: (notifyData.currentLanguage == Constant.languageEN
+                    ? ConstantSession.ResendActivationCodeEN
+                    : ConstantSession.ResendActivationCodeFR),
           returnLogin: false);
     } else {
-      _showError(session.errorMessage ?? "Error");
+      _showError(session.errorMessage ?? (notifyData.currentLanguage == Constant.languageEN
+                    ? ConstantSession.ResendActivationErrorMessageEN
+                    : ConstantSession.ResendActivationErrorMessageFR));
     }
   }
 
@@ -76,7 +84,9 @@ class _ActivateParentAccountState extends State<ActivateParentAccount> {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        title: const Text("Success"),
+        title: const Text((notifyData.currentLanguage == Constant.languageEN
+                    ? ConstantSession.SuccessMessageEN
+                    : ConstantSession.SuccessMessageFR)),
         content: Text(message),
         actions: [
           TextButton(
@@ -91,7 +101,9 @@ class _ActivateParentAccountState extends State<ActivateParentAccount> {
                 Navigator.pop(context);
               }
             },
-            child: const Text("Continue"),
+            child: const Text((notifyData.currentLanguage == Constant.languageEN
+                    ? ConstantSession.ContinueMessageEN
+                    : ConstantSession.ContinueMessageFR)),
           )
         ],
       ),
@@ -128,11 +140,15 @@ class _ActivateParentAccountState extends State<ActivateParentAccount> {
                 onPressed:
                     () {}, //context.read<SessionPro_resendActivationCodevider>().login('child'),
                 style: Constant.getTitle1ButtonStyle(),
-                child: Text("Activate Account"),
+                child: Text((notifyData.currentLanguage == Constant.languageEN
+                    ? ConstantSession.ActivateAccountEN
+                    : ConstantSession.ActivateAccountFR)),
               ),
               const SizedBox(height: 24),
               const Text(
-                "Enter the activation code sent by email",
+                (notifyData.currentLanguage == Constant.languageEN
+                    ? ConstantSession.EnterActivationCodeEN
+                    : ConstantSession.EnterActivationCodeFR),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 20),
@@ -142,7 +158,9 @@ class _ActivateParentAccountState extends State<ActivateParentAccount> {
                   "Email",
                   keyboardType: TextInputType.emailAddress,
                   notifyData),
-              _field(notifyData, codeCtrl, "Activation Code",
+              _field(notifyData, codeCtrl, (notifyData.currentLanguage == Constant.languageEN
+                    ? ConstantSession.ActivationCodeEN
+                    : ConstantSession.ActivationCodeFR),
                   keyboardType: TextInputType.text, addValidator: false),
               const SizedBox(height: 20),
               SizedBox(
@@ -152,7 +170,9 @@ class _ActivateParentAccountState extends State<ActivateParentAccount> {
                   onPressed: (){session.isLoading ? null : _activate(notifyData)},
                   child: session.isLoading
                       ? const CircularProgressIndicator()
-                      : const Text("Activate Account"),
+                      : const Text((notifyData.currentLanguage == Constant.languageEN
+                    ? ConstantSession.ActivateAccountBetaEN
+                    : ConstantSession.ActivateAccountBetaFR)),
                 ),
               ),
               const SizedBox(height: 20),
@@ -167,7 +187,9 @@ class _ActivateParentAccountState extends State<ActivateParentAccount> {
                   },
                   child: session.isActivationCodeSending
                       ? const CircularProgressIndicator()
-                      : const Text("Resend Activation Code"),
+                      : const Text((notifyData.currentLanguage == Constant.languageEN
+                    ? ConstantSession.ResendActivationCodeBetaEN
+                    : ConstantSession.ResendActivationCodeBetaFR)),
                 ),
               ),
             ],
@@ -190,7 +212,9 @@ class _ActivateParentAccountState extends State<ActivateParentAccount> {
         controller: ctrl,
         keyboardType: keyboardType,
         validator: (v) =>
-            addValidator ? (v == null || v.isEmpty ? "Required" : null) : null,
+            addValidator ? (v == null || v.isEmpty ? (notifyData.currentLanguage == Constant.languageEN
+                    ? ConstantSession.RequiredEN
+                    : ConstantSession.RequiredFR) : null) : null,
         decoration: InputDecoration(
           labelText: label,
           border: OutlineInputBorder(
