@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../core/constance_session.dart';
 import '../../core/constances.dart';
+import '../../core/notify_data.dart';
 import '../../providers/session_provider.dart';
 import '../../widgets/app_scaffold.dart';
 
@@ -42,7 +44,7 @@ class _ActivateParentAccountState extends State<ActivateParentAccount> {
 
     if (success) {
       _showSuccess(
-        notifyData: notifyData,
+        notifyData,
           message:
               (notifyData.currentLanguage == Constant.languageEN
                     ? ConstantSession.ActivationSuccessMessageEN
@@ -68,7 +70,7 @@ class _ActivateParentAccountState extends State<ActivateParentAccount> {
 
     if (success) {
       _showSuccess(
-        notifyData: notifyData,
+        notifyData,
           message: (notifyData.currentLanguage == Constant.languageEN
                     ? ConstantSession.ResendActivationCodeEN
                     : ConstantSession.ResendActivationCodeFR),
@@ -84,7 +86,7 @@ class _ActivateParentAccountState extends State<ActivateParentAccount> {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        title: const Text((notifyData.currentLanguage == Constant.languageEN
+        title: Text((notifyData.currentLanguage == Constant.languageEN
                     ? ConstantSession.SuccessMessageEN
                     : ConstantSession.SuccessMessageFR)),
         content: Text(message),
@@ -101,7 +103,7 @@ class _ActivateParentAccountState extends State<ActivateParentAccount> {
                 Navigator.pop(context);
               }
             },
-            child: const Text((notifyData.currentLanguage == Constant.languageEN
+            child: Text((notifyData.currentLanguage == Constant.languageEN
                     ? ConstantSession.ContinueMessageEN
                     : ConstantSession.ContinueMessageFR)),
           )
@@ -145,7 +147,7 @@ class _ActivateParentAccountState extends State<ActivateParentAccount> {
                     : ConstantSession.ActivateAccountFR)),
               ),
               const SizedBox(height: 24),
-              const Text(
+              Text(
                 (notifyData.currentLanguage == Constant.languageEN
                     ? ConstantSession.EnterActivationCodeEN
                     : ConstantSession.EnterActivationCodeFR),
@@ -156,8 +158,8 @@ class _ActivateParentAccountState extends State<ActivateParentAccount> {
                   notifyData,
                   emailCtrl,
                   "Email",
-                  keyboardType: TextInputType.emailAddress,
-                  notifyData),
+                  keyboardType: TextInputType.emailAddress
+                  ),
               _field(notifyData, codeCtrl, (notifyData.currentLanguage == Constant.languageEN
                     ? ConstantSession.ActivationCodeEN
                     : ConstantSession.ActivationCodeFR),
@@ -167,10 +169,10 @@ class _ActivateParentAccountState extends State<ActivateParentAccount> {
                 width: double.infinity,
                 child: ElevatedButton(
                   style: Constant.getTitle3ButtonStyle(),
-                  onPressed: (){session.isLoading ? null : _activate(notifyData)},
+                  onPressed: (){session.isLoading ? null : _activate(notifyData);},
                   child: session.isLoading
                       ? const CircularProgressIndicator()
-                      : const Text((notifyData.currentLanguage == Constant.languageEN
+                      : Text((notifyData.currentLanguage == Constant.languageEN
                     ? ConstantSession.ActivateAccountBetaEN
                     : ConstantSession.ActivateAccountBetaFR)),
                 ),
@@ -187,7 +189,7 @@ class _ActivateParentAccountState extends State<ActivateParentAccount> {
                   },
                   child: session.isActivationCodeSending
                       ? const CircularProgressIndicator()
-                      : const Text((notifyData.currentLanguage == Constant.languageEN
+                      : Text((notifyData.currentLanguage == Constant.languageEN
                     ? ConstantSession.ResendActivationCodeBetaEN
                     : ConstantSession.ResendActivationCodeBetaFR)),
                 ),

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../core/constance_session.dart';
 import '../../core/constances.dart';
+import '../../core/notify_data.dart';
 import '../../providers/session_provider.dart';
 import '../../widgets/app_scaffold.dart';
 import 'parent_reset_password.dart';
@@ -41,10 +43,10 @@ class _ParentResetState extends State<ParentReset> {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        title: const Text((notifyData.currentLanguage == Constant.languageEN
+        title: Text((notifyData.currentLanguage == Constant.languageEN
             ? ConstantSession.ParentResetEmailSentEN
             : ConstantSession.ParentResetEmailSentFR)),
-        content: const Text(
+        content: Text(
           (notifyData.currentLanguage == Constant.languageEN
               ? ConstantSession.ParentResetEmailSentMsgEN
               : ConstantSession.ParentResetEmailSentMsgFR),
@@ -63,7 +65,7 @@ class _ParentResetState extends State<ParentReset> {
                 ),
               );
             },
-            child: const Text((notifyData.currentLanguage == Constant.languageEN
+            child: Text((notifyData.currentLanguage == Constant.languageEN
                 ? ConstantSession.ParentResetContinueEN
                 : ConstantSession.ParentResetContinueFR)),
           )
@@ -108,7 +110,7 @@ class _ParentResetState extends State<ParentReset> {
                         .ParentResetResetPasswordReceivedResetCodeFR)),
               ),
               const SizedBox(height: 24),
-              const Text(
+              Text(
                 (notifyData.currentLanguage == Constant.languageEN
                     ? ConstantSession.ParentResetEnterYourEmailEN
                     : ConstantSession.ParentResetEnterYourEmailFR),
@@ -141,7 +143,7 @@ class _ParentResetState extends State<ParentReset> {
                   },
                   child: session.isLoading
                       ? const CircularProgressIndicator()
-                      : const Text(
+                      : Text(
                           (notifyData.currentLanguage == Constant.languageEN
                               ? ConstantSession.ParentResetSendResetCodeBtnEN
                               : ConstantSession.ParentResetSendResetCodeBtnFR)),

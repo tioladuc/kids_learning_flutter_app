@@ -6,6 +6,7 @@ import 'package:kids_learning_flutter_app/screens/introscreen/main_intro_screen_
 import 'package:kids_learning_flutter_app/screens/introscreen/statistics/intro_statistics.dart';
 import 'package:provider/provider.dart';
 
+import '../core/constance_session.dart';
 import '../core/constances.dart';
 import '../core/notify_data.dart';
 import '../models/child.dart';
@@ -80,13 +81,6 @@ class _AppFooter  extends State<AppFooter>  {//class AppFooter extends Stateless
                 }
               }
               
-              /*if(session.isLoggedIn) {
-                print('top top top top = ' + index.toString());
-                notifyData.setCurrentBottomPosition(index); 
-              }else {
-                notifyData.setCurrentBottomPosition(0); 
-              }*/
-              
               }),
 
             type: BottomNavigationBarType.fixed,
@@ -101,10 +95,10 @@ class _AppFooter  extends State<AppFooter>  {//class AppFooter extends Stateless
             selectedFontSize: 12,
             unselectedFontSize: 11,
       items:  [
-        BottomNavigationBarItem(icon: Icon(Icons.home),  label: (notifyData.currentLanguage == Constant.languageEN) ? 'Home x' : 'Home'),
-        BottomNavigationBarItem(icon: Icon(Icons.settings), label: (notifyData.currentLanguage == Constant.languageEN) ? 'Settings x' : 'Settings'),
-        BottomNavigationBarItem(icon: Icon(Icons.person), label: (notifyData.currentLanguage == Constant.languageEN) ? 'Profile x' : 'Profile', ),
-        BottomNavigationBarItem(icon: Icon(Icons.bar_chart), label: (notifyData.currentLanguage == Constant.languageEN) ? 'Report x' : 'Report'),
+        BottomNavigationBarItem(icon: Icon(Icons.home),  label: (notifyData.currentLanguage == Constant.languageEN) ? ConstantSession.BottomHomeEN : ConstantSession.BottomHomeFR),
+        BottomNavigationBarItem(icon: Icon(Icons.workspaces), label: (notifyData.currentLanguage == Constant.languageEN) ? ConstantSession.BottomOperationEN : ConstantSession.BottomOperationFR),
+        BottomNavigationBarItem(icon: Icon(Icons.bar_chart), label: (notifyData.currentLanguage == Constant.languageEN) ? ConstantSession.BottomStatisticsEN : ConstantSession.BottomStatisticsFR, ),
+        BottomNavigationBarItem(icon: Icon(Icons.monetization_on_outlined), label: (notifyData.currentLanguage == Constant.languageEN) ? ConstantSession.BottomPaymentEN : ConstantSession.BottomPaymentFR),
       ],
     );
   }

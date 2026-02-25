@@ -1,4 +1,13 @@
 class ConstantSession {
+  static String BottomHomeEN = 'Home';
+  static String BottomHomeFR = 'Accueil';
+  static String BottomOperationEN = 'Operations';
+  static String BottomOperationFR = 'Operations';
+  static String BottomStatisticsEN = 'Statistics';
+  static String BottomStatisticsFR = 'Statistiques';
+  static String BottomPaymentEN = 'Payments';
+  static String BottomPaymentFR = 'Paiements';
+  /////////////////////////////////////////////////////
   static final ChoiceChild = 'child';
   static final ChoiceParent = 'parent';
 

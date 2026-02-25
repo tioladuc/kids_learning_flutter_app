@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../core/constance_session.dart';
 import '../../core/constances.dart';
+import '../../core/notify_data.dart';
 import '../../providers/session_provider.dart';
 import '../../widgets/app_scaffold.dart';
 
@@ -64,10 +66,10 @@ class _ParentResetPasswordState extends State<ParentResetPassword> {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        title: const Text((notifyData.currentLanguage == Constant.languageEN
+        title: Text((notifyData.currentLanguage == Constant.languageEN
             ? ConstantSession.ParentResetPasswordSuccessEN
             : ConstantSession.ParentResetPasswordSuccessFR)),
-        content: const Text((notifyData.currentLanguage == Constant.languageEN
+        content: Text((notifyData.currentLanguage == Constant.languageEN
             ? ConstantSession.ParentResetPasswordPasswordResetSuccessfullyEN
             : ConstantSession.ParentResetPasswordPasswordResetSuccessfullyFR)),
         actions: [
@@ -79,7 +81,7 @@ class _ParentResetPasswordState extends State<ParentResetPassword> {
               Navigator.pop(context);
               Navigator.pop(context);
             },
-            child: const Text((notifyData.currentLanguage == Constant.languageEN
+            child: Text((notifyData.currentLanguage == Constant.languageEN
                 ? ConstantSession.ParentResetPasswordContinueEN
                 : ConstantSession.ParentResetPasswordContinueFR)),
           )
@@ -125,31 +127,31 @@ class _ParentResetPasswordState extends State<ParentResetPassword> {
                     : ConstantSession.ParentResetPasswordResetPasswordFR)),
               ),
               const SizedBox(height: 24),
-              const Text(
+              Text(
                 (notifyData.currentLanguage == Constant.languageEN
                     ? ConstantSession.ParentResetPasswordEnterYourEmailEN
                     : ConstantSession.ParentResetPasswordEnterYourEmailFR),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 20),
-              _field(
+              _field(notifyData,
                   emailCtrl,
                   (notifyData.currentLanguage == Constant.languageEN
                       ? ConstantSession.ParentResetPasswordEmailEN
                       : ConstantSession.ParentResetPasswordEmailFR),
                   keyboardType: TextInputType.emailAddress),
-              _field(
+              _field(notifyData,
                   codeCtrl,
                   (notifyData.currentLanguage == Constant.languageEN
                       ? ConstantSession.ParentResetPasswordResetCodeEN
                       : ConstantSession.ParentResetPasswordResetCodeFR)),
-              _field(
+              _field(notifyData,
                   passwordCtrl,
                   (notifyData.currentLanguage == Constant.languageEN
                       ? ConstantSession.ParentResetPasswordNewPasswordEN
                       : ConstantSession.ParentResetPasswordNewPasswordFR),
                   obscure: true),
-              _field(
+              _field(notifyData,
                   confirmCtrl,
                   (notifyData.currentLanguage == Constant.languageEN
                       ? ConstantSession.ParentResetPasswordConfirmPasswordEN
@@ -165,7 +167,7 @@ class _ParentResetPasswordState extends State<ParentResetPassword> {
                   },
                   child: session.isLoading
                       ? const CircularProgressIndicator()
-                      : const Text(
+                      : Text(
                           (notifyData.currentLanguage == Constant.languageEN
                               ? ConstantSession
                                   .ParentResetPasswordResetPasswordBtnEN
@@ -181,6 +183,7 @@ class _ParentResetPasswordState extends State<ParentResetPassword> {
   }
 
   Widget _field(
+    NotifyData notifyData,
     TextEditingController ctrl,
     String label, {
     bool obscure = false,

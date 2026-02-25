@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../core/constance_session.dart';
 import '../../core/constances.dart';
 import '../../core/notify_data.dart';
 import '../../providers/session_provider.dart';
@@ -51,10 +52,10 @@ class _CreateParentAccountState extends State<CreateParentAccount> {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        title: const Text((notifyData.currentLanguage == Constant.languageEN
+        title: Text((notifyData.currentLanguage == Constant.languageEN
             ? ConstantSession.CreateParentAccountCreatedEN
             : ConstantSession.CreateParentAccountCreatedFR)),
-        content: const Text(
+        content: Text(
           (notifyData.currentLanguage == Constant.languageEN
               ? ConstantSession.CreateParentAccountValidationMsgEN
               : ConstantSession.CreateParentAccountValidationMsgFR),
@@ -73,7 +74,7 @@ class _CreateParentAccountState extends State<CreateParentAccount> {
                 ),
               );
             },
-            child: const Text((notifyData.currentLanguage == Constant.languageEN
+            child: Text((notifyData.currentLanguage == Constant.languageEN
                 ? ConstantSession.CreateParentAccountActivateEN
                 : ConstantSession.CreateParentAccountActivateFR)),
           )
@@ -163,7 +164,7 @@ class _CreateParentAccountState extends State<CreateParentAccount> {
                   },
                   child: session.isLoading
                       ? const CircularProgressIndicator()
-                      : const Text((notifyData.currentLanguage ==
+                      : Text((notifyData.currentLanguage ==
                               Constant.languageEN
                           ? ConstantSession.CreateParentAccountCreateAccountEN
                           : ConstantSession
