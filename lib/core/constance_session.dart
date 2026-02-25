@@ -2,14 +2,14 @@ class ConstantSession {
   static final ChoiceChild = 'child';
   static final ChoiceParent = 'parent';
 
-  static final ReturnLoginChoicesEN = 'Return Login Choices EN';
-  static final ReturnLoginChoicesFR = 'Return Login Choices FR';
+  static final ReturnLoginChoicesEN = 'Return Login Choices';
+  static final ReturnLoginChoicesFR = 'Retourner Aux Choix';
 
-  static final LoginAsChildEN = 'Login as Child EN';
-  static final LoginAsChildFR = 'Login as Child FR';
+  static final LoginAsChildEN = 'Login as Child';
+  static final LoginAsChildFR = 'Se Loguer Comme Enfant';
 
-  static final LoginAsParentEN = 'Login as Parent EN';
-  static final LoginAsParentFR = 'Login as Parent FR';
+  static final LoginAsParentEN = 'Login as Parent';
+  static final LoginAsParentFR = 'Se Loguer Comme Parent';
 
   static final CreateParentAccountEN = 'Create Parent Account';
   static final CreateParentAccountFR = 'Créer Compte Parent';
@@ -17,17 +17,17 @@ class ConstantSession {
   static final ResetParentAccountEN = 'Reset Parent Account';
   static final ResetParentAccountFR = 'ReInitialiser Compte Parent';
 
-  static final LoginTextEN = 'Login EN';
-  static final LoginTextFR = 'Login FR';
+  static final LoginTextEN = 'Login';
+  static final LoginTextFR = 'Login';
 
-  static final PasswordTextEN = 'Password EN';
-  static final PasswordTextFR = 'Password FR';
+  static final PasswordTextEN = 'Password';
+  static final PasswordTextFR = 'Mot de passe';
 
-  static final LoginButtonEN = 'Login EN';
-  static final LoginButtonFR = 'Login FR';
+  static final LoginButtonEN = 'Login';
+  static final LoginButtonFR = 'Se Loguer';
 
-  static final LogoutButtonEN = 'Logout EN';
-  static final LogoutButtonFR = 'Logout FR';
+  static final LogoutButtonEN = 'Logout';
+  static final LogoutButtonFR = 'Se Déconnecter';
 
   static final LogoutTitleEN = 'Log out from application';
   static final LogoutTitleFR = "Se déconnecter de l'application";
