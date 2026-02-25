@@ -22,7 +22,7 @@ class ConstantPresentation {
       "Learn4Kids est une plateforme éducative conçue pour aider les enfants à apprendre grâce à des leçons interactives, des jeux et des activités."
       "Les parents peuvent suivre les progrès, tandis que les enfants profitent d’une expérience d’apprentissage amusante et stimulante.";
   static String LatestNewsEN = 'Latest News';
-  static String LatestNewsR = 'Dernières Nouvelles';
+  static String LatestNewsFR = 'Dernières Nouvelles';
   static String NoNewsAvailableEN = 'No news available';
   static String NoNewsAvailableFR = 'Aucune nouvelle disponible';
   static String ContactUsEN = 'Contact Us';

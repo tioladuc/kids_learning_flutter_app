@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../core/constance_payment.dart';
 import '../../core/constances.dart';
+import '../../core/notify_data.dart';
 import '../../models/payment_model.dart';
 import '../../providers/session_provider.dart';
 import '../../widgets/app_scaffold.dart';
@@ -61,7 +63,7 @@ class _PaymentState extends State<Payment> {
           /// ============================
           /// PAID PAYMENTS
           /// ============================
-          const Text(
+          Text(
             (notifyData.currentLanguage == Constant.languageEN
                 ? ConstantPayment.PaidPaymentsTitleEN
                 : ConstantPayment.PaidPaymentsTitleFR),
@@ -71,18 +73,18 @@ class _PaymentState extends State<Payment> {
           const SizedBox(height: 10),
 
           if (session.paidPayments.isEmpty)
-            const Text((notifyData.currentLanguage == Constant.languageEN
+            Text((notifyData.currentLanguage == Constant.languageEN
                 ? ConstantPayment.NoPaymentsDoneEN
                 : ConstantPayment.NoPaymentsDoneFR))
           else
-            _buildPaymentList(session.paidPayments, isPaid: true),
+            _buildPaymentList(session.paidPayments, notifyData, isPaid: true),
 
           const SizedBox(height: 20),
 
           /// ============================
           /// UPCOMING PAYMENTS
           /// ============================
-          const Text(
+          Text(
             (notifyData.currentLanguage == Constant.languageEN
                 ? ConstantPayment.UpcomingPaymentsTitleEN
                 : ConstantPayment.UpcomingPaymentsTitleFR),
@@ -92,7 +94,7 @@ class _PaymentState extends State<Payment> {
           const SizedBox(height: 10),
 
           if (session.upcomingPayments.isEmpty)
-            const Text((notifyData.currentLanguage == Constant.languageEN
+            Text((notifyData.currentLanguage == Constant.languageEN
                 ? ConstantPayment.NoUpcomingPaymentsEN
                 : ConstantPayment.NoUpcomingPaymentsFR))
           else

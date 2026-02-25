@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../core/constance_course.dart';
+import '../../core/constance_statistics.dart';
 import '../../core/constances.dart';
 import '../../core/notify_data.dart';
 import '../../models/child.dart';
@@ -74,7 +75,7 @@ class _IntroStatisticsForParentState extends State<IntroStatisticsForParent> {
     }
 
     if (children.isEmpty) {
-      return const Center(
+      return Center(
           child: Text(notifyData.currentLanguage == Constant.languageEN
               ? ConstantStatistics.NoChildrenRegisteredEN
               : ConstantStatistics.NoChildrenRegisteredFR));

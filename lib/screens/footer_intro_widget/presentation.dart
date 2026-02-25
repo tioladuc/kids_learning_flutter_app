@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kids_learning_flutter_app/core/notify_data.dart';
 import 'package:provider/provider.dart';
+import '../../core/constance_presentation.dart';
 import '../../core/constances.dart';
 import '../../providers/session_provider.dart';
 import '../../widgets/app_scaffold.dart';
@@ -72,7 +73,7 @@ class _PresentationState extends State<Presentation> {
     );
 
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
+      SnackBar(
           content: Text((notifyData.currentLanguage == Constant.languageEN
               ? ConstantPresentation.EmailSentEN
               : ConstantPresentation.EmailSentFR))),
@@ -114,7 +115,7 @@ class _PresentationState extends State<Presentation> {
             /// ===============================
             /// 1. PRESENTATION SECTION
             /// ===============================
-            const Text(
+            Text(
               (notifyData.currentLanguage == Constant.languageEN
                   ? ConstantPresentation.Welcome2Learn4KidsEN
                   : ConstantPresentation.Welcome2Learn4KidsFR),
@@ -125,7 +126,7 @@ class _PresentationState extends State<Presentation> {
             ),
             const SizedBox(height: 10),
 
-            const Text(
+            Text(
               (notifyData.currentLanguage == Constant.languageEN
                   ? ConstantPresentation.WelcomeMessageEN
                   : ConstantPresentation.WelcomeMessageFR),
@@ -137,7 +138,7 @@ class _PresentationState extends State<Presentation> {
             /// ===============================
             /// 2. LATEST NEWS
             /// ===============================
-            const Text(
+            Text(
               (notifyData.currentLanguage == Constant.languageEN
                   ? ConstantPresentation.LatestNewsEN
                   : ConstantPresentation.LatestNewsFR),
@@ -149,7 +150,7 @@ class _PresentationState extends State<Presentation> {
             const SizedBox(height: 10),
 
             if (newsList.isEmpty)
-              const Text(
+              Text(
                   (notifyData.currentLanguage == Constant.languageEN
                       ? ConstantPresentation.NoNewsAvailableEN
                       : ConstantPresentation.NoNewsAvailableFR),
@@ -192,7 +193,7 @@ class _PresentationState extends State<Presentation> {
             /// ===============================
             /// 3. CONTACT / REQUEST FORM
             /// ===============================
-            const Text(
+            Text(
               (notifyData.currentLanguage == Constant.languageEN
                   ? ConstantPresentation.ContactUsEN
                   : ConstantPresentation.ContactUsFR),
@@ -210,7 +211,7 @@ class _PresentationState extends State<Presentation> {
                   /// Subject
                   TextFormField(
                     controller: _subjectController,
-                    decoration: const InputDecoration(
+                    decoration:  InputDecoration(
                       labelText:
                           (notifyData.currentLanguage == Constant.languageEN
                               ? ConstantPresentation.SubjectEN
@@ -229,7 +230,7 @@ class _PresentationState extends State<Presentation> {
                   /// Category
                   DropdownButtonFormField<String>(
                     value: _selectedCategory,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       labelText:
                           (notifyData.currentLanguage == Constant.languageEN
                               ? ConstantPresentation.CategoryEN
@@ -255,7 +256,7 @@ class _PresentationState extends State<Presentation> {
                   TextFormField(
                     controller: _contentController,
                     maxLines: 5,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       labelText:
                           (notifyData.currentLanguage == Constant.languageEN
                               ? ConstantPresentation.ContentEN
@@ -275,7 +276,7 @@ class _PresentationState extends State<Presentation> {
                   ElevatedButton(
                     onPressed: _sendRequest,
                     style: Constant.getTitle3ButtonStyle(),
-                    child: const Text(
+                    child: Text(
                         (notifyData.currentLanguage == Constant.languageEN
                             ? ConstantPresentation.SendEN
                             : ConstantPresentation.SendFR)),

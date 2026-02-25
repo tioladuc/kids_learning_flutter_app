@@ -148,7 +148,7 @@ class _RecordAudioScreenState extends State<RecordAudioScreen> {
 
       Navigator.pop(context);
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar( SnackBar(
           content: Text(notifyData.currentLanguage == Constant.languageEN
               ? Constant.UploadFailedEN
               : Constant.UploadFailedFR)));
