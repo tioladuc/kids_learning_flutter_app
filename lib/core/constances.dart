@@ -1,5 +1,29 @@
 import 'package:flutter/material.dart';
+/***class LanguageProvider with ChangeNotifier {
+  AppLanguage _current = AppLanguage.EN;
 
+  AppLanguage get current => _current;
+
+  void setLanguage(AppLanguage lang) {
+    _current = lang;
+    notifyListeners();
+  }
+}
+
+class AppText {
+  static String getText(Map<AppLanguage, String> map, AppLanguage lang) {
+  return map[lang] ?? map[AppLanguage.EN]!;
+}
+
+  static Map<AppLanguage, String> activationSuccessMessage = {
+    AppLanguage.EN: "Your account has been activated successfully. You can now login!",
+    AppLanguage.FR: "Votre compte a été activé avec succès. Vous pouvez maintenant vous connecter !",
+  };
+
+}***/
+
+
+///////////////////////////////////////////////
 class Constant {
   static final String profileChild = 'Child';
   static final String profileParent = 'Parent';

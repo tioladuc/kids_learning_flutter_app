@@ -4,6 +4,7 @@ import 'package:kids_learning_flutter_app/providers/session_provider.dart';
 import 'package:kids_learning_flutter_app/screens/introscreen/main_intro_screen_parent.dart';
 import 'package:provider/provider.dart';
 import '../../core/constance_child.dart';
+import '../../core/core_translator.dart';
 import '../../core/notify_data.dart';
 import '../../widgets/app_scaffold.dart';
 import '../audio/audio_list_screen.dart';
@@ -21,6 +22,7 @@ class MainIntroScreenChild extends StatefulWidget {
 
 class _MainIntroScreenChild extends State<MainIntroScreenChild> {
   List<Map<String, dynamic>> menuItems = [];
+  Translator translator = Translator();
 
   List<Map<String, dynamic>> produceMenuItems(
     String langue,
@@ -29,9 +31,9 @@ class _MainIntroScreenChild extends State<MainIntroScreenChild> {
     String logoutDisplay = '';
 
     if (session.parent != null) {
-      logoutDisplay = langue == Constant.languageEN
+      logoutDisplay = translator.getText('menuLogoutChildParent');/*langue == Constant.languageEN
           ? ConstantChild.menuLogoutChildParentEN
-          : ConstantChild.menuLogoutChildParentFR;
+          : ConstantChild.menuLogoutChildParentFR;*/
     } else {
       logoutDisplay = langue == Constant.languageEN
           ? ConstantChild.menuLogoutEN
@@ -120,7 +122,10 @@ class _MainIntroScreenChild extends State<MainIntroScreenChild> {
   Widget build(BuildContext context) {
     final notifyData = context.watch<NotifyData>();
     final session = context.watch<SessionProvider>();
+    translator = Translator(status: StatusLangue.CONSTANCE_CHILD, lang: notifyData.currentLanguage);
     menuItems = produceMenuItems(notifyData.currentLanguage, session);
+    print('POPOPOPOPOPOPOPOPOPO');
+    
 
     return AppScaffold(
       body: ListView.builder(
