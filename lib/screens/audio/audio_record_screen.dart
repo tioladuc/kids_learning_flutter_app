@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../core/constances.dart';
+import '../../core/core_translator.dart';
 import '../../core/notify_data.dart';
 import '../../providers/audio_provider.dart';
 import '../../widgets/app_scaffold.dart';
@@ -21,6 +22,7 @@ class RecordAudioScreen extends StatefulWidget {
 }
 
 class _RecordAudioScreenState extends State<RecordAudioScreen> {
+  Translator translator = Translator();
   final _recorder = FlutterSoundRecorder();
   final _player = AudioPlayer();
 
@@ -149,9 +151,7 @@ class _RecordAudioScreenState extends State<RecordAudioScreen> {
       Navigator.pop(context);
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar( SnackBar(
-          content: Text(notifyData.currentLanguage == Constant.languageEN
-              ? Constant.UploadFailedEN
-              : Constant.UploadFailedFR)));
+          content: Text(translator.getText('UploadFailed'))));
     } finally {
       setState(() => _isUploading = false);
     }
@@ -178,6 +178,7 @@ class _RecordAudioScreenState extends State<RecordAudioScreen> {
   @override
   Widget build(BuildContext context) {
     final notifyData = context.watch<NotifyData>();
+    translator = Translator(status: StatusLangue.CONSTANCE_CONSTANCE, lang: notifyData.currentLanguage);
 
     return AppScaffold(
       //appBar: AppBar(title: const Text('Record Audio')),
@@ -188,17 +189,13 @@ class _RecordAudioScreenState extends State<RecordAudioScreen> {
             ElevatedButton(
               onPressed: () {},
               style: Constant.getTitle1ButtonStyle(),
-              child: notifyData.currentLanguage == Constant.languageEN
-                  ? Text(Constant.recordMainTitleEN)
-                  : Text(Constant.recordMainTitleFR),
+              child: Text(translator.getText('recordMainTitle')),
             ),
             const SizedBox(height: 24),
             TextField(
               controller: _titleController,
               decoration: InputDecoration(
-                labelText: notifyData.currentLanguage == Constant.languageEN
-                    ? Constant.recordTitleEN
-                    : Constant.recordTitleFR,
+                labelText: translator.getText('recordTitle'),
               ),
             ),
             const SizedBox(height: 10),
@@ -206,9 +203,7 @@ class _RecordAudioScreenState extends State<RecordAudioScreen> {
               controller: _descriptionController,
               maxLines: 2,
               decoration: InputDecoration(
-                labelText: notifyData.currentLanguage == Constant.languageEN
-                    ? Constant.recordDescriptionEN
-                    : Constant.recordDescriptionFR,
+                labelText: translator.getText('recordDescriptionEN'),
               ),
             ),
             const SizedBox(height: 24),
@@ -217,12 +212,8 @@ class _RecordAudioScreenState extends State<RecordAudioScreen> {
               icon: Icon(_isRecording ? Icons.stop : Icons.mic),
               label: Text(
                 _isRecording
-                    ? (notifyData.currentLanguage == Constant.languageEN
-                        ? Constant.recordStopEN
-                        : Constant.recordStopFR)
-                    : (notifyData.currentLanguage == Constant.languageEN
-                        ? Constant.recordStartEN
-                        : Constant.recordStartFR),
+                    ? translator.getText('recordStop')
+                    : translator.getText('recordStart'),
               ),
             ),
             const SizedBox(height: 24),
@@ -269,10 +260,7 @@ class _RecordAudioScreenState extends State<RecordAudioScreen> {
               },
               child: _isUploading
                   ? const CircularProgressIndicator()
-                  : Text(
-                      notifyData.currentLanguage == Constant.languageEN
-                          ? Constant.recordSaveAndUploadEN
-                          : Constant.recordSaveAndUploadFR,
+                  : Text(translator.getText('recordSaveAndUpload'),
                     ),
             ),
           ],

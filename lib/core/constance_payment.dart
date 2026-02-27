@@ -1,5 +1,5 @@
 class ConstantPayment {
-  static final String PaymentsDashboardTitleEN = "Payments Dashboard";
+  /*static final String PaymentsDashboardTitleEN = "Payments Dashboard";
   static final String PaymentsDashboardTitleFR = "Tableau de Bord Paiement";
 
   static final String PaidPaymentsTitleEN = "Paid Payments";
@@ -21,4 +21,4 @@ class ConstantPayment {
   static final String StatutPaidFR = "Payé";
   static final String StatutToPayEN = "To Pay";
   static final String StatutToPayFR = "A Payer";
-}
+*/}

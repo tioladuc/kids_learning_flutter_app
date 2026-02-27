@@ -1,5 +1,5 @@
 class ConstantSession {
-  static String BottomHomeEN = 'Home';
+  /*tatic String BottomHomeEN = 'Home';
   static String BottomHomeFR = 'Accueil';
   static String BottomOperationEN = 'Operations';
   static String BottomOperationFR = 'Operations';
@@ -214,4 +214,4 @@ class ConstantSession {
   static final ParentResetSendResetCodeBtnEN = "Send Reset Code";
   static final ParentResetSendResetCodeBtnFR =
       "Envoyer le code de réinitialisation";
-}
+*/}

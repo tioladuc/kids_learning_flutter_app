@@ -34,26 +34,10 @@ class _KidsLearningApp extends State<KidsLearningApp> {
       theme: appTheme,
       home: Consumer2<SessionProvider, NotifyData>(
         builder: (context, session, notifyData, _) {
-          /**********print('toto toto toto = ' + notifyData.currentBottomPosition.toString());
-          return IndexedStack(
-            index: notifyData.currentBottomPosition,
-            children: _pages,
-          );*************/
+          
 
-          if (session.isLoggedIn) {//MainIntroScreenChild
-            /*******if(notifyData.currentBottomPosition ==0) {
-              return const Text('Home');
-            }
-            else if(notifyData.currentBottomPosition ==1) {
-              return const Text('Setting');
-            }
-            else if(notifyData.currentBottomPosition ==2) {
-              return const Text('Profile');
-            }
-            else if(notifyData.currentBottomPosition ==3) {
-              return const Text('Statistics');
-            }********/
-            return session.role == ConstantSession.ChoiceChild ? const MainIntroScreenChild(): const AudioListScreen();
+          if (session.isLoggedIn) {
+            return session.role == NotifyData.ChoiceChild ? const MainIntroScreenChild(): const AudioListScreen();
           }
           return const LoginScreen();
         

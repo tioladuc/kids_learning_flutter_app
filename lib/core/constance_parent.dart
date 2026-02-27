@@ -1,5 +1,5 @@
 class ConstantParent {
-  static final String menuTitrePageIntroParentFR = 'Liste des Enfants Enregistés';
+  /*static final String menuTitrePageIntroParentFR = 'Liste des Enfants Enregistés';
   static final String menuTitrePageIntroParentEN = 'List of Registered Children';
 
   static final String menuNoChildRegisterFR = 'Aucun Enfant enregistré !... Enregistrez vos enfants sur la plateforme pour profiter de nos outils';
@@ -28,7 +28,7 @@ class ConstantParent {
 
   static final String labelChildSaveButtonFR = 'Enregistrer';
   static final String labelChildSaveButtonEN = 'Save';
-//////////////////////////////////
+
   static final String labelTitleParentPwdChangeFR = 'Changer Mon Nom & Mots de Passe';
   static final String labelTitleParentPwdChangeEN = 'Change Name & Password';
 
@@ -39,7 +39,7 @@ class ConstantParent {
   static final String labelPwdParentPwdChangeEN = 'Password';
 
 
-static final String labelCancelButtonParentPwdChangeFR = 'Annuler';
+  static final String labelCancelButtonParentPwdChangeFR = 'Annuler';
   static final String labelCancelButtonParentPwdChangeEN = 'Cancel';
 
 
@@ -105,5 +105,5 @@ static final String labelCancelButtonParentPwdChangeFR = 'Annuler';
 
   static final String labelChildWorkAsDetailFR = 'Travailler comme Enfant';
   static final String labelChildWorkAsDetailEN = 'Work as Child';
-
+*/
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../core/constance_course.dart';
 import '../../../core/constances.dart';
+import '../../../core/core_translator.dart';
 import '../../../core/notify_data.dart';
 import '../../../models/child.dart';
 import '../../../models/course.dart';
@@ -21,6 +22,7 @@ class ChildPickCourse extends StatefulWidget {
 }
 
 class _ChildPickCourseState extends State<ChildPickCourse> {
+  Translator translator = Translator();
   @override
   void initState() {
     super.initState();
@@ -34,6 +36,7 @@ class _ChildPickCourseState extends State<ChildPickCourse> {
   Widget build(BuildContext context) {
     final provider = context.watch<CourseProvider>();
     final notifyData = context.watch<NotifyData>();
+    translator = Translator(status: StatusLangue.CONSTANCE_COURSE, lang: notifyData.currentLanguage);
 
     return AppScaffold(
       body: _buildBody(provider, notifyData),
@@ -47,9 +50,7 @@ class _ChildPickCourseState extends State<ChildPickCourse> {
 
     if (provider.pickCourses.isEmpty) {
       return Center(
-        child: Text(notifyData.currentLanguage == Constant.AppNameEN
-            ? ConstantCourse.PickCourseNoCourseAvailableEN
-            : ConstantCourse.PickCourseNoCourseAvailableFR),
+        child: Text(translator.getText('PickCourseNoCourseAvailable')),
       );
     }
 
@@ -59,9 +60,7 @@ class _ChildPickCourseState extends State<ChildPickCourse> {
           onPressed: () {},
           style: Constant.getTitle1ButtonStyle(),
           child: Text("${widget.child.name} - " + (
-              notifyData.currentLanguage == Constant.languageEN
-                  ? ConstantCourse.PickCoursePickACourseEN
-                  : ConstantCourse.PickCoursePickACourseFR)),
+              translator.getText('PickCoursePickACourse'))),
         ),
         Expanded(
           child: ListView.builder(
@@ -92,24 +91,16 @@ class _ChildPickCourseState extends State<ChildPickCourse> {
             _header(course),
             const SizedBox(height: 10),
             _infoRow(
-                (notifyData.currentLanguage == Constant.languageEN
-                    ? ConstantCourse.PendingCourseCodeEN
-                    : ConstantCourse.PendingCourseCodeFR),
+                translator.getText('PendingCourseCode'),
                 course.code),
             _infoRow(
-                (notifyData.currentLanguage == Constant.languageEN
-                    ? ConstantCourse.PendingCourseDescriptionEN
-                    : ConstantCourse.PendingCourseDescriptionFR),
+                translator.getText('PendingCourseDescription'),
                 course.description),
             _infoRow(
-                (notifyData.currentLanguage == Constant.languageEN
-                    ? ConstantCourse.PendingCourseAmountEN
-                    : ConstantCourse.PendingCourseAmountFR),
+                translator.getText('PendingCourseAmount'),
                 "\$${course.amount.toStringAsFixed(2)}"),
             _infoRow(
-                (notifyData.currentLanguage == Constant.languageEN
-                    ? ConstantCourse.PendingCourseValidityEN
-                    : ConstantCourse.PendingCourseValidityFR),
+                translator.getText('PendingCourseValidity'),
                 course.validity),
             const SizedBox(height: 12),
             Align(
@@ -119,10 +110,7 @@ class _ChildPickCourseState extends State<ChildPickCourse> {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue,
                 ),
-                child: Text(
-                    (notifyData.currentLanguage == Constant.languageEN
-                        ? ConstantCourse.PickCoursePickACourseEN
-                        : ConstantCourse.PickCoursePickACourseFR)),
+                child: Text(translator.getText('PickCoursePickACourse')),
               ),
             ),
           ],
@@ -193,24 +181,16 @@ class _ChildPickCourseState extends State<ChildPickCourse> {
     final confirm = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text((notifyData.currentLanguage == Constant.languageEN
-            ? ConstantCourse.PickCourseConfirmTitleEN
-            : ConstantCourse.PickCourseConfirmTitleFR)),
-        content: Text((notifyData.currentLanguage == Constant.languageEN
-            ? ConstantCourse.PickCourseConfirmDescriptionEN
-            : ConstantCourse.PickCourseConfirmDescriptionFR)),
+        title: Text(translator.getText('PickCourseConfirmTitle')),
+        content: Text(translator.getText('PickCourseConfirmDescription')),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: Text((notifyData.currentLanguage == Constant.languageEN
-                ? ConstantCourse.PickCoursePickCancelBtnEN
-                : ConstantCourse.PickCoursePickCancelBtnFR)),
+            child: Text(translator.getText('PickCoursePickCancelBtn')),
           ),
           ElevatedButton(
             onPressed: () => Navigator.pop(context, true),
-            child: Text((notifyData.currentLanguage == Constant.languageEN
-                ? ConstantCourse.PickCoursePickConfirmBtnEN
-                : ConstantCourse.PickCoursePickConfirmBtnFR)),
+            child: Text(translator.getText('PickCoursePickConfirmBtn')),
           ),
         ],
       ),
@@ -235,19 +215,13 @@ class _ChildPickCourseState extends State<ChildPickCourse> {
       await showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: Text((notifyData.currentLanguage == Constant.languageEN
-              ? ConstantCourse.PickCoursePickConfirmSuccessEN
-              : ConstantCourse.PickCoursePickConfirmSuccessFR)),
-          content: Text((notifyData.currentLanguage == Constant.languageEN
-              ? ConstantCourse.PickCoursePickConfirmSuccessMsgEN
-              : ConstantCourse.PickCoursePickConfirmSuccessMsgFR)),
+          title: Text(translator.getText('PickCoursePickConfirmSuccess')),
+          content: Text(translator.getText('PickCoursePickConfirmSuccessMsg')),
           actions: [
             ElevatedButton(
               onPressed: () => Navigator.pop(context),
               child: Text(
-                  (notifyData.currentLanguage == Constant.languageEN
-                      ? ConstantCourse.PickCoursePickConfirmSuccessOKEN
-                      : ConstantCourse.PickCoursePickConfirmSuccessOKFR)),
+                  translator.getText('PickCoursePickConfirmSuccessOK')),
             ),
           ],
         ),
@@ -261,17 +235,13 @@ class _ChildPickCourseState extends State<ChildPickCourse> {
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: Text((notifyData.currentLanguage == Constant.languageEN
-              ? ConstantCourse.PickCoursePickConfirmSuccessErrorEN
-              : ConstantCourse.PickCoursePickConfirmSuccessErrorFR)),
+          title: Text(translator.getText('PickCoursePickConfirmSuccessError')),
           content: Text(e.toString()),
           actions: [
             ElevatedButton(
               onPressed: () => Navigator.pop(context),
               child: Text(
-                  (notifyData.currentLanguage == Constant.languageEN
-                      ? ConstantCourse.PickCoursePickConfirmSuccessOKEN
-                      : ConstantCourse.PickCoursePickConfirmSuccessOKFR)),
+                  translator.getText('PickCoursePickConfirmSuccessOK')),
             ),
           ],
         ),

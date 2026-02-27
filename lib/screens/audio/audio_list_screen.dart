@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../core/constances.dart';
+import '../../core/core_translator.dart';
 import '../../core/notify_data.dart';
 import '../../providers/audio_provider.dart';
 import '../../widgets/app_scaffold.dart';
@@ -15,6 +16,7 @@ class AudioListScreen extends StatefulWidget {
 }
 
 class _AudioListScreenState extends State<AudioListScreen> {
+  Translator translator = Translator();
   @override
   void initState() {
     super.initState();
@@ -24,6 +26,7 @@ class _AudioListScreenState extends State<AudioListScreen> {
   @override
   Widget build(BuildContext context) {
     final notifyData = context.watch<NotifyData>();
+    translator = Translator(status: StatusLangue.CONSTANCE_CONSTANCE, lang: notifyData.currentLanguage);
     final audios = context.watch<AudioProvider>().audios;
 
     return AppScaffold(
@@ -36,9 +39,7 @@ class _AudioListScreenState extends State<AudioListScreen> {
               ElevatedButton(
                 onPressed: () {},
                 style: Constant.getTitle1ButtonStyle(),
-                child: notifyData.currentLanguage == Constant.languageEN
-                    ? Text(Constant.listingAudioTitleEN)
-                    : Text(Constant.listingAudioTitleFR),
+                child: Text(translator.getText('listingAudioTitle')),
               ),
               const SizedBox(width: 24),
               IconButton(

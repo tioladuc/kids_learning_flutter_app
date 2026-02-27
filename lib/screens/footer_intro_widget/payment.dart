@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../core/constance_payment.dart';
 import '../../core/constances.dart';
+import '../../core/core_translator.dart';
 import '../../core/notify_data.dart';
 import '../../models/payment_model.dart';
 import '../../providers/session_provider.dart';
@@ -15,6 +16,8 @@ class Payment extends StatefulWidget {
 }
 
 class _PaymentState extends State<Payment> {
+  Translator translator = Translator();
+  
   @override
   void initState() {
     super.initState();
@@ -28,11 +31,10 @@ class _PaymentState extends State<Payment> {
   Widget build(BuildContext context) {
     final session = context.watch<SessionProvider>();
     final NotifyData notifyData = context.watch<NotifyData>();
+    translator = Translator(status: StatusLangue.CONSTANCE_PAYMENT, lang: notifyData.currentLanguage);
 
     return AppScaffold(
-      /*appBar: AppBar(
-        title: const Text("Payments"),
-      ),*/
+      
       body: Padding(
         padding: const EdgeInsets.all(12),
         child: _buildContent(session, notifyData),
@@ -53,9 +55,7 @@ class _PaymentState extends State<Payment> {
             child: ElevatedButton(
               onPressed: () {},
               style: Constant.getTitle1ButtonStyle(),
-              child: Text((notifyData.currentLanguage == Constant.languageEN
-                  ? ConstantPayment.PaymentsDashboardTitleEN
-                  : ConstantPayment.PaymentsDashboardTitleFR)),
+              child: Text(translator.getText('PaymentsDashboardTitle')),
             ),
           ),
           const SizedBox(height: 10),
@@ -63,19 +63,14 @@ class _PaymentState extends State<Payment> {
           /// ============================
           /// PAID PAYMENTS
           /// ============================
-          Text(
-            (notifyData.currentLanguage == Constant.languageEN
-                ? ConstantPayment.PaidPaymentsTitleEN
-                : ConstantPayment.PaidPaymentsTitleFR),
+          Text(translator.getText('PaidPaymentsTitle'),
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
 
           const SizedBox(height: 10),
 
           if (session.paidPayments.isEmpty)
-            Text((notifyData.currentLanguage == Constant.languageEN
-                ? ConstantPayment.NoPaymentsDoneEN
-                : ConstantPayment.NoPaymentsDoneFR))
+            Text(translator.getText('NoPaymentsDone'))
           else
             _buildPaymentList(session.paidPayments, notifyData, isPaid: true),
 
@@ -84,19 +79,14 @@ class _PaymentState extends State<Payment> {
           /// ============================
           /// UPCOMING PAYMENTS
           /// ============================
-          Text(
-            (notifyData.currentLanguage == Constant.languageEN
-                ? ConstantPayment.UpcomingPaymentsTitleEN
-                : ConstantPayment.UpcomingPaymentsTitleFR),
+          Text(translator.getText('UpcomingPaymentsTitle'),
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
 
           const SizedBox(height: 10),
 
           if (session.upcomingPayments.isEmpty)
-            Text((notifyData.currentLanguage == Constant.languageEN
-                ? ConstantPayment.NoUpcomingPaymentsEN
-                : ConstantPayment.NoUpcomingPaymentsFR))
+            Text(translator.getText('NoUpcomingPayments'))
           else
             _buildPaymentList(session.upcomingPayments, notifyData,
                 isPaid: false),
@@ -162,9 +152,7 @@ class _PaymentState extends State<Payment> {
               children: [
                 const Icon(Icons.book, size: 18),
                 const SizedBox(width: 8),
-                Text((notifyData.currentLanguage == Constant.languageEN
-                        ? ConstantPayment.CourseTitleEN
-                        : ConstantPayment.CourseTitleFR) +
+                Text(translator.getText('CourseTitle') +
                     " ${payment.courseName}"),
               ],
             ),
@@ -176,9 +164,7 @@ class _PaymentState extends State<Payment> {
               children: [
                 const Icon(Icons.person, size: 18),
                 const SizedBox(width: 8),
-                Text((notifyData.currentLanguage == Constant.languageEN
-                        ? ConstantPayment.ChildTitleEN
-                        : ConstantPayment.ChildTitleFR) +
+                Text(translator.getText('ChildTitle') +
                     " ${payment.childName}"),
               ],
             ),
@@ -206,12 +192,8 @@ class _PaymentState extends State<Payment> {
                 const SizedBox(width: 8),
                 Text(
                   isPaid
-                      ? (notifyData.currentLanguage == Constant.languageEN
-                          ? ConstantPayment.StatutPaidEN
-                          : ConstantPayment.StatutPaidFR)
-                      : (notifyData.currentLanguage == Constant.languageEN
-                          ? ConstantPayment.StatutToPayEN
-                          : ConstantPayment.StatutToPayFR),
+                      ? translator.getText('StatutPaid')
+                      : translator.getText('StatutToPay'),
                   style: TextStyle(
                     color: isPaid ? Colors.green : Colors.orange,
                     fontWeight: FontWeight.w600,

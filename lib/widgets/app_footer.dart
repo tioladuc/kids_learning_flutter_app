@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 
 import '../core/constance_session.dart';
 import '../core/constances.dart';
+import '../core/core_translator.dart';
 import '../core/notify_data.dart';
 import '../models/child.dart';
 import '../screens/audio/audio_list_screen.dart';
@@ -28,6 +29,7 @@ class AppFooter extends StatefulWidget {
 
 class _AppFooter  extends State<AppFooter>  {//class AppFooter extends StatelessWidget {
   int _currentIndex = 0;
+  Translator translator = Translator();
   final List<Widget> _pages = [
                   LoginScreen(),
                   MainIntroScreenChild(),
@@ -45,6 +47,7 @@ class _AppFooter  extends State<AppFooter>  {//class AppFooter extends Stateless
   @override
   Widget build(BuildContext context) {
     final notifyData = context.watch<NotifyData>();
+    translator = Translator(status: StatusLangue.CONSTANCE_SESSION, lang: notifyData.currentLanguage);
     final session = context.watch<SessionProvider>();
     _currentIndex = notifyData.currentBottomPosition;
 
@@ -95,10 +98,10 @@ class _AppFooter  extends State<AppFooter>  {//class AppFooter extends Stateless
             selectedFontSize: 12,
             unselectedFontSize: 11,
       items:  [
-        BottomNavigationBarItem(icon: Icon(Icons.home),  label: (notifyData.currentLanguage == Constant.languageEN) ? ConstantSession.BottomHomeEN : ConstantSession.BottomHomeFR),
-        BottomNavigationBarItem(icon: Icon(Icons.workspaces), label: (notifyData.currentLanguage == Constant.languageEN) ? ConstantSession.BottomOperationEN : ConstantSession.BottomOperationFR),
-        BottomNavigationBarItem(icon: Icon(Icons.bar_chart), label: (notifyData.currentLanguage == Constant.languageEN) ? ConstantSession.BottomStatisticsEN : ConstantSession.BottomStatisticsFR, ),
-        BottomNavigationBarItem(icon: Icon(Icons.monetization_on_outlined), label: (notifyData.currentLanguage == Constant.languageEN) ? ConstantSession.BottomPaymentEN : ConstantSession.BottomPaymentFR),
+        BottomNavigationBarItem(icon: Icon(Icons.home),  label: translator.getText('BottomHome')),
+        BottomNavigationBarItem(icon: Icon(Icons.workspaces), label: translator.getText('BottomOperation')),
+        BottomNavigationBarItem(icon: Icon(Icons.bar_chart), label: translator.getText('BottomStatistics')),
+        BottomNavigationBarItem(icon: Icon(Icons.monetization_on_outlined), label: translator.getText('BottomPayment')),
       ],
     );
   }

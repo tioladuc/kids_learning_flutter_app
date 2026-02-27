@@ -3,6 +3,7 @@ import 'package:kids_learning_flutter_app/core/notify_data.dart';
 import 'package:provider/provider.dart';
 import '../../../core/constance_course.dart';
 import '../../../core/constances.dart';
+import '../../../core/core_translator.dart';
 import '../../../models/child.dart';
 import '../../../models/course.dart';
 import '../../../providers/course_provider.dart';
@@ -24,6 +25,8 @@ class ParentChildPendingScreen extends StatefulWidget {
 }
 
 class _ParentChildPendingScreenState extends State<ParentChildPendingScreen> {
+  Translator translator = Translator();
+
   @override
   void initState() {
     super.initState();
@@ -37,6 +40,7 @@ class _ParentChildPendingScreenState extends State<ParentChildPendingScreen> {
   Widget build(BuildContext context) {
     final provider = context.watch<CourseProvider>();
     final notifyData = context.watch<NotifyData>();
+    translator = Translator(status: StatusLangue.CONSTANCE_COURSE, lang: notifyData.currentLanguage);
 
     return AppScaffold(body: _buildBody(provider, notifyData));
   }
@@ -48,9 +52,7 @@ class _ParentChildPendingScreenState extends State<ParentChildPendingScreen> {
 
     if (provider.pendingCourses.isEmpty) {
       return Center(
-          child: Text(notifyData.currentLanguage == Constant.languageEN
-              ? ConstantCourse.NoPendingCourseMsgEN
-              : ConstantCourse.NoPendingCourseMsgFR));
+          child: Text(translator.getText('NoPendingCourseMsg')));
     }
 
     return Column(
@@ -59,9 +61,7 @@ class _ParentChildPendingScreenState extends State<ParentChildPendingScreen> {
           onPressed: () {},
           style: Constant.getTitle1ButtonStyle(),
           child: Text("${widget.child.name} - " +
-              (notifyData.currentLanguage == Constant.languageEN
-                  ? ConstantCourse.PendingCourseTitleEN
-                  : ConstantCourse.PendingCourseTitleFR)),
+              translator.getText('PendingCourseTitle')),
         ),
         Expanded(
           child: ListView.builder(
@@ -96,30 +96,20 @@ class _ParentChildPendingScreenState extends State<ParentChildPendingScreen> {
             _header(course, notifyData),
             const SizedBox(height: 10),
             _infoRow(
-                (notifyData.currentLanguage == Constant.languageEN
-                    ? ConstantCourse.PendingCourseCodeEN
-                    : ConstantCourse.PendingCourseCodeFR),
+                translator.getText('PendingCourseCode'),
                 course.code),
             _infoRow(
-                (notifyData.currentLanguage == Constant.languageEN
-                    ? ConstantCourse.PendingCourseDescriptionEN
-                    : ConstantCourse.PendingCourseDescriptionFR),
+                translator.getText('PendingCourseDescription'),
                 course.description),
             _infoRow(
-                (notifyData.currentLanguage == Constant.languageEN
-                    ? ConstantCourse.PendingCourseAmountEN
-                    : ConstantCourse.PendingCourseAmountFR),
+                translator.getText('PendingCourseAmount'),
                 "\$${course.amount.toStringAsFixed(2)}"),
             _infoRow(
-                (notifyData.currentLanguage == Constant.languageEN
-                    ? ConstantCourse.PendingCourseValidityEN
-                    : ConstantCourse.PendingCourseValidityFR),
+                translator.getText('PendingCourseValidity'),
                 course.validity),
             if (course.isRegistered && course.expiryDate != null)
               _infoRow(
-                (notifyData.currentLanguage == Constant.languageEN
-                    ? ConstantCourse.PendingCourseExpireEN
-                    : ConstantCourse.PendingCourseExpireFR),
+                translator.getText('PendingCourseExpire'),
                 _formatDate(course.expiryDate!),
                 highlight: isExpiringSoon,
               ),
@@ -157,12 +147,8 @@ class _ParentChildPendingScreenState extends State<ParentChildPendingScreen> {
                   ),
                 )
               : Text(isRenew
-                  ? (notifyData.currentLanguage == Constant.languageEN
-                      ? ConstantCourse.PendingCourseRenewEN
-                      : ConstantCourse.PendingCourseRenewFR)
-                  : (notifyData.currentLanguage == Constant.languageEN
-                      ? ConstantCourse.PendingCoursePurchaseEN
-                      : ConstantCourse.PendingCoursePurchaseFR)),
+                  ? translator.getText('PendingCourseRenew')
+                  : translator.getText('PendingCoursePurchase')),
         ),
       ),
     );
@@ -188,9 +174,7 @@ class _ParentChildPendingScreenState extends State<ParentChildPendingScreen> {
                     color: Colors.white,
                   ),
                 )
-              : Text((notifyData.currentLanguage == Constant.languageEN
-                  ? ConstantCourse.PendingCourseRemoveCourseEN
-                  : ConstantCourse.PendingCourseRemoveCourseFR)),
+              : Text(translator.getText('PendingCourseRemoveCourse')),
         ),
       ),
     );
@@ -213,9 +197,7 @@ class _ParentChildPendingScreenState extends State<ParentChildPendingScreen> {
       _showSuccessDialog(notifyData);
     } else {
       _showError(provider.errorMessage ??
-          (notifyData.currentLanguage == Constant.languageEN
-              ? ConstantCourse.PendingCoursePaymentFailedEN
-              : ConstantCourse.PendingCoursePaymentFailedFR));
+          translator.getText('PendingCoursePaymentFailed'));
     }
   }
 
@@ -236,9 +218,7 @@ class _ParentChildPendingScreenState extends State<ParentChildPendingScreen> {
       _showSuccessCourseRemovalDialog(notifyData);
     } else {
       _showError(provider.errorMessage ??
-          (notifyData.currentLanguage == Constant.languageEN
-              ? ConstantCourse.PendingCourseCourseRemovalFailedEN
-              : ConstantCourse.PendingCourseCourseRemovalFailedFR));
+          translator.getText('PendingCourseCourseRemovalFailed'));
     }
   }
 
@@ -246,28 +226,20 @@ class _ParentChildPendingScreenState extends State<ParentChildPendingScreen> {
     return showDialog<bool>(
       context: context,
       builder: (_) => AlertDialog(
-        title: Text((notifyData.currentLanguage == Constant.languageEN
-            ? ConstantCourse.PendingCourseConfirmPaymentTitleEN
-            : ConstantCourse.PendingCourseConfirmPaymentTitleFR)),
+        title: Text(translator.getText('PendingCourseConfirmPaymentTitle')),
         content: Text(
-          (notifyData.currentLanguage == Constant.languageEN
-                  ? ConstantCourse.PendingCourseConfirmPaymentMsgEN
-                  : ConstantCourse.PendingCourseConfirmPaymentMsgFR)
+          translator.getText('PendingCourseConfirmPaymentMsg')
               .replaceAll('{0}', course.amount.toStringAsFixed(2))
               .replaceAll('{1}', course.name),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: Text((notifyData.currentLanguage == Constant.languageEN
-                ? ConstantCourse.PendingCoursePaymentCancelBtnEN
-                : ConstantCourse.PendingCoursePaymentCancelBtnFR)),
+            child: Text(translator.getText('PendingCoursePaymentCancelBtn')),
           ),
           ElevatedButton(
             onPressed: () => Navigator.pop(context, true),
-            child: Text((notifyData.currentLanguage == Constant.languageEN
-                ? ConstantCourse.PendingCoursePaymentConfirmBtnEN
-                : ConstantCourse.PendingCoursePaymentConfirmBtnFR)),
+            child: Text((translator.getText('PendingCoursePaymentConfirmBtn'))),
           ),
         ],
       ),
@@ -279,25 +251,17 @@ class _ParentChildPendingScreenState extends State<ParentChildPendingScreen> {
     return showDialog<bool>(
       context: context,
       builder: (_) => AlertDialog(
-        title: Text((notifyData.currentLanguage == Constant.languageEN
-            ? ConstantCourse.PendingCourseRemovalTitleEN
-            : ConstantCourse.PendingCourseRemovalTitleFR)),
-        content: Text((notifyData.currentLanguage == Constant.languageEN
-                ? ConstantCourse.PendingCourseRemovalMsgEN
-                : ConstantCourse.PendingCourseRemovalMsgFR)
+        title: Text(translator.getText('PendingCourseRemovalTitle')),
+        content: Text(translator.getText('PendingCourseRemovalMsg')
             .replaceAll('{0}', course.name)),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: Text((notifyData.currentLanguage == Constant.languageEN
-                ? ConstantCourse.PendingCourseRemovalCancelBtnEN
-                : ConstantCourse.PendingCourseRemovalCancelBtnFR)),
+            child: Text(translator.getText('PendingCourseRemovalCancelBtn')),
           ),
           ElevatedButton(
             onPressed: () => Navigator.pop(context, true),
-            child: Text((notifyData.currentLanguage == Constant.languageEN
-                ? ConstantCourse.PendingCourseRemovalConfirmBtnEN
-                : ConstantCourse.PendingCourseRemovalConfirmBtnFR)),
+            child: Text(translator.getText('PendingCourseRemovalConfirmBtn')),
           ),
         ],
       ),
@@ -308,18 +272,12 @@ class _ParentChildPendingScreenState extends State<ParentChildPendingScreen> {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        title: Text((notifyData.currentLanguage == Constant.languageEN
-            ? ConstantCourse.PendingCoursePaymentSuccessTitleEN
-            : ConstantCourse.PendingCoursePaymentSuccessTitleFR)),
-        content: Text((notifyData.currentLanguage == Constant.languageEN
-            ? ConstantCourse.PendingCoursePaymentSuccessMsgEN
-            : ConstantCourse.PendingCoursePaymentSuccessMsgFR)),
+        title: Text(translator.getText('PendingCoursePaymentSuccessTitle')),
+        content: Text(translator.getText('PendingCoursePaymentSuccessMsg')),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text((notifyData.currentLanguage == Constant.languageEN
-                ? ConstantCourse.PendingCoursePaymentSuccessOKEN
-                : ConstantCourse.PendingCoursePaymentSuccessOKFR)),
+            child: Text(translator.getText('PendingCoursePaymentSuccessOK')),
           ),
         ],
       ),
@@ -330,18 +288,12 @@ class _ParentChildPendingScreenState extends State<ParentChildPendingScreen> {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        title: Text((notifyData.currentLanguage == Constant.languageEN
-            ? ConstantCourse.PendingCourseRemovalSuccessTitleEN
-            : ConstantCourse.PendingCourseRemovalSuccessTitleFR)),
-        content: Text((notifyData.currentLanguage == Constant.languageEN
-            ? ConstantCourse.PendingCourseRemovalSuccessMsgEN
-            : ConstantCourse.PendingCourseRemovalSuccessMsgFR)),
+        title: Text(translator.getText('PendingCourseRemovalSuccessTitle')),
+        content: Text(translator.getText('PendingCourseRemovalSuccessMsg')),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text((notifyData.currentLanguage == Constant.languageEN
-                ? ConstantCourse.PendingCourseRemovalSuccessOKEN
-                : ConstantCourse.PendingCourseRemovalSuccessOKFR)),
+            child: Text(translator.getText('PendingCourseRemovalSuccessOK')),
           ),
         ],
       ),
@@ -377,19 +329,13 @@ class _ParentChildPendingScreenState extends State<ParentChildPendingScreen> {
     Color color;
 
     if (!course.isRegistered) {
-      text = (notifyData.currentLanguage == Constant.languageEN
-          ? ConstantCourse.PendingCoursePaymentStatusPendingEN
-          : ConstantCourse.PendingCoursePaymentStatusPendingFR);
+      text = translator.getText('PendingCoursePaymentStatusPending');
       color = Colors.orange;
     } else if (isExpiringSoon) {
-      text = (notifyData.currentLanguage == Constant.languageEN
-          ? ConstantCourse.PendingCoursePaymentStatusExpiringSoonEN
-          : ConstantCourse.PendingCoursePaymentStatusExpiringSoonFR);
+      text = translator.getText('PendingCoursePaymentStatusExpiringSoon');
       color = Colors.red;
     } else {
-      text = (notifyData.currentLanguage == Constant.languageEN
-          ? ConstantCourse.PendingCoursePaymentStatusActiveEN
-          : ConstantCourse.PendingCoursePaymentStatusActiveFR);
+      text = translator.getText('PendingCoursePaymentStatusActive');
       color = Colors.green;
     }
 

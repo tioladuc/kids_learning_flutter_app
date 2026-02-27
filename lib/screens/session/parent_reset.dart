@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../core/constance_session.dart';
 import '../../core/constances.dart';
+import '../../core/core_translator.dart';
 import '../../core/notify_data.dart';
 import '../../providers/session_provider.dart';
 import '../../widgets/app_scaffold.dart';
@@ -17,6 +18,7 @@ class ParentReset extends StatefulWidget {
 class _ParentResetState extends State<ParentReset> {
   final _formKey = GlobalKey<FormState>();
   final emailCtrl = TextEditingController();
+  Translator translator = Translator();
 
   Future<void> _sendCode(NotifyData notifyData) async {
     if (!_formKey.currentState!.validate()) return;
@@ -33,9 +35,7 @@ class _ParentResetState extends State<ParentReset> {
       _showSuccess(notifyData);
     } else {
       _showError(session.errorMessage ??
-          (notifyData.currentLanguage == Constant.languageEN
-              ? ConstantSession.ParentResetErrorMsgEN
-              : ConstantSession.ParentResetErrorMsgFR));
+          translator.getText('ParentResetErrorMsg'));
     }
   }
 
@@ -43,13 +43,8 @@ class _ParentResetState extends State<ParentReset> {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        title: Text((notifyData.currentLanguage == Constant.languageEN
-            ? ConstantSession.ParentResetEmailSentEN
-            : ConstantSession.ParentResetEmailSentFR)),
-        content: Text(
-          (notifyData.currentLanguage == Constant.languageEN
-              ? ConstantSession.ParentResetEmailSentMsgEN
-              : ConstantSession.ParentResetEmailSentMsgFR),
+        title: Text(translator.getText('ParentResetEmailSent')),
+        content: Text(translator.getText('ParentResetEmailSentMsg'),
         ),
         actions: [
           TextButton(
@@ -65,9 +60,7 @@ class _ParentResetState extends State<ParentReset> {
                 ),
               );
             },
-            child: Text((notifyData.currentLanguage == Constant.languageEN
-                ? ConstantSession.ParentResetContinueEN
-                : ConstantSession.ParentResetContinueFR)),
+            child: Text(translator.getText('ParentResetContinue')),
           )
         ],
       ),
@@ -90,6 +83,7 @@ class _ParentResetState extends State<ParentReset> {
   Widget build(BuildContext context) {
     final session = context.watch<SessionProvider>();
     final notifyData = context.watch<NotifyData>();
+    translator = Translator(status: StatusLangue.CONSTANCE_SESSION, lang: notifyData.currentLanguage);
 
     return AppScaffold(
       //appBar: AppBar(title: const Text("Reset Password")),
@@ -103,31 +97,20 @@ class _ParentResetState extends State<ParentReset> {
                 onPressed:
                     () {}, //context.read<SessionProvider>().login('child'),
                 style: Constant.getTitle1ButtonStyle(),
-                child: Text((notifyData.currentLanguage == Constant.languageEN
-                    ? ConstantSession
-                        .ParentResetResetPasswordReceivedResetCodeEN
-                    : ConstantSession
-                        .ParentResetResetPasswordReceivedResetCodeFR)),
+                child: Text(translator.getText('ParentResetResetPasswordReceivedResetCode')),
               ),
               const SizedBox(height: 24),
-              Text(
-                (notifyData.currentLanguage == Constant.languageEN
-                    ? ConstantSession.ParentResetEnterYourEmailEN
-                    : ConstantSession.ParentResetEnterYourEmailFR),
+              Text(translator.getText('ParentResetEnterYourEmail'),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 20),
               TextFormField(
                 controller: emailCtrl,
                 validator: (v) => v == null || v.isEmpty
-                    ? (notifyData.currentLanguage == Constant.languageEN
-                        ? ConstantSession.ParentResetEmailRequiredEN
-                        : ConstantSession.ParentResetEmailRequiredFR)
+                    ? translator.getText('ParentResetEmailRequired')
                     : null,
                 decoration: InputDecoration(
-                  labelText: (notifyData.currentLanguage == Constant.languageEN
-                      ? ConstantSession.ParentResetEmailEN
-                      : ConstantSession.ParentResetEmailFR),
+                  labelText: translator.getText('ParentResetEmail'),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
@@ -143,10 +126,7 @@ class _ParentResetState extends State<ParentReset> {
                   },
                   child: session.isLoading
                       ? const CircularProgressIndicator()
-                      : Text(
-                          (notifyData.currentLanguage == Constant.languageEN
-                              ? ConstantSession.ParentResetSendResetCodeBtnEN
-                              : ConstantSession.ParentResetSendResetCodeBtnFR)),
+                      : Text(translator.getText('ParentResetSendResetCodeBtn')),
                 ),
               ),
             ],

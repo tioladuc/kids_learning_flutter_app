@@ -1,4 +1,11 @@
 import 'lang/constance_child/constant_child_lang.dart';
+import 'lang/constance_course/constant_course_lang.dart';
+import 'lang/constance_parent/constant_parent_lang.dart';
+import 'lang/constance_payment/constant_payment_lang.dart';
+import 'lang/constance_presentation/constant_presentation_lang.dart';
+import 'lang/constance_session/constant_session_lang.dart';
+import 'lang/constance_statistics/constant_statistics_lang.dart';
+import 'lang/constances/constant_lang.dart';
 
 class Translator {
   String translatorFile = '';
@@ -6,45 +13,53 @@ class Translator {
   Map<String, String> currLang = Map();
   
   Translator({StatusLangue status = StatusLangue.CONSTANCE_CHILD, String lang = ''}) {
-    print('LANGUAGE ==== ' + lang);
+    
     if(lang=='')return;
 
     switch (status) {
       case StatusLangue.CONSTANCE_CHILD:
         defaultLang = ConstantChildLangue.getDefault();
         currLang = ConstantChildLangue.getDictionnary(lang);
-        print(currLang);
-        print("Child constants selected");
         break;
 
       case StatusLangue.CONSTANCE_COURSE:
-        print("Course constants selected");
+        defaultLang = ConstantCourseLangue.getDefault();
+        currLang = ConstantCourseLangue.getDictionnary(lang);
         break;
 
       case StatusLangue.CONSTANCE_PARENT:
-        print("Parent constants selected");
+        defaultLang = ConstantParentLangue.getDefault();
+        currLang = ConstantParentLangue.getDictionnary(lang);
         break;
 
       case StatusLangue.CONSTANCE_PAYMENT:
-        print("Payment constants selected");
+        defaultLang = ConstantPaymentLangue.getDefault();
+        currLang = ConstantPaymentLangue.getDictionnary(lang);
         break;
 
       case StatusLangue.CONSTANCE_PRESENTATION:
-        print("Presentation constants selected");
+        defaultLang = ConstantPresentationLangue.getDefault();
+        currLang = ConstantPresentationLangue.getDictionnary(lang);
         break;
 
       case StatusLangue.CONSTANCE_SESSION:
-        print("Session constants selected");
+        defaultLang = ConstantSessionLangue.getDefault();
+        currLang = ConstantSessionLangue.getDictionnary(lang);
         break;
 
       case StatusLangue.CONSTANCE_STATISTICS:
-        print("Statistics constants selected");
+        defaultLang = ConstantStatisticsLangue.getDefault();
+        currLang = ConstantStatisticsLangue.getDictionnary(lang);
+        break;
+
+      case StatusLangue.CONSTANCE_CONSTANCE:
+        defaultLang = ConstantConstantLangue.getDefault();
+        currLang = ConstantConstantLangue.getDictionnary(lang);
         break;
     }
   }
 
   String getText(String key) {
-    print('CONTAIN KEY = ' + currLang.containsKey(key).toString());
     return currLang.containsKey(key) ? currLang[key]??'' : defaultLang[key]??'';
   }
 
@@ -58,4 +73,5 @@ enum StatusLangue {
   CONSTANCE_PRESENTATION,
   CONSTANCE_SESSION,
   CONSTANCE_STATISTICS,
+  CONSTANCE_CONSTANCE,
 }

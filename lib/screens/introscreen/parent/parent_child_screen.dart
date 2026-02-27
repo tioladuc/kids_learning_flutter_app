@@ -3,6 +3,7 @@ import 'package:kids_learning_flutter_app/screens/introscreen/main_intro_screen_
 import 'package:provider/provider.dart';
 import '../../../core/constance_parent.dart';
 import '../../../core/constances.dart';
+import '../../../core/core_translator.dart';
 import '../../../core/notify_data.dart';
 import '../../../models/child.dart';
 import '../../../providers/session_provider.dart';
@@ -23,6 +24,7 @@ class ParentChildScreen extends StatefulWidget {
 class _ParentChildScreenState extends State<ParentChildScreen> {
   late TextEditingController _nameController;
   late TextEditingController _passwordController;
+  Translator translator = Translator();
 
   late Child _editableChild;
 
@@ -68,10 +70,7 @@ class _ParentChildScreenState extends State<ParentChildScreen> {
     );
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(
-          notifyData.currentLanguage == Constant.AppNameEN
-              ? ConstantParent.detailedChildPageChildUpdateEN
-              : ConstantParent.detailedChildPageChildUpdateEN,
+        content: Text(translator.getText('detailedChildPageChildUpdate'),
         ),
       ),
     );
@@ -85,23 +84,14 @@ class _ParentChildScreenState extends State<ParentChildScreen> {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        title: Text(
-          notifyData.currentLanguage == Constant.languageEN
-              ? ConstantParent.childDeleteTitleEN
-              : ConstantParent.childDeleteTitleFR,
+        title: Text(translator.getText('childDeleteTitle'),
         ),
-        content: Text(
-          notifyData.currentLanguage == Constant.languageEN
-              ? ConstantParent.childDeleteContainEN
-              : ConstantParent.childDeleteContainFR,
+        content: Text(translator.getText('childDeleteContain'),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text(
-              notifyData.currentLanguage == Constant.languageEN
-                  ? ConstantParent.childDeleteCancelButtonEN
-                  : ConstantParent.childDeleteCancelButtonFR,
+            child: Text(translator.getText('childDeleteCancelButton'),
             ),
           ),
           ElevatedButton(
@@ -114,18 +104,12 @@ class _ParentChildScreenState extends State<ParentChildScreen> {
 
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Text(
-                    notifyData.currentLanguage == Constant.languageEN
-                        ? ConstantParent.childDeleteAlertMessageEN
-                        : ConstantParent.childDeleteAlertMessageFR,
+                  content: Text(translator.getText('childDeleteAlertMessage'),
                   ),
                 ),
               );
             },
-            child: Text(
-              notifyData.currentLanguage == Constant.languageEN
-                  ? ConstantParent.childDeleteDeleteButtonEN
-                  : ConstantParent.childDeleteDeleteButtonFR,
+            child: Text(translator.getText('childDeleteDeleteButton'),
             ),
           ),
         ],
@@ -189,10 +173,7 @@ class _ParentChildScreenState extends State<ParentChildScreen> {
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(
-          notifyData.currentLanguage == Constant.languageEN
-              ? ConstantParent.childParentWorkAsChildEN
-              : ConstantParent.childParentWorkAsChildFR,
+        content: Text(translator.getText('childParentWorkAsChild'),
         ),
       ),
     );
@@ -202,6 +183,7 @@ class _ParentChildScreenState extends State<ParentChildScreen> {
   Widget build(BuildContext context) {
     final notifyData = context.watch<NotifyData>();
     final session = context.watch<SessionProvider>();
+    translator = Translator(status: StatusLangue.CONSTANCE_PARENT, lang: notifyData.currentLanguage);
 
     return AppScaffold(
       body: SingleChildScrollView(
@@ -211,10 +193,7 @@ class _ParentChildScreenState extends State<ParentChildScreen> {
             ElevatedButton(
               onPressed: () {},
               style: Constant.getTitle1ButtonStyle(),
-              child: Text(
-                notifyData.currentLanguage == Constant.languageEN
-                    ? ConstantParent.labelTitleChildIdDetailEN
-                    : ConstantParent.labelTitleChildIdDetailFR,
+              child: Text(translator.getText('labelTitleChildIdDetail'),
               ),
             ),
             // -------------------------
@@ -232,10 +211,7 @@ class _ParentChildScreenState extends State<ParentChildScreen> {
                     const Icon(Icons.child_care, size: 60, color: Colors.blue),
                     const SizedBox(height: 10),
 
-                    Text(
-                      (notifyData.currentLanguage == Constant.languageEN
-                              ? ConstantParent.labelChildIdFR
-                              : ConstantParent.labelChildIdFR) +
+                    Text(translator.getText('labelChildId') +
                           ": ${widget.child.id}",
                       style: const TextStyle(color: Colors.grey),
                     ),
@@ -246,10 +222,7 @@ class _ParentChildScreenState extends State<ParentChildScreen> {
                     TextField(
                       controller: _nameController,
                       decoration: InputDecoration(
-                        labelText:
-                            notifyData.currentLanguage == Constant.languageEN
-                                ? ConstantParent.labelChildNameDetailEN
-                                : ConstantParent.labelChildNameDetailFR,
+                        labelText:translator.getText('labelChildNameDetailEN'),
                         border: const OutlineInputBorder(),
                       ),
                     ),
@@ -263,10 +236,7 @@ class _ParentChildScreenState extends State<ParentChildScreen> {
                       ),
                       readOnly: true,
                       decoration: InputDecoration(
-                        labelText:
-                            notifyData.currentLanguage == Constant.languageEN
-                                ? ConstantParent.labelChildLoginDetailEN
-                                : ConstantParent.labelChildLoginDetailFR,
+                        labelText:translator.getText('labelChildLoginDetail'),
                         border: OutlineInputBorder(),
                       ),
                     ),
@@ -278,10 +248,7 @@ class _ParentChildScreenState extends State<ParentChildScreen> {
                       controller: _passwordController,
                       obscureText: true,
                       decoration: InputDecoration(
-                        labelText:
-                            notifyData.currentLanguage == Constant.languageEN
-                                ? ConstantParent.labelChildPasswordDetailEN
-                                : ConstantParent.labelChildPasswordDetailFR,
+                        labelText:translator.getText('labelChildPasswordDetail'),
                         border: OutlineInputBorder(),
                       ),
                     ),
@@ -294,10 +261,7 @@ class _ParentChildScreenState extends State<ParentChildScreen> {
                           _saveChanges(notifyData);
                         },
                         icon: const Icon(Icons.save),
-                        label: Text(
-                          notifyData.currentLanguage == Constant.languageEN
-                              ? ConstantParent.labelChildSaveChangesDetailEN
-                              : ConstantParent.labelChildSaveChangesDetailFR,
+                        label: Text(translator.getText('labelChildSaveChangesDetail'),
                         ),
                         style: Constant.getTitle3ButtonStyle()),
                   ],
@@ -315,20 +279,13 @@ class _ParentChildScreenState extends State<ParentChildScreen> {
                 children: [
                   ListTile(
                     leading: const Icon(Icons.timer),
-                    title: Text(
-                        notifyData.currentLanguage == Constant.languageEN
-                            ? ConstantParent.labelChildPendingCourseDetailEN
-                            : ConstantParent.labelChildPendingCourseDetailFR),
+                    title: Text(translator.getText('labelChildPendingCourseDetail')),
                     onTap: _viewPendingCourses,
                   ),
                   if (widget.child.parentResponsible!)
                     ListTile(
                       leading: const Icon(Icons.money_off_csred_outlined),
-                      title: Text(notifyData.currentLanguage ==
-                              Constant.languageEN
-                          ? ConstantParent.labelChildRemoveFinancialAuthorityEN
-                          : ConstantParent
-                              .labelChildRemoveFinancialAuthorityFR),
+                      title: Text(translator.getText('labelChildRemoveFinancialAuthority')),
                       onTap: () {
                         setState(() {
                           session.setParentAsReponsibleOfChild(
@@ -339,12 +296,7 @@ class _ParentChildScreenState extends State<ParentChildScreen> {
                   if (!widget.child.parentResponsible!)
                     ListTile(
                       leading: const Icon(Icons.monetization_on_outlined),
-                      title: Text(
-                          notifyData.currentLanguage == Constant.languageEN
-                              ? ConstantParent
-                                  .labelChildAcquisitionFinancialAuthorityEN
-                              : ConstantParent
-                                  .labelChildAcquisitionFinancialAuthorityFR),
+                      title: Text(translator.getText('labelChildAcquisitionFinancialAuthority')),
                       onTap: () {
                         setState(() {
                           session.setParentAsReponsibleOfChild(
@@ -355,19 +307,13 @@ class _ParentChildScreenState extends State<ParentChildScreen> {
                   const Divider(height: 1),
                   ListTile(
                     leading: const Icon(Icons.bar_chart),
-                    title: Text(
-                        notifyData.currentLanguage == Constant.languageEN
-                            ? ConstantParent.labelChildViewStatsDetailEN
-                            : ConstantParent.labelChildViewStatsDetailFR),
+                    title: Text(translator.getText('labelChildViewStatsDetail')),
                     onTap: _viewStatistics,
                   ),
                   const Divider(height: 1),
                   ListTile(
                     leading: const Icon(Icons.play_circle_fill),
-                    title: Text(
-                        notifyData.currentLanguage == Constant.languageEN
-                            ? ConstantParent.labelChildWorkAsDetailEN
-                            : ConstantParent.labelChildWorkAsDetailFR),
+                    title: Text(translator.getText('labelChildWorkAsDetail')),
                     onTap: () {
                       _workAsChild(notifyData);
                     },
@@ -375,10 +321,7 @@ class _ParentChildScreenState extends State<ParentChildScreen> {
                   const Divider(height: 1),
                   ListTile(
                     leading: const Icon(Icons.delete, color: Colors.red),
-                    title: Text(
-                      notifyData.currentLanguage == Constant.languageEN
-                          ? ConstantParent.labelChildDeleteChildDetailEN
-                          : ConstantParent.labelChildDeleteChildDetailFR,
+                    title: Text(translator.getText('labelChildDeleteChildDetail'),
                     ),
                     onTap: () {
                       _deleteChild(notifyData);

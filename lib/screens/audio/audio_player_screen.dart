@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import '../../core/constances.dart';
+import '../../core/core_translator.dart';
 import '../../core/notify_data.dart';
 import '../../models/audio_item.dart';
 import '../../widgets/app_scaffold.dart';
@@ -15,6 +16,7 @@ class AudioPlayerScreen extends StatefulWidget {
 }
 
 class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
+  Translator translator = Translator();
   final player = AudioPlayer();
   final double speedPace = 0.25;
   double currentSpeed = 1.0;
@@ -58,6 +60,7 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
   @override
   Widget build(BuildContext context) {
     final notifyData = context.watch<NotifyData>();
+    translator = Translator(status: StatusLangue.CONSTANCE_CONSTANCE, lang: notifyData.currentLanguage);
 
     return AppScaffold(
         body: Padding(
@@ -68,17 +71,12 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
           ElevatedButton(
             onPressed: () {},
             style: Constant.getTitle1ButtonStyle(),
-            child: notifyData.currentLanguage == Constant.languageEN
-                ? Text(Constant.readingAudioTitleEN)
-                : Text(Constant.readingAudioTitleFR),
+            child: Text(translator.getText('readingAudioTitle')),
           ),
           const SizedBox(height: 24),
           Text(widget.audio.title, style: Constant.getTitleStyle()),
           const SizedBox(height: 5),
-          Text(
-            (notifyData.currentLanguage == Constant.languageEN
-                    ? Constant.readingSpeedEN
-                    : Constant.readingSpeedFR) +
+          Text(translator.getText('readingSpeed') +
                 currentSpeed.toString(),
             style: Constant.getTextSimpleStyle(),
           ),

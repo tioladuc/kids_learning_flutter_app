@@ -3,6 +3,7 @@ import 'package:kids_learning_flutter_app/core/notify_data.dart';
 import 'package:provider/provider.dart';
 import '../../core/constance_presentation.dart';
 import '../../core/constances.dart';
+import '../../core/core_translator.dart';
 import '../../providers/session_provider.dart';
 import '../../widgets/app_scaffold.dart';
 
@@ -15,6 +16,7 @@ class Presentation extends StatefulWidget {
 
 class _PresentationState extends State<Presentation> {
   final _formKey = GlobalKey<FormState>();
+  Translator translator = Translator();
 
   final TextEditingController _subjectController = TextEditingController();
   final TextEditingController _contentController = TextEditingController();
@@ -24,22 +26,22 @@ class _PresentationState extends State<Presentation> {
   List<String> _categories = [];
 
   void changeCategoryInialise(NotifyData notifyData) {
-    if (notifyData.currentLanguage == Constant.languageEN) {
+    if (notifyData.currentLanguage == NotifyData.languageEN) {
       _categories = [
-        ConstantPresentation.CategoryRequestInformationEN,
-        ConstantPresentation.CategoryComplainEN,
-        ConstantPresentation.CategorySuggestionEN,
-        ConstantPresentation.CategoryOtherEN
+        NotifyData.CategoryRequestInformationEN,
+        NotifyData.CategoryComplainEN,
+        NotifyData.CategorySuggestionEN,
+        NotifyData.CategoryOtherEN
       ];
-      _selectedCategory = ConstantPresentation.CategoryRequestInformationEN;
+      _selectedCategory = NotifyData.CategoryRequestInformationEN;
     } else {
       _categories = [
-        ConstantPresentation.CategoryRequestInformationFR,
-        ConstantPresentation.CategoryComplainFR,
-        ConstantPresentation.CategorySuggestionFR,
-        ConstantPresentation.CategoryOtherFR
+        NotifyData.CategoryRequestInformationFR,
+        NotifyData.CategoryComplainFR,
+        NotifyData.CategorySuggestionFR,
+        NotifyData.CategoryOtherFR
       ];
-      _selectedCategory = ConstantPresentation.CategoryRequestInformationFR;
+      _selectedCategory = NotifyData.CategoryRequestInformationFR;
     }
   }
 
@@ -74,17 +76,13 @@ class _PresentationState extends State<Presentation> {
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-          content: Text((notifyData.currentLanguage == Constant.languageEN
-              ? ConstantPresentation.EmailSentEN
-              : ConstantPresentation.EmailSentFR))),
+          content: Text(translator.getText('EmailSent'))),
     );
 
     _subjectController.clear();
     _contentController.clear();
     setState(() {
-      _selectedCategory = notifyData.currentLanguage == Constant.languageEN
-          ? ConstantPresentation.CategoryRequestInformationEN
-          : ConstantPresentation.CategoryRequestInformationFR;
+      _selectedCategory = translator.getText('CategoryRequestInformation');
     });
   }
 
@@ -92,6 +90,7 @@ class _PresentationState extends State<Presentation> {
   Widget build(BuildContext context) {
     final session = context.watch<SessionProvider>();
     final notifyData = context.watch<NotifyData>();
+    translator = Translator(status: StatusLangue.CONSTANCE_PRESENTATION, lang: notifyData.currentLanguage);
     final newsList = session.latestNews;
     changeCategoryInialise(notifyData);
 
@@ -105,9 +104,7 @@ class _PresentationState extends State<Presentation> {
               child: ElevatedButton(
                 onPressed: () {},
                 style: Constant.getTitle1ButtonStyle(),
-                child: Text((notifyData.currentLanguage == Constant.languageEN
-                    ? ConstantPresentation.Learn4KidsEN
-                    : ConstantPresentation.Learn4KidsFR)),
+                child: Text(translator.getText('Learn4Kids')),
               ),
             ),
             const SizedBox(height: 10),
@@ -116,9 +113,7 @@ class _PresentationState extends State<Presentation> {
             /// 1. PRESENTATION SECTION
             /// ===============================
             Text(
-              (notifyData.currentLanguage == Constant.languageEN
-                  ? ConstantPresentation.Welcome2Learn4KidsEN
-                  : ConstantPresentation.Welcome2Learn4KidsFR),
+              translator.getText('Welcome2Learn4Kids'),
               style: TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
@@ -126,10 +121,7 @@ class _PresentationState extends State<Presentation> {
             ),
             const SizedBox(height: 10),
 
-            Text(
-              (notifyData.currentLanguage == Constant.languageEN
-                  ? ConstantPresentation.WelcomeMessageEN
-                  : ConstantPresentation.WelcomeMessageFR),
+            Text(translator.getText('WelcomeMessage'),
               style: TextStyle(fontSize: 16),
             ),
 
@@ -138,10 +130,7 @@ class _PresentationState extends State<Presentation> {
             /// ===============================
             /// 2. LATEST NEWS
             /// ===============================
-            Text(
-              (notifyData.currentLanguage == Constant.languageEN
-                  ? ConstantPresentation.LatestNewsEN
-                  : ConstantPresentation.LatestNewsFR),
+            Text(translator.getText('LatestNews'),
               style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -150,10 +139,7 @@ class _PresentationState extends State<Presentation> {
             const SizedBox(height: 10),
 
             if (newsList.isEmpty)
-              Text(
-                  (notifyData.currentLanguage == Constant.languageEN
-                      ? ConstantPresentation.NoNewsAvailableEN
-                      : ConstantPresentation.NoNewsAvailableFR),
+              Text(translator.getText('NoNewsAvailable'),
                   style: TextStyle(color: Colors.blue))
             else
               ListView.builder(
@@ -193,10 +179,7 @@ class _PresentationState extends State<Presentation> {
             /// ===============================
             /// 3. CONTACT / REQUEST FORM
             /// ===============================
-            Text(
-              (notifyData.currentLanguage == Constant.languageEN
-                  ? ConstantPresentation.ContactUsEN
-                  : ConstantPresentation.ContactUsFR),
+            Text(translator.getText('ContactUs'),
               style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -213,15 +196,11 @@ class _PresentationState extends State<Presentation> {
                     controller: _subjectController,
                     decoration:  InputDecoration(
                       labelText:
-                          (notifyData.currentLanguage == Constant.languageEN
-                              ? ConstantPresentation.SubjectEN
-                              : ConstantPresentation.SubjectFR),
+                          translator.getText('Subject'),
                       border: OutlineInputBorder(),
                     ),
                     validator: (value) => value!.isEmpty
-                        ? (notifyData.currentLanguage == Constant.languageEN
-                            ? ConstantPresentation.EnterSubjectEN
-                            : ConstantPresentation.EnterSubjectFR)
+                        ? translator.getText('EnterSubject')
                         : null,
                   ),
 
@@ -231,10 +210,7 @@ class _PresentationState extends State<Presentation> {
                   DropdownButtonFormField<String>(
                     value: _selectedCategory,
                     decoration: InputDecoration(
-                      labelText:
-                          (notifyData.currentLanguage == Constant.languageEN
-                              ? ConstantPresentation.CategoryEN
-                              : ConstantPresentation.CategoryEN),
+                      labelText:translator.getText('Category'),
                       border: OutlineInputBorder(),
                     ),
                     items: _categories.map((c) {
@@ -257,16 +233,11 @@ class _PresentationState extends State<Presentation> {
                     controller: _contentController,
                     maxLines: 5,
                     decoration: InputDecoration(
-                      labelText:
-                          (notifyData.currentLanguage == Constant.languageEN
-                              ? ConstantPresentation.ContentEN
-                              : ConstantPresentation.ContentFR),
+                      labelText:translator.getText('Content'),
                       border: OutlineInputBorder(),
                     ),
                     validator: (value) => value!.isEmpty
-                        ? (notifyData.currentLanguage == Constant.languageEN
-                            ? ConstantPresentation.EnterMessageEN
-                            : ConstantPresentation.EnterMessageFR)
+                        ? translator.getText('EnterMessage')
                         : null,
                   ),
 
@@ -276,10 +247,7 @@ class _PresentationState extends State<Presentation> {
                   ElevatedButton(
                     onPressed: _sendRequest,
                     style: Constant.getTitle3ButtonStyle(),
-                    child: Text(
-                        (notifyData.currentLanguage == Constant.languageEN
-                            ? ConstantPresentation.SendEN
-                            : ConstantPresentation.SendFR)),
+                    child: Text(translator.getText('Send')),
                   ),
                 ],
               ),

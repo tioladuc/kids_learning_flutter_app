@@ -1,5 +1,5 @@
 class ConstantCourse {
-  static String NoPendingCourseMsgEN = 'No pending courses';
+  /*static String NoPendingCourseMsgEN = 'No pending courses';
   static String NoPendingCourseMsgFR = 'Aucun cours en attente';
 
   static String PendingCourseTitleEN = 'Pending courses';
@@ -106,4 +106,4 @@ class ConstantCourse {
   static String PickCoursePickConfirmSuccessOKFR = 'OK';
   static String PickCoursePickConfirmSuccessErrorEN = 'Error';
   static String PickCoursePickConfirmSuccessErrorFR = 'Erreur';
-}
+*/}

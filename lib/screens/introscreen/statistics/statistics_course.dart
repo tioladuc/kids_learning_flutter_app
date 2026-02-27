@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../core/constance_statistics.dart';
 import '../../../core/constances.dart';
+import '../../../core/core_translator.dart';
 import '../../../core/notify_data.dart';
 import '../../../models/child.dart';
 import '../../../models/course.dart';
@@ -24,6 +25,8 @@ class StatisticsCourse extends StatefulWidget {
 }
 
 class _StatisticsCourseState extends State<StatisticsCourse> {
+  Translator translator = Translator();
+  
   @override
   void initState() {
     super.initState();
@@ -40,6 +43,7 @@ class _StatisticsCourseState extends State<StatisticsCourse> {
   Widget build(BuildContext context) {
     final provider = context.watch<StatisticsProvider>();
     final notifyData = context.watch<NotifyData>();
+    translator = Translator(status: StatusLangue.CONSTANCE_STATISTICS, lang: notifyData.currentLanguage);
 
     return AppScaffold(
       body: provider.isLoading
@@ -51,9 +55,7 @@ class _StatisticsCourseState extends State<StatisticsCourse> {
   Widget _buildBody(StatisticsProvider provider, NotifyData notifyData) {
     if (provider.courseStatistics.isEmpty) {
       return Center(
-        child: Text((notifyData.currentLanguage == Constant.languageEN
-            ? ConstantStatistics.CourseStatNoStatisticsAvailableEN
-            : ConstantStatistics.CourseStatNoStatisticsAvailableFR)),
+        child: Text(translator.getText('CourseStatNoStatisticsAvailable')),
       );
     }
 
@@ -82,9 +84,7 @@ class _StatisticsCourseState extends State<StatisticsCourse> {
       child: ListTile(
         leading: const Icon(Icons.bar_chart, size: 40),
         title: Text(widget.course.name),
-        subtitle: Text((notifyData.currentLanguage == Constant.languageEN
-                ? ConstantStatistics.CourseStatChildEN
-                : ConstantStatistics.CourseStatChildFR)
+        subtitle: Text(translator.getText('CourseStatChild')
             .replaceAll('{0}', widget.child.name)),
       ),
     );
@@ -106,28 +106,18 @@ class _StatisticsCourseState extends State<StatisticsCourse> {
             _dateHeader(stat),
             const SizedBox(height: 8),
             _infoRow(
-                (notifyData.currentLanguage == Constant.languageEN
-                    ? ConstantStatistics.CourseStatStartEN
-                    : ConstantStatistics.CourseStatStartFR),
+                translator.getText('CourseStatStart'),
                 _formatDate(stat.startDate)),
             _infoRow(
-                (notifyData.currentLanguage == Constant.languageEN
-                    ? ConstantStatistics.CourseStatEndEN
-                    : ConstantStatistics.CourseStatEndFR),
+                translator.getText('CourseStatEnd'),
                 _formatDate(stat.endDate)),
             _infoRow(
-                (notifyData.currentLanguage == Constant.languageEN
-                    ? ConstantStatistics.CourseStatDurationEN
-                    : ConstantStatistics.CourseStatDurationFR),
-                (notifyData.currentLanguage == Constant.languageEN
-                        ? ConstantStatistics.CourseStatMinuteEN
-                        : ConstantStatistics.CourseStatMinuteFR)
+                translator.getText('CourseStatDuration'),
+                translator.getText('CourseStatMinute')
                     .replaceAll('{0}', stat.duration.toString())),
             const Divider(),
             _infoRow(
-                (notifyData.currentLanguage == Constant.languageEN
-                    ? ConstantStatistics.CourseStatDetailEN
-                    : ConstantStatistics.CourseStatDetailFR),
+                translator.getText('CourseStatDetail'),
                 stat.detail),
             const SizedBox(height: 8),
             _appreciationBadge(stat.appreciation, notifyData),
@@ -158,24 +148,24 @@ class _StatisticsCourseState extends State<StatisticsCourse> {
   Widget _appreciationBadge(String appreciation, NotifyData notifyData) {
     Color color;
 
-    if (ConstantStatistics.CourseStatExcellentEN.toLowerCase() ==
+    if (NotifyData.CourseStatExcellentEN.toLowerCase() ==
             appreciation.toLowerCase() ||
-        ConstantStatistics.CourseStatExcellentFR.toLowerCase() ==
+        NotifyData.CourseStatExcellentFR.toLowerCase() ==
             appreciation.toLowerCase()) {
       color = Colors.green;
-    } else if (ConstantStatistics.CourseStatGoodEN.toLowerCase() ==
+    } else if (NotifyData.CourseStatGoodEN.toLowerCase() ==
             appreciation.toLowerCase() ||
-        ConstantStatistics.CourseStatGoodFR.toLowerCase() ==
+        NotifyData.CourseStatGoodFR.toLowerCase() ==
             appreciation.toLowerCase()) {
       color = Colors.blue;
-    } else if (ConstantStatistics.CourseStatAverageEN.toLowerCase() ==
+    } else if (NotifyData.CourseStatAverageEN.toLowerCase() ==
             appreciation.toLowerCase() ||
-        ConstantStatistics.CourseStatAverageFR.toLowerCase() ==
+        NotifyData.CourseStatAverageFR.toLowerCase() ==
             appreciation.toLowerCase()) {
       color = Colors.orange;
-    } else if (ConstantStatistics.CourseStatPoorEN.toLowerCase() ==
+    } else if (NotifyData.CourseStatPoorEN.toLowerCase() ==
             appreciation.toLowerCase() ||
-        ConstantStatistics.CourseStatPoorFR.toLowerCase() ==
+        NotifyData.CourseStatPoorFR.toLowerCase() ==
             appreciation.toLowerCase()) {
       color = Colors.red;
     } else {

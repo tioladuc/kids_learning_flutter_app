@@ -1,5 +1,5 @@
 class ConstantPresentation {
-  static String CategoryRequestInformationEN = 'Request Information';
+  /*static String CategoryRequestInformationEN = 'Request Information';
   static String CategoryRequestInformationFR = 'Demande d`Information';
   static String CategoryComplainEN = 'Complain';
   static String CategoryComplainFR = 'Complainte';
@@ -39,4 +39,4 @@ class ConstantPresentation {
   static String EnterMessageFR = 'Entrer message';
   static String SendEN = 'Send';
   static String SendFR = 'Envoyer';
-}
+*/}

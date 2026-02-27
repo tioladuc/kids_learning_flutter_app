@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kids_learning_flutter_app/screens/session/login_screen.dart';
 import 'package:provider/provider.dart';
 import '../core/constances.dart';
+import '../core/core_translator.dart';
 import '../core/notify_data.dart';
 import '../providers/session_provider.dart';
 
@@ -17,11 +18,13 @@ class AppHeader extends StatefulWidget implements PreferredSizeWidget {
 
 class _AppHeader extends State<AppHeader> with ChangeNotifier {
   String currentLanguage = Constant.currentLanguage;
+  Translator translator = Translator();
 
   @override
   Widget build(BuildContext context) {
     final session = context.watch<SessionProvider>();
     final notifyData = context.watch<NotifyData>();
+    translator = Translator(status: StatusLangue.CONSTANCE_CONSTANCE, lang: notifyData.currentLanguage);
 
     return AppBar(
       centerTitle: true,
@@ -38,29 +41,21 @@ class _AppHeader extends State<AppHeader> with ChangeNotifier {
           ),
         ),
       ),
-      title: Text(
-        currentLanguage == Constant.languageEN
-            ? Constant.AppNameEN
-            : Constant.AppNameFR,
+      title: Text(translator.getText('AppName'),
         style: TextStyle(fontWeight: FontWeight.bold),
       ),
       actions: [
         ElevatedButton(
           style: Constant.getTitle3ButtonStyle(),
-          child: currentLanguage != Constant.languageEN
-              ? Text(Constant.languageEN)
-              : Text(Constant.languageFR),
+          child: Text(notifyData.displayLanguageChanger()),
           onPressed: () => {
             setState(() {
-              currentLanguage = currentLanguage == Constant.languageEN
-                  ? Constant.languageFR
-                  : Constant.languageEN;
+              currentLanguage = currentLanguage == NotifyData.languageEN
+                  ? NotifyData.languageFR
+                  : NotifyData.languageEN;;
               Constant.currentLanguage = currentLanguage;
               notifyData.changeLanguage(currentLanguage);
-              /*session.setRole(null);
-              session.setParent(null);
-              session.setChild(null);
-              session.setCurrentChildAsParent(null);*/
+              
             }),
           },
         ),

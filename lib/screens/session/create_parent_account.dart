@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../core/constance_session.dart';
 import '../../core/constances.dart';
+import '../../core/core_translator.dart';
 import '../../core/notify_data.dart';
 import '../../providers/session_provider.dart';
 import '../../widgets/app_scaffold.dart';
@@ -16,6 +17,7 @@ class CreateParentAccount extends StatefulWidget {
 
 class _CreateParentAccountState extends State<CreateParentAccount> {
   final _formKey = GlobalKey<FormState>();
+  Translator translator = Translator();
 
   final firstNameCtrl = TextEditingController();
   final lastNameCtrl = TextEditingController();
@@ -42,9 +44,7 @@ class _CreateParentAccountState extends State<CreateParentAccount> {
       _showSuccessDialog(notifyData);
     } else {
       _showError(session.errorMessage ??
-          (notifyData.currentLanguage == Constant.languageEN
-              ? ConstantSession.CreateParentAccountErrorMessageEN
-              : ConstantSession.CreateParentAccountErrorMessageFR));
+          translator.getText('CreateParentAccountErrorMessage'));
     }
   }
 
@@ -52,13 +52,9 @@ class _CreateParentAccountState extends State<CreateParentAccount> {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        title: Text((notifyData.currentLanguage == Constant.languageEN
-            ? ConstantSession.CreateParentAccountCreatedEN
-            : ConstantSession.CreateParentAccountCreatedFR)),
+        title: Text(translator.getText('CreateParentAccountCreated')),
         content: Text(
-          (notifyData.currentLanguage == Constant.languageEN
-              ? ConstantSession.CreateParentAccountValidationMsgEN
-              : ConstantSession.CreateParentAccountValidationMsgFR),
+          translator.getText('CreateParentAccountValidationMsg'),
         ),
         actions: [
           TextButton(
@@ -74,9 +70,7 @@ class _CreateParentAccountState extends State<CreateParentAccount> {
                 ),
               );
             },
-            child: Text((notifyData.currentLanguage == Constant.languageEN
-                ? ConstantSession.CreateParentAccountActivateEN
-                : ConstantSession.CreateParentAccountActivateFR)),
+            child: Text(translator.getText('CreateParentAccountActivate')),
           )
         ],
       ),
@@ -103,6 +97,7 @@ class _CreateParentAccountState extends State<CreateParentAccount> {
   Widget build(BuildContext context) {
     final session = context.watch<SessionProvider>();
     final NotifyData notifyData = context.watch<NotifyData>();
+    translator = Translator(status: StatusLangue.CONSTANCE_SESSION, lang: notifyData.currentLanguage);
 
     return AppScaffold(
       //appBar: AppBar(title: const Text("Create Parent Account")),
@@ -116,43 +111,30 @@ class _CreateParentAccountState extends State<CreateParentAccount> {
                 onPressed:
                     () {}, //context.read<SessionProvider>().login('child'),
                 style: Constant.getTitle1ButtonStyle(),
-                child: Text((notifyData.currentLanguage == Constant.languageEN
-                    ? ConstantSession.CreateParentAccountCreateParentAccountEN
-                    : ConstantSession
-                        .CreateParentAccountCreateParentAccountFR)),
+                child: Text(translator.getText('CreateParentAccountCreateParentAccount')),
               ),
               const SizedBox(height: 24),
               _field(
                   notifyData,
                   firstNameCtrl,
-                  (notifyData.currentLanguage == Constant.languageEN
-                      ? ConstantSession.CreateParentAccountFirstNameEN
-                      : ConstantSession.CreateParentAccountFirstNameFR)),
+                  translator.getText('CreateParentAccountFirstName')),
               _field(
                   notifyData,
                   lastNameCtrl,
-                  (notifyData.currentLanguage == Constant.languageEN
-                      ? ConstantSession.CreateParentAccountLastNameEN
-                      : ConstantSession.CreateParentAccountLastNameFR)),
+                  translator.getText('CreateParentAccountLastName')),
               _field(
                   notifyData,
                   loginCtrl,
-                  (notifyData.currentLanguage == Constant.languageEN
-                      ? ConstantSession.CreateParentAccountLoginEN
-                      : ConstantSession.CreateParentAccountLoginFR)),
+                  translator.getText('CreateParentAccountLogin')),
               _field(
                   notifyData,
                   emailCtrl,
-                  (notifyData.currentLanguage == Constant.languageEN
-                      ? ConstantSession.CreateParentAccountEmailEN
-                      : ConstantSession.CreateParentAccountEmailFR),
+                  translator.getText('CreateParentAccountEmail'),
                   keyboardType: TextInputType.emailAddress),
               _field(
                   notifyData,
                   passwordCtrl,
-                  (notifyData.currentLanguage == Constant.languageEN
-                      ? ConstantSession.CreateParentAccountPasswordEN
-                      : ConstantSession.CreateParentAccountPasswordFR),
+                  translator.getText('CreateParentAccountPassword'),
                   obscure: true),
               const SizedBox(height: 20),
               SizedBox(
@@ -164,11 +146,7 @@ class _CreateParentAccountState extends State<CreateParentAccount> {
                   },
                   child: session.isLoading
                       ? const CircularProgressIndicator()
-                      : Text((notifyData.currentLanguage ==
-                              Constant.languageEN
-                          ? ConstantSession.CreateParentAccountCreateAccountEN
-                          : ConstantSession
-                              .CreateParentAccountCreateAccountFR)),
+                      : Text(translator.getText('CreateParentAccountCreateAccount')),
                 ),
               ),
             ],
@@ -192,9 +170,7 @@ class _CreateParentAccountState extends State<CreateParentAccount> {
         obscureText: obscure,
         keyboardType: keyboardType,
         validator: (v) => v == null || v.isEmpty
-            ? (notifyData.currentLanguage == Constant.languageEN
-                ? ConstantSession.CreateParentAccountRequiredEN
-                : ConstantSession.CreateParentAccountRequiredFR)
+            ? translator.getText('CreateParentAccountRequired')
             : null,
         decoration: InputDecoration(
           labelText: label,

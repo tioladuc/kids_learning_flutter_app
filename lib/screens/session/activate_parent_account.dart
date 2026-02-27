@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../core/constance_session.dart';
 import '../../core/constances.dart';
+import '../../core/core_translator.dart';
 import '../../core/notify_data.dart';
 import '../../providers/session_provider.dart';
 import '../../widgets/app_scaffold.dart';
@@ -20,6 +21,7 @@ class ActivateParentAccount extends StatefulWidget {
 
 class _ActivateParentAccountState extends State<ActivateParentAccount> {
   final _formKey = GlobalKey<FormState>();
+  Translator translator = Translator();
 
   late TextEditingController emailCtrl;
   final codeCtrl = TextEditingController();
@@ -46,14 +48,10 @@ class _ActivateParentAccountState extends State<ActivateParentAccount> {
       _showSuccess(
         notifyData,
           message:
-              (notifyData.currentLanguage == Constant.languageEN
-                    ? ConstantSession.ActivationSuccessMessageEN
-                    : ConstantSession.ActivationSuccessMessageFR),
+              translator.getText('ActivationSuccessMessage'),
           returnLogin: true);
     } else {
-      _showError(session.errorMessage ?? (notifyData.currentLanguage == Constant.languageEN
-                    ? ConstantSession.ActivationErrorMessageEN
-                    : ConstantSession.ActivationErrorMessageFR));
+      _showError(session.errorMessage ?? translator.getText('ActivationErrorMessage'));
     }
   }
 
@@ -71,14 +69,10 @@ class _ActivateParentAccountState extends State<ActivateParentAccount> {
     if (success) {
       _showSuccess(
         notifyData,
-          message: (notifyData.currentLanguage == Constant.languageEN
-                    ? ConstantSession.ResendActivationCodeEN
-                    : ConstantSession.ResendActivationCodeFR),
+          message: translator.getText('ResendActivationCode'),
           returnLogin: false);
     } else {
-      _showError(session.errorMessage ?? (notifyData.currentLanguage == Constant.languageEN
-                    ? ConstantSession.ResendActivationErrorMessageEN
-                    : ConstantSession.ResendActivationErrorMessageFR));
+      _showError(session.errorMessage ?? translator.getText('ResendActivationErrorMessage'));
     }
   }
 
@@ -86,9 +80,7 @@ class _ActivateParentAccountState extends State<ActivateParentAccount> {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        title: Text((notifyData.currentLanguage == Constant.languageEN
-                    ? ConstantSession.SuccessMessageEN
-                    : ConstantSession.SuccessMessageFR)),
+        title: Text(translator.getText('SuccessMessage')),
         content: Text(message),
         actions: [
           TextButton(
@@ -103,9 +95,7 @@ class _ActivateParentAccountState extends State<ActivateParentAccount> {
                 Navigator.pop(context);
               }
             },
-            child: Text((notifyData.currentLanguage == Constant.languageEN
-                    ? ConstantSession.ContinueMessageEN
-                    : ConstantSession.ContinueMessageFR)),
+            child: Text(translator.getText('ContinueMessage')),
           )
         ],
       ),
@@ -129,9 +119,10 @@ class _ActivateParentAccountState extends State<ActivateParentAccount> {
   Widget build(BuildContext context) {
     final session = context.watch<SessionProvider>();
     final NotifyData notifyData = context.watch<NotifyData>();
+    translator = Translator(status: StatusLangue.CONSTANCE_SESSION, lang: notifyData.currentLanguage);
 
     return AppScaffold(
-      //appBar: AppBar(title: const Text("Activate Account")),
+      
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Form(
@@ -140,17 +131,12 @@ class _ActivateParentAccountState extends State<ActivateParentAccount> {
             children: [
               ElevatedButton(
                 onPressed:
-                    () {}, //context.read<SessionPro_resendActivationCodevider>().login('child'),
+                    () {}, 
                 style: Constant.getTitle1ButtonStyle(),
-                child: Text((notifyData.currentLanguage == Constant.languageEN
-                    ? ConstantSession.ActivateAccountEN
-                    : ConstantSession.ActivateAccountFR)),
+                child: Text(translator.getText('ActivateAccount')),
               ),
               const SizedBox(height: 24),
-              Text(
-                (notifyData.currentLanguage == Constant.languageEN
-                    ? ConstantSession.EnterActivationCodeEN
-                    : ConstantSession.EnterActivationCodeFR),
+              Text(translator.getText('EnterActivationCode'),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 20),
@@ -160,9 +146,7 @@ class _ActivateParentAccountState extends State<ActivateParentAccount> {
                   "Email",
                   keyboardType: TextInputType.emailAddress
                   ),
-              _field(notifyData, codeCtrl, (notifyData.currentLanguage == Constant.languageEN
-                    ? ConstantSession.ActivationCodeEN
-                    : ConstantSession.ActivationCodeFR),
+              _field(notifyData, codeCtrl, translator.getText('ActivationCode'),
                   keyboardType: TextInputType.text, addValidator: false),
               const SizedBox(height: 20),
               SizedBox(
@@ -172,9 +156,7 @@ class _ActivateParentAccountState extends State<ActivateParentAccount> {
                   onPressed: (){session.isLoading ? null : _activate(notifyData);},
                   child: session.isLoading
                       ? const CircularProgressIndicator()
-                      : Text((notifyData.currentLanguage == Constant.languageEN
-                    ? ConstantSession.ActivateAccountBetaEN
-                    : ConstantSession.ActivateAccountBetaFR)),
+                      : Text(translator.getText('ActivateAccountBeta')),
                 ),
               ),
               const SizedBox(height: 20),
@@ -189,9 +171,7 @@ class _ActivateParentAccountState extends State<ActivateParentAccount> {
                   },
                   child: session.isActivationCodeSending
                       ? const CircularProgressIndicator()
-                      : Text((notifyData.currentLanguage == Constant.languageEN
-                    ? ConstantSession.ResendActivationCodeBetaEN
-                    : ConstantSession.ResendActivationCodeBetaFR)),
+                      : Text(translator.getText('ResendActivationCodeBeta')),
                 ),
               ),
             ],
@@ -214,9 +194,7 @@ class _ActivateParentAccountState extends State<ActivateParentAccount> {
         controller: ctrl,
         keyboardType: keyboardType,
         validator: (v) =>
-            addValidator ? (v == null || v.isEmpty ? (notifyData.currentLanguage == Constant.languageEN
-                    ? ConstantSession.RequiredEN
-                    : ConstantSession.RequiredFR) : null) : null,
+            addValidator ? (v == null || v.isEmpty ? translator.getText('Required') : null) : null,
         decoration: InputDecoration(
           labelText: label,
           border: OutlineInputBorder(

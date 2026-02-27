@@ -5,18 +5,21 @@ import 'package:provider/provider.dart';
 import '../../core/constance_session.dart';
 //import '../../core/constances.dart';
 import '../../core/constances.dart';
+import '../../core/core_translator.dart';
 import '../../core/notify_data.dart';
 import '../../widgets/app_page_title.dart';
 import '../../widgets/app_scaffold.dart';
 
 class LogoutScreen extends StatelessWidget {
-  const LogoutScreen({super.key});
+  LogoutScreen({super.key});
+  
+  Translator translator = Translator();
 
   @override
   Widget build(BuildContext context) {
     final notifyData = context.watch<NotifyData>();
+    translator = Translator(status: StatusLangue.CONSTANCE_SESSION, lang: notifyData.currentLanguage);
     final sessionProvider = context.watch<SessionProvider>();
-    //final session = context.watch<SessionProvider>();
 
     return AppScaffold(
       body: SafeArea(
@@ -28,16 +31,11 @@ class LogoutScreen extends StatelessWidget {
             children: [
               const SizedBox(height: 20),
               PageTitle(
-                text: notifyData.currentLanguage == Constant.languageEN
-                    ? ConstantSession.LogoutTitleEN
-                    : ConstantSession.LogoutTitleFR,
+                text: translator.getText('LogoutTitle'),
               ),
 
               const SizedBox(height: 20),
-              Text(
-                notifyData.currentLanguage == Constant.languageEN
-                    ? ConstantSession.LogoutMessageEN
-                    : ConstantSession.LogoutMessageFR,
+              Text(translator.getText('LogoutMessage'),
               ),
 
               const SizedBox(height: 20),
@@ -52,9 +50,7 @@ class LogoutScreen extends StatelessWidget {
                     MaterialPageRoute(builder: (_) => LoginScreen()),
                   );
                 },
-                child: notifyData.currentLanguage == Constant.languageEN
-                    ? Text(ConstantSession.LogoutButtonEN)
-                    : Text(ConstantSession.LogoutButtonFR),
+                child: Text(translator.getText('LogoutButton'))
               ),
             ],
           ),

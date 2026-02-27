@@ -25,7 +25,7 @@ class AppText {
 
 ///////////////////////////////////////////////
 class Constant {
-  static final String profileChild = 'Child';
+  /*static final String profileChild = 'Child';
   static final String profileParent = 'Parent';
 
   static final AppNameFR = 'Kids Learning FR';
@@ -66,7 +66,7 @@ class Constant {
   static final String recordSaveAndUploadEN = 'Save & Upload';
 
   static final String UploadFailedEN = 'Upload Failed';
-  static final String UploadFailedFR = 'Sauvegarde échouée';
+  static final String UploadFailedFR = 'Sauvegarde échouée';*/
 
   static String currentLanguage = 'EN';
 

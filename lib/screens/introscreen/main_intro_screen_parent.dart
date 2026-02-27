@@ -3,6 +3,7 @@ import 'package:kids_learning_flutter_app/screens/introscreen/main_intro_screen_
 import 'package:provider/provider.dart';
 import '../../core/constance_parent.dart';
 import '../../core/constances.dart';
+import '../../core/core_translator.dart';
 import '../../core/notify_data.dart';
 import '../../models/child.dart';
 import '../../providers/session_provider.dart';
@@ -18,6 +19,8 @@ class MainIntroScreenParent extends StatefulWidget {
 }
 
 class _MainIntroScreenParent extends State<MainIntroScreenParent> {
+  Translator translator = Translator();
+  
   void _navigateTo(Child? item) {
     Navigator.push(
       context,
@@ -29,6 +32,7 @@ class _MainIntroScreenParent extends State<MainIntroScreenParent> {
   Widget build(BuildContext context) {
     SessionProvider session = context.watch<SessionProvider>();
     final notifyData = context.watch<NotifyData>();
+    translator = Translator(status: StatusLangue.CONSTANCE_PARENT, lang: notifyData.currentLanguage);
 
     return AppScaffold(
       body: Padding(
@@ -41,9 +45,7 @@ class _MainIntroScreenParent extends State<MainIntroScreenParent> {
               child: ElevatedButton(
                 onPressed: () {},
                 style: Constant.getTitle1ButtonStyle(),
-                child: Text(notifyData.currentLanguage == Constant.languageEN
-                    ? ConstantParent.menuTitrePageIntroParentEN
-                    : ConstantParent.menuTitrePageIntroParentFR),
+                child: Text(translator.getText('menuTitrePageIntroParent')),
               ),
             ),
 
@@ -53,10 +55,7 @@ class _MainIntroScreenParent extends State<MainIntroScreenParent> {
             Expanded(
               child: session.parent!.children.isEmpty
                   ? Center(
-                      child: Text(
-                        notifyData.currentLanguage == Constant.languageEN
-                            ? ConstantParent.menuNoChildRegisterEN
-                            : ConstantParent.menuNoChildRegisterEN,
+                      child: Text(translator.getText('menuNoChildRegister'),
                       ),
                     )
                   : ListView.builder(
@@ -155,10 +154,7 @@ class _MainIntroScreenParent extends State<MainIntroScreenParent> {
               child: ElevatedButton.icon(
                 onPressed: () => _showAddChildDialog(context, notifyData),
                 icon: const Icon(Icons.person_add),
-                label: Text(
-                  notifyData.currentLanguage == Constant.languageEN
-                      ? ConstantParent.menuAddChildEN
-                      : ConstantParent.menuAddChildFR,
+                label: Text(translator.getText('menuAddChild'),
                 ),
                 style: Constant.getTitle3ButtonStyle(),
               ),
@@ -170,9 +166,7 @@ class _MainIntroScreenParent extends State<MainIntroScreenParent> {
                     _showChangePasswordDialog(context, session, notifyData),
                 icon: const Icon(Icons.lock),
                 label: Text(
-                  notifyData.currentLanguage == Constant.languageEN
-                      ? ConstantParent.menuChangeNameAndPwdEN
-                      : ConstantParent.menuChangeNameAndPwdFR,
+                  translator.getText('menuChangeNameAndPwd'),
                 ),
                 style: Constant.getTitle3ButtonRedStyle(),
               ),
@@ -194,37 +188,28 @@ class _MainIntroScreenParent extends State<MainIntroScreenParent> {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        title: Text(
-          notifyData.currentLanguage == Constant.languageEN
-              ? ConstantParent.titleAddChildEN
-              : ConstantParent.titleAddChildFR,
+        title: Text(translator.getText('titleAddChild'),
         ),
         content: Column(
           children: [
             TextField(
               controller: controllerName,
               decoration: InputDecoration(
-                labelText: notifyData.currentLanguage == Constant.languageEN
-                    ? ConstantParent.labelChildNameEN
-                    : ConstantParent.labelChildNameFR,
+                labelText: translator.getText('labelChildName'),
               ),
             ),
             SizedBox(height: 10),
             TextField(
               controller: controllerLogin,
               decoration: InputDecoration(
-                labelText: notifyData.currentLanguage == Constant.languageEN
-                    ? ConstantParent.labelChildLoginEN
-                    : ConstantParent.labelChildLoginFR,
+                labelText: translator.getText('labelChildLogin'),
               ),
             ),
             SizedBox(height: 10),
             TextField(
               controller: controllerPassword,
               decoration: InputDecoration(
-                labelText: notifyData.currentLanguage == Constant.languageEN
-                    ? ConstantParent.labelChildPwdEN
-                    : ConstantParent.labelChildPwdEN,
+                labelText: translator.getText('labelChildPwd'),
               ),
             ),
           ],
@@ -232,10 +217,7 @@ class _MainIntroScreenParent extends State<MainIntroScreenParent> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text(
-              notifyData.currentLanguage == Constant.languageEN
-                  ? ConstantParent.labelChildCancelButtonEN
-                  : ConstantParent.labelChildCancelButtonFR,
+            child: Text(translator.getText('labelChildCancelButton'),
             ),
           ),
           ElevatedButton(
@@ -251,10 +233,7 @@ class _MainIntroScreenParent extends State<MainIntroScreenParent> {
                 Navigator.pop(context);
               }
             },
-            child: Text(
-              notifyData.currentLanguage == Constant.languageEN
-                  ? ConstantParent.labelChildSaveButtonEN
-                  : ConstantParent.labelChildSaveButtonFR,
+            child: Text(translator.getText('labelChildSaveButton'),
             ),
           ),
         ],
@@ -277,19 +256,14 @@ class _MainIntroScreenParent extends State<MainIntroScreenParent> {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        title: Text(
-          notifyData.currentLanguage == Constant.languageEN
-              ? ConstantParent.labelTitleParentPwdChangeEN
-              : ConstantParent.labelTitleParentPwdChangeFR,
+        title: Text(translator.getText('labelTitleParentPwdChange'),
         ),
         content: Column(
           children: [
             TextField(
               controller: controllerName,
               decoration: InputDecoration(
-                labelText: notifyData.currentLanguage == Constant.languageEN
-                    ? ConstantParent.labelNameParentPwdChangeEN
-                    : ConstantParent.labelNameParentPwdChangeFR,
+                labelText: translator.getText('labelNameParentPwdChange'),
               ),
             ),
             SizedBox(height: 10),
@@ -297,9 +271,7 @@ class _MainIntroScreenParent extends State<MainIntroScreenParent> {
               controller: controllerPassword,
               obscureText: true,
               decoration: InputDecoration(
-                labelText: notifyData.currentLanguage == Constant.languageEN
-                    ? ConstantParent.labelNameParentPwdChangeEN
-                    : ConstantParent.labelNameParentPwdChangeFR,
+                labelText: translator.getText('labelNameParentPwdChange'),
               ),
             ),
           ],
@@ -307,10 +279,7 @@ class _MainIntroScreenParent extends State<MainIntroScreenParent> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text(
-              notifyData.currentLanguage == Constant.languageEN
-                  ? ConstantParent.labelCancelButtonParentPwdChangeEN
-                  : ConstantParent.labelCancelButtonParentPwdChangeFR,
+            child: Text(translator.getText('labelCancelButtonParentPwdChange'),
             ),
           ),
           ElevatedButton(
@@ -324,10 +293,7 @@ class _MainIntroScreenParent extends State<MainIntroScreenParent> {
                 Navigator.pop(context);
               }
             },
-            child: Text(
-              notifyData.currentLanguage == Constant.languageEN
-                  ? ConstantParent.labelSaveButtonParentPwdChangeEN
-                  : ConstantParent.labelSaveButtonParentPwdChangeFR,
+            child: Text(translator.getText('labelSaveButtonParentPwdChange'),
             ),
           ),
         ],

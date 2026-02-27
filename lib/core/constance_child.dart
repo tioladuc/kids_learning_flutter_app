@@ -1,6 +1,6 @@
 
 class ConstantChild {
-
+/*
   static final String menuDictationFR = 'Faire Des Dictées';
   static final String menuDictationEN = 'Do Dictation';
 
@@ -17,5 +17,5 @@ class ConstantChild {
   static final String menuLogoutEN = 'Logout';
   static final String menuLogoutChildParentFR = 'Revenir Menu Parent';
   static final String menuLogoutChildParentEN = 'Go Back To Parent Menu';
-
+*/
 }

@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../../core/constance_course.dart';
 import '../../core/constance_statistics.dart';
 import '../../core/constances.dart';
+import '../../core/core_translator.dart';
 import '../../core/notify_data.dart';
 import '../../models/child.dart';
 import '../../providers/session_provider.dart';
@@ -18,6 +19,8 @@ class IntroStatisticsForParent extends StatefulWidget {
 }
 
 class _IntroStatisticsForParentState extends State<IntroStatisticsForParent> {
+  Translator translator = Translator();
+
   @override
   void initState() {
     super.initState();
@@ -31,12 +34,11 @@ class _IntroStatisticsForParentState extends State<IntroStatisticsForParent> {
   Widget build(BuildContext context) {
     final session = context.watch<SessionProvider>();
     final NotifyData notifyData = context.watch<NotifyData>();
+    translator = Translator(status: StatusLangue.CONSTANCE_STATISTICS, lang: notifyData.currentLanguage);
     final children = session.children;
 
     return AppScaffold(
-      /*appBar: AppBar(
-        title: const Text("Children Accounts"),
-      ),*/
+     
       body: Padding(
         padding: const EdgeInsets.all(12),
         child: Column(
@@ -44,25 +46,14 @@ class _IntroStatisticsForParentState extends State<IntroStatisticsForParent> {
             ElevatedButton(
               onPressed: () {},
               style: Constant.getTitle1ButtonStyle(),
-              child: Text(notifyData.currentLanguage == Constant.languageEN
-                  ? ConstantStatistics.ChildrenAccountsStatisticsEN
-                  : ConstantStatistics.ChildrenAccountsStatisticsFR),
+              child: Text(translator.getText('ChildrenAccountsStatistics')),
             ),
             Expanded(
               // ✅ gives available space
               child: _buildContent(session, children, notifyData),
             ),
           ],
-        ) /*_buildContent(session, children)*/ /*Column(
-          children: [
-            ElevatedButton(
-          onPressed: () {},
-          style: Constant.getTitle1ButtonStyle(),
-          child: Text("Children Accounts Statistics" ),
-        ),
-            _buildContent(session, children)
-          ],
-        ),*/
+        ) 
         ,
       ),
     );
@@ -76,9 +67,7 @@ class _IntroStatisticsForParentState extends State<IntroStatisticsForParent> {
 
     if (children.isEmpty) {
       return Center(
-          child: Text(notifyData.currentLanguage == Constant.languageEN
-              ? ConstantStatistics.NoChildrenRegisteredEN
-              : ConstantStatistics.NoChildrenRegisteredFR));
+          child: Text(translator.getText('NoChildrenRegistered')));
     }
 
     return ListView.builder(
@@ -155,9 +144,7 @@ class _IntroStatisticsForParentState extends State<IntroStatisticsForParent> {
                   children: [
                     const Icon(Icons.account_circle, size: 18),
                     const SizedBox(width: 8),
-                    Text((notifyData.currentLanguage == Constant.languageEN
-                            ? ConstantStatistics.StatisticLoginEN
-                            : ConstantStatistics.StatisticLoginFR) +
+                    Text(translator.getText('StatisticLogin') +
                         ": ${child.login}"),
                   ],
                 ),
@@ -169,9 +156,7 @@ class _IntroStatisticsForParentState extends State<IntroStatisticsForParent> {
                   children: [
                     const Icon(Icons.lock, size: 18),
                     const SizedBox(width: 8),
-                    Text((notifyData.currentLanguage == Constant.languageEN
-                            ? ConstantStatistics.StatisticPasswordEN
-                            : ConstantStatistics.StatisticPasswordFR) +
+                    Text(translator.getText('StatisticPassword') +
                         ": ${child.password}"),
                   ],
                 ),
@@ -192,12 +177,8 @@ class _IntroStatisticsForParentState extends State<IntroStatisticsForParent> {
                     const SizedBox(width: 8),
                     Text(
                       child.parentResponsible!
-                          ? (notifyData.currentLanguage == Constant.languageEN
-                              ? ConstantStatistics.FinancialOwnerEN
-                              : ConstantStatistics.FinancialOwnerFR)
-                          : (notifyData.currentLanguage == Constant.languageEN
-                              ? ConstantStatistics.NotFinancialOwnerEN
-                              : ConstantStatistics.NotFinancialOwnerFR),
+                          ? translator.getText('FinancialOwner')
+                          : translator.getText('NotFinancialOwner'),
                       style: TextStyle(
                         color: child.parentResponsible!
                             ? Colors.green

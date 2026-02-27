@@ -31,40 +31,28 @@ class _MainIntroScreenChild extends State<MainIntroScreenChild> {
     String logoutDisplay = '';
 
     if (session.parent != null) {
-      logoutDisplay = translator.getText('menuLogoutChildParent');/*langue == Constant.languageEN
-          ? ConstantChild.menuLogoutChildParentEN
-          : ConstantChild.menuLogoutChildParentFR;*/
+      logoutDisplay = translator.getText('menuLogoutChildParent');
     } else {
-      logoutDisplay = langue == Constant.languageEN
-          ? ConstantChild.menuLogoutEN
-          : ConstantChild.menuLogoutFR;
+      logoutDisplay = translator.getText('menuLogout');
     }
     return [
       {
-        "title": langue == Constant.languageEN
-            ? ConstantChild.menuDictationEN
-            : ConstantChild.menuDictationFR,
+        "title": translator.getText('menuDictation'),
         "icon": Icons.mic,
         "key": 'Dictation',
       },
       {
-        "title": langue == Constant.languageEN
-            ? ConstantChild.menuPickCourseEN
-            : ConstantChild.menuPickCourseFR,
+        "title": translator.getText('menuPickCourse'),
         "icon": Icons.menu_book,
         "key": 'PickACourse',
       },
       {
-        "title": langue == Constant.languageEN
-            ? ConstantChild.menuCoursesValidationPendingEN
-            : ConstantChild.menuCoursesValidationPendingFR,
+        "title": translator.getText('menuCoursesValidationPending'),
         "icon": Icons.hourglass_top,
         "key": 'CourseValidationPending',
       },
       {
-        "title": langue == Constant.languageEN
-            ? ConstantChild.menuStatisticsEN
-            : ConstantChild.menuStatisticsFR,
+        "title": translator.getText('menuStatistics'),
         "icon": Icons.bar_chart,
         "key": 'Statistics',
       },
@@ -105,7 +93,7 @@ class _MainIntroScreenChild extends State<MainIntroScreenChild> {
       if (session.parent == null) {
         Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (_) => const LogoutScreen()),
+          MaterialPageRoute(builder: (_) => LogoutScreen()),
           (route) => false,
         );
       } else {
@@ -124,7 +112,6 @@ class _MainIntroScreenChild extends State<MainIntroScreenChild> {
     final session = context.watch<SessionProvider>();
     translator = Translator(status: StatusLangue.CONSTANCE_CHILD, lang: notifyData.currentLanguage);
     menuItems = produceMenuItems(notifyData.currentLanguage, session);
-    print('POPOPOPOPOPOPOPOPOPO');
     
 
     return AppScaffold(

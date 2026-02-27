@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../core/constance_statistics.dart';
 import '../../../core/constances.dart';
+import '../../../core/core_translator.dart';
 import '../../../core/notify_data.dart';
 import '../../../models/child.dart';
 import '../../../providers/statistics_provider.dart';
@@ -26,6 +27,7 @@ class IntroStatistics extends StatefulWidget {
 
 class _IntroStatisticsState extends State<IntroStatistics> {
   Child? child;
+  Translator translator = Translator();
 
   @override
   void initState() {
@@ -50,6 +52,7 @@ class _IntroStatisticsState extends State<IntroStatistics> {
   Widget build(BuildContext context) {
     final provider = context.watch<StatisticsProvider>();
     final notifyData = context.watch<NotifyData>();
+    translator = Translator(status: StatusLangue.CONSTANCE_STATISTICS, lang: notifyData.currentLanguage);
 
     return AppScaffold(
       body: provider.isLoading
@@ -68,36 +71,24 @@ class _IntroStatisticsState extends State<IntroStatistics> {
             child: ElevatedButton(
               onPressed: () {},
               style: Constant.getTitle1ButtonStyle(),
-              child: Text((notifyData.currentLanguage == Constant.languageEN
-                  ? ConstantStatistics.ChildStatTitleEN
-                  : ConstantStatistics.ChildStatTitleFR)),
+              child: Text(translator.getText('ChildStatTitle')),
             ),
           ),
           _childHeader(notifyData),
           const SizedBox(height: 16),
-          _sectionTitle((notifyData.currentLanguage == Constant.languageEN
-              ? ConstantStatistics.IntroStatTitleBasicInformationEN
-              : ConstantStatistics.IntroStatTitleBasicInformationFR)),
+          _sectionTitle(translator.getText('IntroStatTitleBasicInformation')),
           _basicInfo(notifyData),
           const SizedBox(height: 16),
-          _sectionTitle((notifyData.currentLanguage == Constant.languageEN
-              ? ConstantStatistics.IntroStatTitleLastConnectionEN
-              : ConstantStatistics.IntroStatTitleLastConnectionFR)),
+          _sectionTitle(translator.getText('IntroStatTitleLastConnection')),
           _connectionInfo(provider, notifyData),
           const SizedBox(height: 16),
-          _sectionTitle((notifyData.currentLanguage == Constant.languageEN
-              ? ConstantStatistics.IntroStatTitleCoursesVisitedEN
-              : ConstantStatistics.IntroStatTitleCoursesVisitedFR)),
+          _sectionTitle(translator.getText('IntroStatTitleCoursesVisited')),
           _coursesVisited(provider, notifyData),
           const SizedBox(height: 16),
-          _sectionTitle((notifyData.currentLanguage == Constant.languageEN
-              ? ConstantStatistics.IntroStatTitleCoursesCompletedEN
-              : ConstantStatistics.IntroStatTitleCoursesCompletedFR)),
+          _sectionTitle(translator.getText('IntroStatTitleCoursesCompleted')),
           _coursesCompleted(provider, notifyData),
           const SizedBox(height: 16),
-          _sectionTitle((notifyData.currentLanguage == Constant.languageEN
-              ? ConstantStatistics.IntroStatTitleCoursesNeverDoneEN
-              : ConstantStatistics.IntroStatTitleCoursesNeverDoneFR)),
+          _sectionTitle(translator.getText('IntroStatTitleCoursesNeverDone')),
           _coursesNeverDone(provider, notifyData),
         ],
       ),
@@ -115,9 +106,7 @@ class _IntroStatisticsState extends State<IntroStatistics> {
               Text(widget.child.name.isNotEmpty ? widget.child.name[0] : "?"),
         ),
         title: Text(widget.child.name),
-        subtitle: Text((notifyData.currentLanguage == Constant.languageEN
-                ? ConstantStatistics.IntroStatLoginEN
-                : ConstantStatistics.IntroStatLoginFR)
+        subtitle: Text(translator.getText('IntroStatLogin')
             .replaceAll('{0}', child!.login)),
         trailing: widget.isResponsible
             ? const Icon(Icons.star, color: Colors.orange)
@@ -134,36 +123,22 @@ class _IntroStatisticsState extends State<IntroStatistics> {
         child: Column(
           children: [
             _infoRow(
-                (notifyData.currentLanguage == Constant.languageEN
-                    ? ConstantStatistics.IntroStatAgeEN
-                    : ConstantStatistics.IntroStatAgeFR),
+                translator.getText('IntroStatAge'),
                 "${child!.age ?? '-'}"),
             _infoRow(
-                (notifyData.currentLanguage == Constant.languageEN
-                    ? ConstantStatistics.IntroStatCompletedTasksEN
-                    : ConstantStatistics.IntroStatCompletedTasksFR),
+                translator.getText('IntroStatCompletedTasks'),
                 "${child!.completedTasks ?? 0}"),
             _infoRow(
-                (notifyData.currentLanguage == Constant.languageEN
-                    ? ConstantStatistics.IntroStatTotalTasksEN
-                    : ConstantStatistics.IntroStatTotalTasksFR),
+                translator.getText('IntroStatTotalTasks'),
                 "${child!.totalTasks ?? 0}"),
             _infoRow(
-                (notifyData.currentLanguage == Constant.languageEN
-                    ? ConstantStatistics.IntroStatTotalTimeEN
-                    : ConstantStatistics.IntroStatTotalTimeFR),
-                (notifyData.currentLanguage == Constant.languageEN
-                        ? ConstantStatistics.IntroStatMinuteEN
-                        : ConstantStatistics.IntroStatMinuteFR)
+                translator.getText('IntroStatTotalTime'),
+                translator.getText('IntroStatMinute')
                     .replaceAll(
                         '{0}', (child!.totalTimeMinutes ?? 0).toString())),
             _infoRow(
-                (notifyData.currentLanguage == Constant.languageEN
-                    ? ConstantStatistics.IntroStatStreakDaysEN
-                    : ConstantStatistics.IntroStatStreakDaysFR),
-                (notifyData.currentLanguage == Constant.languageEN
-                        ? ConstantStatistics.IntroStatDaysEN
-                        : ConstantStatistics.IntroStatDaysFR)
+                translator.getText('IntroStatStreakDays'),
+                translator.getText('IntroStatDays')
                     .replaceAll('{0}', (child!.streakDays ?? 0).toString())),
           ],
         ),
@@ -178,15 +153,10 @@ class _IntroStatisticsState extends State<IntroStatistics> {
         padding: const EdgeInsets.all(12),
         child: Column(
           children: [
-            _infoRow(
-                (notifyData.currentLanguage == Constant.languageEN
-                    ? ConstantStatistics.IntroStatLastConnectionEN
-                    : ConstantStatistics.IntroStatLastConnectionFR),
+            _infoRow(translator.getText('IntroStatLastConnection'),
                 provider.lastConnectionTime ?? "-"),
             _infoRow(
-                (notifyData.currentLanguage == Constant.languageEN
-                    ? ConstantStatistics.IntroStatDurationEN
-                    : ConstantStatistics.IntroStatDurationFR),
+                translator.getText('IntroStatDuration'),
                 provider.lastConnectionDuration ?? "-"),
           ],
         ),
@@ -197,9 +167,7 @@ class _IntroStatisticsState extends State<IntroStatistics> {
   /// COURSES VISITED
   Widget _coursesVisited(StatisticsProvider provider, NotifyData notifyData) {
     if (provider.visitedCourses.isEmpty) {
-      return Text((notifyData.currentLanguage == Constant.languageEN
-          ? ConstantStatistics.IntroStatNoCoursesVisitedEN
-          : ConstantStatistics.IntroStatNoCoursesVisitedFR));
+      return Text(translator.getText('IntroStatNoCoursesVisited'));
     }
 
     return Column(
@@ -211,9 +179,7 @@ class _IntroStatisticsState extends State<IntroStatistics> {
         return Card(
           child: ListTile(
             title: Text(course.name),
-            subtitle: Text((notifyData.currentLanguage == Constant.languageEN
-                    ? ConstantStatistics.IntroStatTimeSpentEN
-                    : ConstantStatistics.IntroStatTimeSpentFR)
+            subtitle: Text(translator.getText('IntroStatTimeSpent')
                 .replaceAll('{0}', duration.toString())
                 .replaceAll('{1}', _formatDate(lastDateConnection))),
             leading: const Icon(Icons.visibility),
@@ -238,9 +204,7 @@ class _IntroStatisticsState extends State<IntroStatistics> {
   /// COURSES COMPLETED
   Widget _coursesCompleted(StatisticsProvider provider, NotifyData notifyData) {
     if (provider.completedCourses.isEmpty) {
-      return Text((notifyData.currentLanguage == Constant.languageEN
-          ? ConstantStatistics.IntroStatNoCompletedCoursesEN
-          : ConstantStatistics.IntroStatNoCompletedCoursesFR));
+      return Text(translator.getText('IntroStatNoCompletedCourses'));
     }
 
     return Column(
@@ -270,9 +234,7 @@ class _IntroStatisticsState extends State<IntroStatistics> {
   /// COURSES NEVER DONE
   Widget _coursesNeverDone(StatisticsProvider provider, NotifyData notifyData) {
     if (provider.neverDoneCourses.isEmpty) {
-      return Text((notifyData.currentLanguage == Constant.languageEN
-          ? ConstantStatistics.IntroStatNoPendingCoursesEN
-          : ConstantStatistics.IntroStatNoPendingCoursesFR));
+      return Text(translator.getText('IntroStatNoPendingCourses'));
     }
 
     return Column(
@@ -283,9 +245,7 @@ class _IntroStatisticsState extends State<IntroStatistics> {
         return Card(
           child: ListTile(
             title: Text(course.name),
-            subtitle: Text((notifyData.currentLanguage == Constant.languageEN
-                    ? ConstantStatistics.IntroStatPickedOnEN
-                    : ConstantStatistics.IntroStatPickedOnFR)
+            subtitle: Text(translator.getText('IntroStatPickedOn')
                 .replaceAll('{0}', _formatDate(date))),
             leading: const Icon(Icons.schedule, color: Colors.orange),
           ),

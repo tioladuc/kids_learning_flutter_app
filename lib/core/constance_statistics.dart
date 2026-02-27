@@ -1,5 +1,5 @@
 class ConstantStatistics {
-  static String ChildStatTitleEN = 'Child Statistics';
+  /*static String ChildStatTitleEN = 'Child Statistics';
   static String ChildStatTitleFR = 'Statistique Enfant';
 
   static String IntroStatTitleBasicInformationEN = 'Basic Information';
@@ -96,4 +96,4 @@ class ConstantStatistics {
   static String FinancialOwnerFR = 'Responsable Financier';
   static String NotFinancialOwnerEN = "Not Financial Owner";
   static String NotFinancialOwnerFR = 'Pas Responsable Financier';
-}
+*/}
