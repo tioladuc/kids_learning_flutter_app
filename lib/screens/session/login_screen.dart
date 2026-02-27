@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:kids_learning_flutter_app/core/notify_data.dart';
 import 'package:kids_learning_flutter_app/screens/introscreen/main_intro_screen_child.dart';
 import 'package:provider/provider.dart';
-import '../../core/constance_session.dart';
 import '../../core/constances.dart';
 import '../../core/core_translator.dart';
 import '../../providers/session_provider.dart';

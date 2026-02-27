@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../core/constance_course.dart';
-import '../../core/constance_statistics.dart';
 import '../../core/constances.dart';
 import '../../core/core_translator.dart';
 import '../../core/notify_data.dart';

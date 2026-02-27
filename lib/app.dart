@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kids_learning_flutter_app/core/notify_data.dart';
 import 'package:provider/provider.dart';
-
-import 'core/constance_session.dart';
 import 'models/child.dart';
 import 'providers/session_provider.dart';
 import 'screens/introscreen/child/child_pick_course.dart';

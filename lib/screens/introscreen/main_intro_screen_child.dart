@@ -3,7 +3,6 @@ import 'package:kids_learning_flutter_app/core/constances.dart';
 import 'package:kids_learning_flutter_app/providers/session_provider.dart';
 import 'package:kids_learning_flutter_app/screens/introscreen/main_intro_screen_parent.dart';
 import 'package:provider/provider.dart';
-import '../../core/constance_child.dart';
 import '../../core/core_translator.dart';
 import '../../core/notify_data.dart';
 import '../../widgets/app_scaffold.dart';

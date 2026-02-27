@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kids_learning_flutter_app/screens/introscreen/main_intro_screen_parent.dart';
 import 'package:provider/provider.dart';
-import '../../../core/constance_parent.dart';
 import '../../../core/constances.dart';
 import '../../../core/core_translator.dart';
 import '../../../core/notify_data.dart';

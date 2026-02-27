@@ -5,8 +5,6 @@ import 'package:kids_learning_flutter_app/screens/footer_intro_widget/presentati
 import 'package:kids_learning_flutter_app/screens/introscreen/main_intro_screen_parent.dart';
 import 'package:kids_learning_flutter_app/screens/introscreen/statistics/intro_statistics.dart';
 import 'package:provider/provider.dart';
-
-import '../core/constance_session.dart';
 import '../core/constances.dart';
 import '../core/core_translator.dart';
 import '../core/notify_data.dart';
