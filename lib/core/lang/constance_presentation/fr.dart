@@ -26,5 +26,10 @@ class Fr {
 
   "EnterMessage": "Entrer message",
   "Send": "Envoyer",
+
+  "CategoryRequestInformation": "Demande d`Information",
+  "CategoryComplain": "Complainte",
+  "CategorySuggestion": "Suggestion",
+  "CategoryOther": "Autre",
 };
 }

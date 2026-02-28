@@ -146,31 +146,22 @@ class _StatisticsCourseState extends State<StatisticsCourse> {
   /// APPRECIATION BADGE
   Widget _appreciationBadge(String appreciation, NotifyData notifyData) {
     Color color;
-
-    if (NotifyData.CourseStatExcellentEN.toLowerCase() ==
-            appreciation.toLowerCase() ||
-        NotifyData.CourseStatExcellentFR.toLowerCase() ==
+    if ('CourseStatExcellent'.toLowerCase() ==
             appreciation.toLowerCase()) {
       color = Colors.green;
-    } else if (NotifyData.CourseStatGoodEN.toLowerCase() ==
-            appreciation.toLowerCase() ||
-        NotifyData.CourseStatGoodFR.toLowerCase() ==
+    } else if ('CourseStatGood'.toLowerCase() ==
             appreciation.toLowerCase()) {
       color = Colors.blue;
-    } else if (NotifyData.CourseStatAverageEN.toLowerCase() ==
-            appreciation.toLowerCase() ||
-        NotifyData.CourseStatAverageFR.toLowerCase() ==
+    } else if ('CourseStatAverage'.toLowerCase() ==
             appreciation.toLowerCase()) {
       color = Colors.orange;
-    } else if (NotifyData.CourseStatPoorEN.toLowerCase() ==
-            appreciation.toLowerCase() ||
-        NotifyData.CourseStatPoorFR.toLowerCase() ==
+    } else if ('CourseStatPoor'.toLowerCase() ==
             appreciation.toLowerCase()) {
       color = Colors.red;
     } else {
       color = Colors.grey;
     }
-
+    
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
       decoration: BoxDecoration(
@@ -178,7 +169,7 @@ class _StatisticsCourseState extends State<StatisticsCourse> {
         borderRadius: BorderRadius.circular(20),
       ),
       child: Text(
-        appreciation,
+        translator.getText(appreciation),
         style: TextStyle(
           color: color,
           fontWeight: FontWeight.bold,

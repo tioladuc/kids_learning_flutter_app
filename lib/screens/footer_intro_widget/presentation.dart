@@ -20,28 +20,11 @@ class _PresentationState extends State<Presentation> {
   final TextEditingController _subjectController = TextEditingController();
   final TextEditingController _contentController = TextEditingController();
 
-  String _selectedCategory = '';
+  String _selectedCategory  = '';
 
-  List<String> _categories = [];
-
-  void changeCategoryInialise(NotifyData notifyData) {
-    if (notifyData.currentLanguage == NotifyData.languageEN) {
-      _categories = [
-        NotifyData.CategoryRequestInformationEN,
-        NotifyData.CategoryComplainEN,
-        NotifyData.CategorySuggestionEN,
-        NotifyData.CategoryOtherEN
-      ];
-      _selectedCategory = NotifyData.CategoryRequestInformationEN;
-    } else {
-      _categories = [
-        NotifyData.CategoryRequestInformationFR,
-        NotifyData.CategoryComplainFR,
-        NotifyData.CategorySuggestionFR,
-        NotifyData.CategoryOtherFR
-      ];
-      _selectedCategory = NotifyData.CategoryRequestInformationFR;
-    }
+  void changeCategoryInialise(NotifyData notifyData) {    
+      final _categoriesTmp = NotifyData.CategoryEmailTables;    
+      _selectedCategory = _categoriesTmp[0];    
   }
 
   @override
@@ -80,9 +63,9 @@ class _PresentationState extends State<Presentation> {
 
     _subjectController.clear();
     _contentController.clear();
-    setState(() {
+    /*setState(() {
       _selectedCategory = translator.getText('CategoryRequestInformation');
-    });
+    });*/
   }
 
   @override
@@ -212,10 +195,10 @@ class _PresentationState extends State<Presentation> {
                       labelText:translator.getText('Category'),
                       border: OutlineInputBorder(),
                     ),
-                    items: _categories.map((c) {
+                    items: NotifyData.CategoryEmailTables.map((c) {
                       return DropdownMenuItem(
                         value: c,
-                        child: Text(c),
+                        child: Text(translator.getText(c)),
                       );
                     }).toList(),
                     onChanged: (value) {

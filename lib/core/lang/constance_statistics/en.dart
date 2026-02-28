@@ -49,5 +49,10 @@ class En {
 
   "FinancialOwner": "Financial Owner",
   "NotFinancialOwner": "Not Financial Owner",
+
+  "CourseStatExcellent": "excellent",
+  "CourseStatGood": "good",
+  "CourseStatAverage": "average",
+  "CourseStatPoor": "poor",
 };
 }

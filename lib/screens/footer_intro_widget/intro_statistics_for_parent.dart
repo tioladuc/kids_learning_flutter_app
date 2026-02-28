@@ -16,14 +16,16 @@ class IntroStatisticsForParent extends StatefulWidget {
       _IntroStatisticsForParentState();
 }
 
-class _IntroStatisticsForParentState extends State<IntroStatisticsForParent> {
+class _IntroStatisticsForParentState
+    extends State<IntroStatisticsForParent> {
   Translator translator = Translator();
 
   @override
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    // ✅ Load data once
+    Future.microtask(() {
       context.read<SessionProvider>().loadChildren();
     });
   }
@@ -31,12 +33,14 @@ class _IntroStatisticsForParentState extends State<IntroStatisticsForParent> {
   @override
   Widget build(BuildContext context) {
     final session = context.watch<SessionProvider>();
-    final NotifyData notifyData = context.watch<NotifyData>();
-    translator = Translator(status: StatusLangue.CONSTANCE_STATISTICS, lang: notifyData.currentLanguage);
-    final children = session.children;
+    final notifyData = context.watch<NotifyData>();
+
+    translator = Translator(
+      status: StatusLangue.CONSTANCE_STATISTICS,
+      lang: notifyData.currentLanguage,
+    );
 
     return AppScaffold(
-     
       body: Padding(
         padding: const EdgeInsets.all(12),
         child: Column(
@@ -44,34 +48,41 @@ class _IntroStatisticsForParentState extends State<IntroStatisticsForParent> {
             ElevatedButton(
               onPressed: () {},
               style: Constant.getTitle1ButtonStyle(),
-              child: Text(translator.getText('ChildrenAccountsStatistics')),
+              child: Text(
+                translator.getText('ChildrenAccountsStatistics'),
+              ),
             ),
-            Expanded(
-              // ✅ gives available space
-              child: _buildContent(session, children, notifyData),
-            ),
+
+            /// 🔥 Main Content
+            Expanded(child: _buildContent(session)),
           ],
-        ) 
-        ,
+        ),
       ),
     );
   }
 
-  Widget _buildContent(
-      SessionProvider session, List children, NotifyData notifyData) {
+  Widget _buildContent(SessionProvider session) {
+    /// ✅ SHOW LOADING
+    print(session.isLoadingChildren);
+    print(session.children.length.toString());
     if (session.isLoadingChildren) {
-      return const Center(child: CircularProgressIndicator());
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
     }
 
-    if (children.isEmpty) {
+    /// ✅ NO DATA
+    if (session.children.isEmpty) {
       return Center(
-          child: Text(translator.getText('NoChildrenRegistered')));
+        child: Text(translator.getText('NoChildrenRegistered')),
+      );
     }
 
+    /// ✅ DATA READY
     return ListView.builder(
-      itemCount: children.length,
+      itemCount: session.children.length,
       itemBuilder: (context, index) {
-        final Child child = children[index];
+        final Child child = session.children[index];
 
         return Card(
           elevation: 3,
@@ -88,47 +99,28 @@ class _IntroStatisticsForParentState extends State<IntroStatisticsForParent> {
                 Row(
                   children: [
                     IconButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => IntroStatistics(
-                              child: child,
-                              isResponsible: child.parentResponsible ?? false,
-                              isViewParent: true,
-                            ),
-                          ),
-                        );
-                      },
+                      onPressed: () => _goToStats(child),
                       icon: const Icon(Icons.person, size: 20),
                     ),
+
                     const SizedBox(width: 8),
-                    Text(
-                      child.name,
-                      style: const TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.blue,
+
+                    Expanded(
+                      child: Text(
+                        child.name,
+                        style: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.blue,
+                        ),
                       ),
                     ),
-                    const SizedBox(width: 8),
+
                     IconButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => IntroStatistics(
-                              child: child,
-                              isResponsible: child.parentResponsible ?? false,
-                              isViewParent: true,
-                            ),
-                          ),
-                        );
-                      },
+                      onPressed: () => _goToStats(child),
                       style: IconButton.styleFrom(
-                        backgroundColor: Colors.blue, // ✅ blue background
-                        foregroundColor: Colors.white, // ✅ icon color
-                        padding: const EdgeInsets.all(12),
+                        backgroundColor: Colors.blue,
+                        foregroundColor: Colors.white,
                       ),
                       icon: const Icon(Icons.arrow_forward_ios, size: 20),
                     ),
@@ -142,8 +134,9 @@ class _IntroStatisticsForParentState extends State<IntroStatisticsForParent> {
                   children: [
                     const Icon(Icons.account_circle, size: 18),
                     const SizedBox(width: 8),
-                    Text(translator.getText('StatisticLogin') +
-                        ": ${child.login}"),
+                    Text(
+                      "${translator.getText('StatisticLogin')}: ${child.login}",
+                    ),
                   ],
                 ),
 
@@ -154,8 +147,9 @@ class _IntroStatisticsForParentState extends State<IntroStatisticsForParent> {
                   children: [
                     const Icon(Icons.lock, size: 18),
                     const SizedBox(width: 8),
-                    Text(translator.getText('StatisticPassword') +
-                        ": ${child.password}"),
+                    Text(
+                      "${translator.getText('StatisticPassword')}: ${child.password}",
+                    ),
                   ],
                 ),
 
@@ -165,20 +159,20 @@ class _IntroStatisticsForParentState extends State<IntroStatisticsForParent> {
                 Row(
                   children: [
                     Icon(
-                      child.parentResponsible!
+                      child.parentResponsible ?? false
                           ? Icons.verified
                           : Icons.info_outline,
-                      color: child.parentResponsible!
+                      color: (child.parentResponsible ?? false)
                           ? Colors.green
                           : Colors.orange,
                     ),
                     const SizedBox(width: 8),
                     Text(
-                      child.parentResponsible!
+                      (child.parentResponsible ?? false)
                           ? translator.getText('FinancialOwner')
                           : translator.getText('NotFinancialOwner'),
                       style: TextStyle(
-                        color: child.parentResponsible!
+                        color: (child.parentResponsible ?? false)
                             ? Colors.green
                             : Colors.orange,
                         fontWeight: FontWeight.w500,
@@ -191,6 +185,19 @@ class _IntroStatisticsForParentState extends State<IntroStatisticsForParent> {
           ),
         );
       },
+    );
+  }
+
+  void _goToStats(Child child) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => IntroStatistics(
+          child: child,
+          isResponsible: child.parentResponsible ?? false,
+          isViewParent: true,
+        ),
+      ),
     );
   }
 }

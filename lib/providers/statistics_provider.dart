@@ -323,7 +323,7 @@ class StatisticsProvider extends ChangeNotifier {
     endDate: DateTime(2026, 1, 20),
     duration: 10,
     detail: "Completed basic lessons with good consistency.",
-    appreciation: "Good progress",
+    appreciation: "CourseStatExcellent",
   ),
 
   CourseStatistics(
@@ -331,7 +331,7 @@ class StatisticsProvider extends ChangeNotifier {
     endDate: DateTime(2026, 2, 5),
     duration: 11,
     detail: "Improved understanding of grammar and vocabulary.",
-    appreciation: "Very good",
+    appreciation: "CourseStatGood",
   ),
 
   CourseStatistics(
@@ -339,7 +339,7 @@ class StatisticsProvider extends ChangeNotifier {
     endDate: DateTime(2026, 2, 10),
     duration: 9,
     detail: "Regular practice sessions, slight improvement needed in exercises.",
-    appreciation: "Average",
+    appreciation: "CourseStatExcellent",
   ),
 
   CourseStatistics(
@@ -347,7 +347,7 @@ class StatisticsProvider extends ChangeNotifier {
     endDate: DateTime(2026, 2, 18),
     duration: 13,
     detail: "Excellent participation and task completion.",
-    appreciation: "Excellent",
+    appreciation: "CourseStatGood",
   ),
 
   CourseStatistics(
@@ -355,7 +355,7 @@ class StatisticsProvider extends ChangeNotifier {
     endDate: DateTime(2026, 1, 30),
     duration: 15,
     detail: "Completed all modules with high accuracy.",
-    appreciation: "Outstanding",
+    appreciation: "CourseStatAverage",
   ),
 
   CourseStatistics(
@@ -363,7 +363,7 @@ class StatisticsProvider extends ChangeNotifier {
     endDate: DateTime(2026, 2, 19),
     duration: 9,
     detail: "Good engagement, but needs more revision on key topics.",
-    appreciation: "Satisfactory",
+    appreciation: "CourseStatPoor",
   ),
 ];
 

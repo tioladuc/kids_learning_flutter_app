@@ -15,7 +15,7 @@ class SessionProvider extends ChangeNotifier {
   List<News> latestNews = [];
 
   List<Child> children = [];
-  bool isLoadingChildren = false;
+  bool isLoadingChildren = true;
 
   List<PaymentModel> paidPayments = [];
   List<PaymentModel> upcomingPayments = [];
@@ -55,7 +55,13 @@ class SessionProvider extends ChangeNotifier {
   }
 
   Future<void> loadChildren() async {
+    isLoadingChildren = true;
+    print('ssssssssssssssssssssssssssssssssssssssssssssssss');
+    await Future.delayed(const Duration(seconds: 2));
     children = parent?.children ?? [];
+    print('5555555555555555=== '+ children.length.toString() +' ===555555555555555555');
+    isLoadingChildren = false;
+    notifyListeners();
   }
 
   void setCurrentChildAsParent(Child? child) {

@@ -26,5 +26,10 @@ class En {
 
   "EnterMessage": "Enter message",
   "Send": "Send",
+
+  "CategoryRequestInformation": "Request Information",
+  "CategoryComplain": "Complain",
+  "CategorySuggestion": "Suggestion",
+  "CategoryOther": "Other",
 };
 }

@@ -49,5 +49,10 @@ class Fr {
 
   "FinancialOwner": "Responsable Financier",
   "NotFinancialOwner": "Pas Responsable Financier",
+
+  "CourseStatExcellent": "excellent",
+  "CourseStatGood": "bien",
+  "CourseStatAverage": "moyen",
+  "CourseStatPoor": "faible",
 };
 }
