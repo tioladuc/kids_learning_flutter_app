@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kids_learning_flutter_app/core/api_client.dart';
 import 'package:kids_learning_flutter_app/providers/course_provider.dart';
 import 'package:kids_learning_flutter_app/providers/statistics_provider.dart';
 import 'package:provider/provider.dart';
@@ -22,7 +23,7 @@ import 'providers/audio_provider.dart';
 
 
 void main() {
-
+  ApiClient.getBetta();
   runApp(
     ChangeNotifierProvider(
       create: (context) => NotifyData(),
