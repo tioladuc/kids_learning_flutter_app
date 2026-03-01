@@ -52,16 +52,16 @@ class _MainIntroScreenParent extends State<MainIntroScreenParent> {
 
             // Children list
             Expanded(
-              child: session.parent!.children.isEmpty
+              child: SessionProvider.parent!.children.isEmpty
                   ? Center(
                       child: Text(translator.getText('menuNoChildRegister'),
                       ),
                     )
                   : ListView.builder(
                       padding: const EdgeInsets.all(16),
-                      itemCount: session.parent?.children.length,
+                      itemCount: SessionProvider.parent?.children.length,
                       itemBuilder: (context, index) {
-                        final item = session.parent?.children[index];
+                        final item = SessionProvider.parent?.children[index];
 
                         return GestureDetector(
                           onTap: () => _navigateTo(item),
@@ -101,10 +101,10 @@ class _MainIntroScreenParent extends State<MainIntroScreenParent> {
                                 const SizedBox(width: 16),
                                 Container(
                                   decoration: BoxDecoration(
-                                    color: (session.parent?.currentChild !=
+                                    color: (SessionProvider.parent?.currentChild !=
                                                 null &&
                                             item.id ==
-                                                session
+                                                SessionProvider
                                                     .parent?.currentChild?.id)
                                         ? Colors.blue
                                         : Colors.grey, // The background color
@@ -116,9 +116,9 @@ class _MainIntroScreenParent extends State<MainIntroScreenParent> {
                                       Icons.bluetooth_audio_outlined,
                                     ),
                                     color:
-                                        (session.parent?.currentChild != null &&
+                                        (SessionProvider.parent?.currentChild != null &&
                                                 item.id ==
-                                                    session.parent?.currentChild
+                                                    SessionProvider.parent?.currentChild
                                                         ?.id)
                                             ? Colors.white
                                             : Colors.black,
@@ -248,9 +248,11 @@ class _MainIntroScreenParent extends State<MainIntroScreenParent> {
     SessionProvider session,
     NotifyData notifyData,
   ) {
-    final controllerName = TextEditingController();
+    final controllerFirstName = TextEditingController();
+    final controllerLastName = TextEditingController();
     final controllerPassword = TextEditingController();
-    controllerName.text = session.parent!.name;
+    controllerFirstName.text = SessionProvider.parent!.firstName??'';
+    controllerLastName.text = SessionProvider.parent!.lastName??'';
 
     showDialog(
       context: context,
@@ -260,9 +262,16 @@ class _MainIntroScreenParent extends State<MainIntroScreenParent> {
         content: Column(
           children: [
             TextField(
-              controller: controllerName,
+              controller: controllerFirstName,
               decoration: InputDecoration(
-                labelText: translator.getText('labelNameParentPwdChange'),
+                labelText: translator.getText('labelFirstNameParentPwdChange'),
+              ),
+            ),
+            SizedBox(height: 10),
+            TextField(
+              controller: controllerLastName,
+              decoration: InputDecoration(
+                labelText: translator.getText('labelLastNameParentPwdChange'),
               ),
             ),
             SizedBox(height: 10),
@@ -283,10 +292,11 @@ class _MainIntroScreenParent extends State<MainIntroScreenParent> {
           ),
           ElevatedButton(
             onPressed: () {
-              if (controllerName.text.isNotEmpty &&
+              if (controllerFirstName.text.isNotEmpty && controllerLastName.text.isNotEmpty &&
                   controllerPassword.text.isNotEmpty) {
                 context.read<SessionProvider>().changeParentPassword(
-                      controllerName.text,
+                      controllerFirstName.text,
+                      controllerLastName.text,
                       controllerPassword.text,
                     );
                 Navigator.pop(context);

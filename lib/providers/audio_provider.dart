@@ -2,26 +2,83 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:flutter/material.dart';
-import '../models/audio_item.dart';
 import '../core/api_client.dart';
+import '../models/audio_item.dart';
 import 'package:http/http.dart' as http;
 
-class AudioProvider extends ChangeNotifier {
+import 'session_base.dart';
+import 'session_provider.dart';
+
+class AudioProvider extends SessionBase {
   List<AudioItem> audios = [];
+  bool isLoading = false;
+  String? errorMessage = null;
 
-  Future<void> loadAudios() async {
-    audios = sampleAudioJson.map((e) => AudioItem.fromJson(e)).toList();
-
+  Future<bool> loadAudios() async {
+    isLoading = true;
+    errorMessage = null;
     notifyListeners();
+
+    bool statusResponse = false;
+    try {
+      final response = await ApiClient.post('/audio/loadAudios', {
+        "childid": SessionProvider.child!.id,
+      });
+      //Map<String, dynamic> response = {'success': true,};
+
+      // ✅ Example: handle response
+      if (response['success'] == true) {
+        statusResponse = true;
+      } else {
+        errorMessage = SessionBase.translator.getText('LoadAudiosError');
+        statusResponse = false;
+      }
+    } catch (e) {
+      errorMessage = e.toString();
+    } finally {
+      isLoading = false;
+      notifyListeners();
+      return statusResponse;
+    }
+    /*audios = sampleAudioJson.map((e) => AudioItem.fromJson(e)).toList();
+
+    notifyListeners();*/
   }
 
-  void addAudio({
+  Future<bool> addAudio({
     required String title,
     required String description,
     required String filePath,
-  }) {
-    final newItem = AudioItem(
+  }) async {
+    isLoading = true;
+    errorMessage = null;
+    notifyListeners();
+
+    bool statusResponse = false;
+    try {
+      final response = await ApiClient.post('/audio/addAudio', {
+        "childid": SessionProvider.child!.id,
+        "title": title,
+        "description": description,
+        "filePath": filePath,
+      });
+      //Map<String, dynamic> response = {'success': true,};
+
+      // ✅ Example: handle response
+      if (response['success'] == true) {
+        statusResponse = true;
+      } else {
+        errorMessage = SessionBase.translator.getText('addAudioError');
+        statusResponse = false;
+      }
+    } catch (e) {
+      errorMessage = e.toString();
+    } finally {
+      isLoading = false;
+      notifyListeners();
+      return statusResponse;
+    }
+    /*final newItem = AudioItem(
       id: DateTime.now().toString(),
       title: title,
       description: description,
@@ -29,15 +86,43 @@ class AudioProvider extends ChangeNotifier {
     );
 
     audios.add(newItem);
-    notifyListeners();
+    notifyListeners();*/
   }
 
-  Future<void> addAndUploadAudio({
+  Future<bool> addAndUploadAudio({
     required String title,
     required String description,
     required String filePath,
   }) async {
-    final file = File(filePath);
+    isLoading = true;
+    errorMessage = null;
+    notifyListeners();
+
+    bool statusResponse = false;
+    try {
+      final response = await ApiClient.post('/audio/addAndUploadAudio', {
+        "childid": SessionProvider.child!.id,
+        "title": title,
+        "description": description,
+        "filePath": filePath,
+      });
+      //Map<String, dynamic> response = {'success': true,};
+
+      // ✅ Example: handle response
+      if (response['success'] == true) {
+        statusResponse = true;
+      } else {
+        errorMessage = SessionBase.translator.getText('AddAndUploadAudioError');
+        statusResponse = false;
+      }
+    } catch (e) {
+      errorMessage = e.toString();
+    } finally {
+      isLoading = false;
+      notifyListeners();
+      return statusResponse;
+    }
+    /*final file = File(filePath);
     final String baseUrl = 'http://127.0.0.1:8000';
 
     final request = http.MultipartRequest(
@@ -62,21 +147,75 @@ class AudioProvider extends ChangeNotifier {
       notifyListeners();
     } else {
       throw Exception('Upload failed');
-    }
+    }*/
   }
 
-  Future<void> deleteAudio(String id) async {
-    //await ApiClient.delete('/selfdictation/$id');
-    audios.removeWhere((a) => a.id == id);
+  Future<bool> deleteAudio(String id) async {
+    isLoading = true;
+    errorMessage = null;
     notifyListeners();
+
+    bool statusResponse = false;
+    try {
+      final response = await ApiClient.post('/audio/deleteAudio', {
+        "childid": SessionProvider.child!.id,
+        "audioid": id,
+      });
+      //Map<String, dynamic> response = {'success': true,};
+
+      // ✅ Example: handle response
+      if (response['success'] == true) {
+        statusResponse = true;
+      } else {
+        errorMessage = SessionBase.translator.getText('DeleteAudioError');
+        statusResponse = false;
+      }
+    } catch (e) {
+      errorMessage = e.toString();
+    } finally {
+      isLoading = false;
+      notifyListeners();
+      return statusResponse;
+    }
+    /*//await ApiClient.delete('/selfdictation/$id');
+    audios.removeWhere((a) => a.id == id);
+    notifyListeners();*/
   }
 
-  Future<void> uploadBytesAudio({
+  Future<bool> uploadBytesAudio({
     required String title,
     required String description,
     required Uint8List audioBytes,
   }) async {
-    AudioItem audio = AudioItem(
+    isLoading = true;
+    errorMessage = null;
+    notifyListeners();
+
+    bool statusResponse = false;
+    try {
+      final response = await ApiClient.post('/audio/uploadBytesAudio', {
+        "childid": SessionProvider.child!.id,
+        "title": title,
+        "description": description,
+        "audioBytes": audioBytes,
+      });
+      //Map<String, dynamic> response = {'success': true,};
+
+      // ✅ Example: handle response
+      if (response['success'] == true) {
+        statusResponse = true;
+      } else {
+        errorMessage = SessionBase.translator.getText('UploadBytesAudioError');
+        statusResponse = false;
+      }
+    } catch (e) {
+      errorMessage = e.toString();
+    } finally {
+      isLoading = false;
+      notifyListeners();
+      return statusResponse;
+    }
+    /*AudioItem audio = AudioItem(
       id: DateTime.now().toString(),
       title: title,
       audioUrl: '',
@@ -103,7 +242,7 @@ class AudioProvider extends ChangeNotifier {
 
     if (response.statusCode != 200 && response.statusCode != 201) {
       throw Exception('Upload failed');
-    }
+    }*/
   }
 
   final List<Map<String, dynamic>> sampleAudioJson = [

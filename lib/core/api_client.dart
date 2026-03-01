@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class ApiClient {
-  static const baseUrl = 'http://YOUR_API_URL';
+  static const baseUrl = 'http://trop.com';
 
   static Future<dynamic> get(String path) async {
     final res = await http.get(Uri.parse('$baseUrl$path'));
@@ -14,6 +14,7 @@ class ApiClient {
   }
 
   static Future<dynamic> post(String path, Map body) async {
+    print('URL =  $baseUrl$path');
     final res = await http.post(
       Uri.parse('$baseUrl$path'),
       headers: {'Content-Type': 'application/json'},

@@ -5,10 +5,7 @@ import 'package:provider/provider.dart';
 import '../../core/constances.dart';
 import '../../core/core_translator.dart';
 import '../../providers/session_provider.dart';
-import '../../widgets/app_header.dart';
-import '../../widgets/app_footer.dart';
 import '../../widgets/app_scaffold.dart';
-import '../audio/audio_list_screen.dart';
 import '../introscreen/main_intro_screen_parent.dart';
 import 'create_parent_account.dart';
 import 'parent_reset.dart';
@@ -23,7 +20,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreen extends State<LoginScreen> {
   final controllerLogin = TextEditingController();
   final controllerPwd = TextEditingController();
-  SessionProvider _sessionProvider = SessionProvider();
+  SessionProvider session = SessionProvider();
   Translator translator = Translator();
 
   String selectedProfile = "";
@@ -37,9 +34,11 @@ class _LoginScreen extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     final notifyData = context.watch<NotifyData>();
-    translator = Translator(status: StatusLangue.CONSTANCE_SESSION, lang: notifyData.currentLanguage);
-    final sessionProvider = context.watch<SessionProvider>();
-    _sessionProvider = sessionProvider;
+    translator = Translator(
+      status: StatusLangue.CONSTANCE_SESSION,
+      lang: notifyData.currentLanguage,
+    );
+    session = context.watch<SessionProvider>();
 
     return AppScaffold(
       body: Center(
@@ -48,9 +47,7 @@ class _LoginScreen extends State<LoginScreen> {
           children: [
             if (selectedProfile != '')
               ElevatedButton(
-                onPressed: () => chooseLoginChoice(
-                  '',
-                ),
+                onPressed: () => chooseLoginChoice(''),
                 style: Constant.getTitle1ButtonStyle(),
                 child: Text(translator.getText('ReturnLoginChoices')),
               ),
@@ -58,9 +55,7 @@ class _LoginScreen extends State<LoginScreen> {
             if (selectedProfile == '' ||
                 selectedProfile == NotifyData.ChoiceChild)
               ElevatedButton(
-                onPressed: () => chooseLoginChoice(
-                  NotifyData.ChoiceChild,
-                ),
+                onPressed: () => chooseLoginChoice(NotifyData.ChoiceChild),
                 style: selectedProfile == NotifyData.ChoiceChild
                     ? Constant.getTitle1ButtonStyleWhite()
                     : Constant.getTitle1ButtonStyleBlack(),
@@ -72,8 +67,7 @@ class _LoginScreen extends State<LoginScreen> {
             if (selectedProfile == '' ||
                 selectedProfile == NotifyData.ChoiceParent)
               ElevatedButton(
-                onPressed: () =>
-                    chooseLoginChoice(NotifyData.ChoiceParent),
+                onPressed: () => chooseLoginChoice(NotifyData.ChoiceParent),
                 style: selectedProfile == NotifyData.ChoiceParent
                     ? Constant.getTitle1ButtonStyleWhite()
                     : Constant.getTitle1ButtonStyleBlack(),
@@ -86,7 +80,9 @@ class _LoginScreen extends State<LoginScreen> {
                 selectedProfile == NotifyData.ChoiceChild)
               TextField(
                 controller: controllerLogin,
-                decoration: InputDecoration(labelText: translator.getText('LoginText')),
+                decoration: InputDecoration(
+                  labelText: translator.getText('LoginText'),
+                ),
               ),
             if (selectedProfile == NotifyData.ChoiceParent ||
                 selectedProfile == NotifyData.ChoiceChild)
@@ -95,7 +91,9 @@ class _LoginScreen extends State<LoginScreen> {
                 selectedProfile == NotifyData.ChoiceChild)
               TextField(
                 controller: controllerPwd,
-                decoration: InputDecoration(labelText: translator.getText('PasswordText')),
+                decoration: InputDecoration(
+                  labelText: translator.getText('PasswordText'),
+                ),
               ),
             if (selectedProfile == NotifyData.ChoiceParent ||
                 selectedProfile == NotifyData.ChoiceChild)
@@ -105,27 +103,75 @@ class _LoginScreen extends State<LoginScreen> {
               ElevatedButton(
                 style: Constant.getTitle3ButtonStyle(),
                 onPressed: () async {
-                  _sessionProvider.setRole(selectedProfile);
-                  if (_sessionProvider.role == NotifyData.ChoiceChild) {
-                    _sessionProvider.setParent(null);
-                    _sessionProvider.setChild(_sessionProvider.tmpChild);
-                  } else {
-                    _sessionProvider.setChild(null);
-                    _sessionProvider.setParent(_sessionProvider.tmpParent);
-                  }
-                  notifyData.setCurrentBottomPosition(1);
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) =>
-                          _sessionProvider.role == NotifyData.ChoiceChild
-                              ? const MainIntroScreenChild()
-                              : const MainIntroScreenParent(),
-                    ),
+                  bool success = await session.login(
+                    selectedProfile,
+                    controllerLogin.text,
+                    controllerPwd.text,
                   );
+
+                  if (success) {
+                    session.setRole(selectedProfile);
+                    if (session.role == NotifyData.ChoiceChild) {
+                      session.setParent(null);
+                      session.setChild(session.tmpChild);
+                    } else {
+                      session.setChild(null);
+                      session.setParent(session.tmpParent);
+                    }
+
+                    notifyData.setCurrentBottomPosition(1);
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => session.role == NotifyData.ChoiceChild
+                            ? const MainIntroScreenChild()
+                            : const MainIntroScreenParent(),
+                      ),
+                    );
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text(session.errorMessage ?? "Error")),
+                    );
+                  }
+
+                  /*session.login(
+                    selectedProfile,
+                    controllerLogin.text,
+                    controllerPwd.text,
+                  );
+                  if (!session.isLoginLoading && session.errorMessage == null) {
+                    session.setRole(selectedProfile);
+                    if (session.role == NotifyData.ChoiceChild) {
+                      session.setParent(null);
+                      session.setChild(session.tmpChild);
+                    } else {
+                      session.setChild(null);
+                      session.setParent(session.tmpParent);
+                    }
+
+                    notifyData.setCurrentBottomPosition(1);
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => session.role == NotifyData.ChoiceChild
+                            ? const MainIntroScreenChild()
+                            : const MainIntroScreenParent(),
+                      ),
+                    );
+                  }*/
                 },
-                child: Text(translator.getText('LoginButton')),
+                child: session.isLoginLoading
+                    ? const CircularProgressIndicator(color: Colors.white)
+                    : Text(translator.getText('LoginButton')),
               ),
+            /*if (session.errorMessage != null)
+              Text(
+                session.errorMessage!,
+                style: TextStyle(
+                  color: Colors.red,
+                  fontStyle: FontStyle.italic,
+                ),
+              ),*/
             if (selectedProfile == '' ||
                 selectedProfile == NotifyData.ChoiceParent)
               FractionallySizedBox(
@@ -147,10 +193,8 @@ class _LoginScreen extends State<LoginScreen> {
                 onPressed: () => {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
-                      builder: (_) => CreateParentAccount(),
-                    ),
-                  )
+                    MaterialPageRoute(builder: (_) => CreateParentAccount()),
+                  ),
                 },
                 style: selectedProfile == NotifyData.ChoiceParent
                     ? Constant.getTitle1ButtonStyleForResetCreate()
@@ -166,10 +210,8 @@ class _LoginScreen extends State<LoginScreen> {
                 onPressed: () => {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
-                      builder: (_) => ParentReset(),
-                    ),
-                  )
+                    MaterialPageRoute(builder: (_) => ParentReset()),
+                  ),
                 },
                 style: selectedProfile == NotifyData.ChoiceParent
                     ? Constant.getTitle1ButtonStyleForResetCreate()

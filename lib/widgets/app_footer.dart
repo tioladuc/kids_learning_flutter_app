@@ -62,7 +62,7 @@ class _AppFooter  extends State<AppFooter>  {//class AppFooter extends Stateless
                   goTo(Presentation());
                 }
                 else if(index==1) {
-                  if(session.parent != null) {
+                  if(SessionProvider.parent != null) {
                     goTo(MainIntroScreenParent());
                   }
                   else {
@@ -70,11 +70,11 @@ class _AppFooter  extends State<AppFooter>  {//class AppFooter extends Stateless
                   }
                 }
                 else if(index==2){
-                  if(session.parent != null) {
+                  if(SessionProvider.parent != null) {
                     goTo(IntroStatisticsForParent());
                   }
                   else {
-                    goTo(IntroStatistics(child: session.child!, isResponsible: false, isViewParent: false,));
+                    goTo(IntroStatistics(child: SessionProvider.child!, isResponsible: false, isViewParent: false,));
                   }
                 }
                 else if(index==3) {

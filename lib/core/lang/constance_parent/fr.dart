@@ -18,7 +18,8 @@ class Fr {
   "labelChildSaveButton": "Enregistrer",
 
   "labelTitleParentPwdChange": "Changer Mon Nom & Mots de Passe",
-  "labelNameParentPwdChange": "Nom Parent",
+  "labelFirstNameParentPwdChange": "Prenom Parent",
+  "labelLastNameParentPwdChange": "Nom Parent",
   "labelPwdParentPwdChange": "Mot de Passe",
 
   "labelCancelButtonParentPwdChange": "Annuler",

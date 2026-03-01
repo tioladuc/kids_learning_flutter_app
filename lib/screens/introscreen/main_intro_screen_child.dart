@@ -29,7 +29,7 @@ class _MainIntroScreenChild extends State<MainIntroScreenChild> {
   ) {
     String logoutDisplay = '';
 
-    if (session.parent != null) {
+    if (SessionProvider.parent != null) {
       logoutDisplay = translator.getText('menuLogoutChildParent');
     } else {
       logoutDisplay = translator.getText('menuLogout');
@@ -70,26 +70,26 @@ class _MainIntroScreenChild extends State<MainIntroScreenChild> {
     if (item['key'] == 'PickACourse') {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (_) => ChildPickCourse(child: session.child!)),
+        MaterialPageRoute(builder: (_) => ChildPickCourse(child: SessionProvider.child!)),
       );
     }
 
     if (item['key'] == 'CourseValidationPending') {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (_) => ChildPendingScreen(child: session.child!)),
+        MaterialPageRoute(builder: (_) => ChildPendingScreen(child: SessionProvider.child!)),
       );
     }
 
     if (item['key'] == 'Statistics') {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (_) => IntroStatistics(child: session.child!, isResponsible: false, isViewParent: false,)),
+        MaterialPageRoute(builder: (_) => IntroStatistics(child: SessionProvider.child!, isResponsible: false, isViewParent: false,)),
       );
     }
 
     if (item['key'] == 'Logout') {
-      if (session.parent == null) {
+      if (SessionProvider.parent == null) {
         Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (_) => LogoutScreen()),

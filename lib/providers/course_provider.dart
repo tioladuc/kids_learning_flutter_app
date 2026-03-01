@@ -1,16 +1,47 @@
 import 'package:flutter/material.dart';
+import 'package:kids_learning_flutter_app/core/notify_data.dart';
+import 'package:kids_learning_flutter_app/providers/session_provider.dart';
 
+import '../core/api_client.dart';
 import '../models/course.dart';
+import 'session_base.dart';
 
-class CourseProvider with ChangeNotifier {
+class CourseProvider extends SessionBase {
   bool isLoading = false;
   String? errorMessage;
 
   List<Course> pendingCourses = [];
   List<Course> pickCourses = [];
 
-  Future<void> loadChildPendingCourses(String childId) async {
+  Future<bool> loadChildPendingCourses(String childId) async {
     isLoading = true;
+    errorMessage = null;
+    notifyListeners();
+
+    bool statusResponse = false;
+    try {
+      final response = await ApiClient.post('/course/loadChildPendingCourses', {
+        "childid": childId,
+      });
+      //Map<String, dynamic> response = {'success': true,};
+
+      // ✅ Example: handle response
+      if (response['success'] == true) {
+        statusResponse = true;
+      } else {
+        errorMessage = SessionBase.translator.getText(
+          'LoadChildPendingCoursesError',
+        );
+        statusResponse = false;
+      }
+    } catch (e) {
+      errorMessage = e.toString();
+    } finally {
+      isLoading = false;
+      notifyListeners();
+      return statusResponse;
+    }
+    /*isLoading = true;
     notifyListeners();
 
     try {
@@ -61,11 +92,38 @@ class CourseProvider with ChangeNotifier {
     } finally {
       isLoading = false;
       notifyListeners();
-    }
+    }*/
   }
 
-  Future<void> loadChildPickCourses(String childId) async {
+  Future<bool> loadChildPickCourses(String childId) async {
     isLoading = true;
+    errorMessage = null;
+    notifyListeners();
+
+    bool statusResponse = false;
+    try {
+      final response = await ApiClient.post('/course/loadChildPickCourses', {
+        "childid": childId,
+      });
+      //Map<String, dynamic> response = {'success': true,};
+
+      // ✅ Example: handle response
+      if (response['success'] == true) {
+        statusResponse = true;
+      } else {
+        errorMessage = SessionBase.translator.getText(
+          'LoadChildPickCoursesError',
+        );
+        statusResponse = false;
+      }
+    } catch (e) {
+      errorMessage = e.toString();
+    } finally {
+      isLoading = false;
+      notifyListeners();
+      return statusResponse;
+    }
+    /*isLoading = true;
     notifyListeners();
 
     try {
@@ -116,7 +174,7 @@ class CourseProvider with ChangeNotifier {
     } finally {
       isLoading = false;
       notifyListeners();
-    }
+    }*/
   }
 
   Future<bool> payCourse({
@@ -124,6 +182,33 @@ class CourseProvider with ChangeNotifier {
     required String courseCode,
   }) async {
     isLoading = true;
+    errorMessage = null;
+    notifyListeners();
+
+    bool statusResponse = false;
+    try {
+      final response = await ApiClient.post('/course/payCourse', {
+        "childid": childId,
+        "coursecode": courseCode,
+        "parentid": SessionProvider.parent!.id,
+      });
+      //Map<String, dynamic> response = {'success': true,};
+
+      // ✅ Example: handle response
+      if (response['success'] == true) {
+        statusResponse = true;
+      } else {
+        errorMessage = SessionBase.translator.getText('PayCourseError');
+        statusResponse = false;
+      }
+    } catch (e) {
+      errorMessage = e.toString();
+    } finally {
+      isLoading = false;
+      notifyListeners();
+      return statusResponse;
+    }
+    /*isLoading = true;
     notifyListeners();
 
     try {
@@ -140,7 +225,7 @@ class CourseProvider with ChangeNotifier {
     } finally {
       isLoading = false;
       notifyListeners();
-    }
+    }*/
   }
 
   Future<bool> removeCourse({
@@ -148,6 +233,33 @@ class CourseProvider with ChangeNotifier {
     required String courseCode,
   }) async {
     isLoading = true;
+    errorMessage = null;
+    notifyListeners();
+
+    bool statusResponse = false;
+    try {
+      final response = await ApiClient.post('/course/removeCourse', {
+        "childid": childId,
+        "coursecode": courseCode,
+        "parentid": SessionProvider.parent!.id,
+      });
+      //Map<String, dynamic> response = {'success': true,};
+
+      // ✅ Example: handle response
+      if (response['success'] == true) {
+        statusResponse = true;
+      } else {
+        errorMessage = SessionBase.translator.getText('RemoveCourseError');
+        statusResponse = false;
+      }
+    } catch (e) {
+      errorMessage = e.toString();
+    } finally {
+      isLoading = false;
+      notifyListeners();
+      return statusResponse;
+    }
+    /*isLoading = true;
     notifyListeners();
 
     try {
@@ -164,12 +276,39 @@ class CourseProvider with ChangeNotifier {
     } finally {
       isLoading = false;
       notifyListeners();
-    }
+    }*/
   }
 
-  Future<void> pickCourse(String childId, String courseCode) async {
-    // Call API to register course
+  Future<bool> pickCourse(String childId, String courseCode) async {
+    isLoading = true;
+    errorMessage = null;
+    notifyListeners();
+
+    bool statusResponse = false;
+    try {
+      final response = await ApiClient.post('/course/pickCourse', {
+        "childid": childId,
+        "coursecode": courseCode,
+        "parentid": SessionProvider.parent!.id,
+      });
+      //Map<String, dynamic> response = {'success': true,};
+
+      // ✅ Example: handle response
+      if (response['success'] == true) {
+        statusResponse = true;
+      } else {
+        errorMessage = SessionBase.translator.getText('PickCourseError');
+        statusResponse = false;
+      }
+    } catch (e) {
+      errorMessage = e.toString();
+    } finally {
+      isLoading = false;
+      notifyListeners();
+      return statusResponse;
+    }
+    /*// Call API to register course
     // Remove course locally or reload list
-    pickCourses.removeWhere((elt) => elt.code == courseCode);
+    pickCourses.removeWhere((elt) => elt.code == courseCode);*/
   }
 }

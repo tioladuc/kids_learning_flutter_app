@@ -1,11 +1,12 @@
-import 'package:flutter/material.dart';
-
+import '../core/api_client.dart';
+import '../core/notify_data.dart';
 import '../models/child.dart';
 import '../models/news.dart';
 import '../models/parent.dart';
 import '../models/payment_model.dart';
+import 'session_base.dart';
 
-class SessionProvider extends ChangeNotifier {
+class SessionProvider extends SessionBase {
   String? role = null; // parent | child   NOT Used
 
   Child? tmpChild;
@@ -21,12 +22,13 @@ class SessionProvider extends ChangeNotifier {
   List<PaymentModel> upcomingPayments = [];
   bool isLoadingPayments = false;
 
-  Child? child;
-  Parent? parent;
+  static Child? child;
+  static Parent? parent;
 
   bool isLoading = false;
   bool isActivationCodeSending = false;
   String? errorMessage;
+  bool isLoginLoading = false;
 
   SessionProvider() {
     child = Child(
@@ -54,23 +56,8 @@ class SessionProvider extends ChangeNotifier {
     tmpChild = Child.copy(child!);
   }
 
-  Future<void> loadChildren() async {
-    isLoadingChildren = true;
-    print('ssssssssssssssssssssssssssssssssssssssssssssssss');
-    await Future.delayed(const Duration(seconds: 2));
-    children = parent?.children ?? [];
-    print('5555555555555555=== '+ children.length.toString() +' ===555555555555555555');
-    isLoadingChildren = false;
-    notifyListeners();
-  }
-
   void setCurrentChildAsParent(Child? child) {
     parent!.currentChild = child;
-    notifyListeners();
-  }
-
-  void login(String selectedRole) {
-    role = selectedRole;
     notifyListeners();
   }
 
@@ -89,52 +76,266 @@ class SessionProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void logout() {
-    role = null;
+  Future<bool> logout() async {
+    isLoading = true;
+    errorMessage = null;
     notifyListeners();
+
+    bool statusResponse = false;
+    try {
+      final response = await ApiClient.post('/account/logout', {
+        "childid": child?.id,
+        "parentid": parent?.id,
+      });
+      //Map<String, dynamic> response = {'success': true,};
+
+      // ✅ Example: handle response
+      if (response['success'] == true) {
+        statusResponse = true;
+        role = null;
+      } else {
+        errorMessage = SessionBase.translator.getText('LogoutError');
+        statusResponse = false;
+      }
+    } catch (e) {
+      errorMessage = e.toString();
+    } finally {
+      isLoading = false;
+      notifyListeners();
+      return statusResponse;
+    }
+    /*role = null;
+    notifyListeners();*/
   }
 
-  void addChild(String login, String name, String password) {
-    parent?.children.add(
-      Child(
-        id: DateTime.now().toString(),
-        name: name,
-        login: login,
-        password: password,
-      ),
-    );
+  //await Future.delayed(const Duration(seconds: 2));
+  //errorMessage = SessionBase.translator.getText( selectedRole == NotifyData.ChoiceChild ? 'ChildLoginError' : 'ParentLoginError');
+  //isLoginLoading = false;
+  //notifyListeners();
+  //return false;
+  Future<bool> login(String selectedRole, String login, String pwd) async {
+    isLoginLoading = true;
+    errorMessage = null;
     notifyListeners();
+
+    bool statusResponse = false;
+    try {
+      final response = await ApiClient.post('/account/login', {
+        "role": selectedRole,
+        "login": login,
+        "password": pwd,
+      });
+      //Map<String, dynamic> response = {'success': true,};
+
+      // ✅ Example: handle response
+      if (response['success'] == true) {
+        role = selectedRole;
+        statusResponse = true;
+      } else {
+        errorMessage = SessionBase.translator.getText(
+          selectedRole == NotifyData.ChoiceChild
+              ? 'ChildLoginError'
+              : 'ParentLoginError',
+        );
+        statusResponse = false;
+      }
+    } catch (e) {
+      errorMessage = e.toString();
+    } finally {
+      isLoginLoading = false;
+      notifyListeners();
+      return statusResponse;
+    }
   }
 
-  void deleteChild(String id) {
-    parent?.children.removeWhere((c) => c.id == id);
+  Future<bool> addChild(String login, String name, String pwd) async {
+    isLoading = true;
+    errorMessage = null;
     notifyListeners();
+
+    bool statusResponse = false;
+    try {
+      final response = await ApiClient.post('/account/addChild', {
+        "name": name,
+        "login": login,
+        "password": pwd,
+        "parentid": parent!.id,
+      });
+      //Map<String, dynamic> response = {'success': true,};
+
+      // ✅ Example: handle response
+      if (response['success'] == true) {
+        statusResponse = true;
+        parent?.children.add(
+          Child(
+            id: DateTime.now().toString(),
+            name: name,
+            login: login,
+            password: pwd,
+          ),
+        );
+      } else {
+        errorMessage = SessionBase.translator.getText('AddChildToParentError');
+        statusResponse = false;
+      }
+    } catch (e) {
+      errorMessage = e.toString();
+    } finally {
+      isLoading = false;
+      notifyListeners();
+      return statusResponse;
+    }
   }
 
-  void changeParentPassword(String name, String newPassword) {
-    parent?.name = name;
-    parent?.password = newPassword;
-    // TODO: call API
-    print("Password changed: $newPassword");
+  Future<bool> deleteChild(String id) async {
+    isLoading = true;
+    errorMessage = null;
     notifyListeners();
+
+    bool statusResponse = false;
+    try {
+      final response = await ApiClient.post('/account/deleteChild', {
+        "childid": id,
+        "parentid": parent!.id,
+      });
+      //Map<String, dynamic> response = {'success': true,};
+
+      // ✅ Example: handle response
+      if (response['success'] == true) {
+        statusResponse = true;
+        parent?.children.removeWhere((c) => c.id == id);
+      } else {
+        errorMessage = SessionBase.translator.getText(
+          'DeleteChildToParentError',
+        );
+        statusResponse = false;
+      }
+    } catch (e) {
+      errorMessage = e.toString();
+    } finally {
+      isLoading = false;
+      notifyListeners();
+      return statusResponse;
+    }
   }
 
-  void changeChildPassword(String name, String newPassword) {
-    child?.name = name;
-    child?.password = newPassword;
-    // TODO: call API
-    print("Password changed: $newPassword");
+  Future<bool> changeParentPassword(
+    String firstName,
+    String lastName,
+    String newPassword,
+  ) async {
+    isLoading = true;
+    errorMessage = null;
     notifyListeners();
+
+    bool statusResponse = false;
+    try {
+      final response = await ApiClient.post('/account/changeParentPassword', {
+        "firstname": firstName,
+        "lastname": lastName,
+        "newpassword": newPassword,
+        "parentid": parent!.id,
+      });
+      //Map<String, dynamic> response = {'success': true,};
+
+      // ✅ Example: handle response
+      if (response['success'] == true) {
+        statusResponse = true;
+        parent?.firstName = firstName;
+        parent?.lastName = lastName;
+        parent?.password = newPassword;
+      } else {
+        errorMessage = SessionBase.translator.getText(
+          'ChangeParentPasswordError',
+        );
+        statusResponse = false;
+      }
+    } catch (e) {
+      errorMessage = e.toString();
+    } finally {
+      isLoading = false;
+      notifyListeners();
+      return statusResponse;
+    }
   }
 
-  void changePasswordParentChild(String name, String newPassword, Child child) {
-    // TODO: call API
-    parent?.children.firstWhere((element) => element.id == child.id).name =
-        name;
-    parent?.children.firstWhere((element) => element.id == child.id).password =
-        newPassword;
-    print("Password changed: $newPassword");
+  Future<bool> changeChildPassword(String name, String newPassword) async {
+    isLoading = true;
+    errorMessage = null;
     notifyListeners();
+
+    bool statusResponse = false;
+    try {
+      final response = await ApiClient.post('/account/changeChildPassword', {
+        "name": name,
+        "newpassword": newPassword,
+        "childid": child?.id,
+        "parentid": parent!.id,
+      });
+      //Map<String, dynamic> response = {'success': true,};
+
+      // ✅ Example: handle response
+      if (response['success'] == true) {
+        statusResponse = true;
+        child?.name = name;
+        child?.password = newPassword;
+      } else {
+        errorMessage = SessionBase.translator.getText(
+          'ChangePwdChildToParentError',
+        );
+        statusResponse = false;
+      }
+    } catch (e) {
+      errorMessage = e.toString();
+    } finally {
+      isLoading = false;
+      notifyListeners();
+      return statusResponse;
+    }
+  }
+
+  Future<bool> changePasswordParentChild(
+    String name,
+    String newPassword,
+    Child child,
+  ) async {
+    isLoading = true;
+    errorMessage = null;
+    notifyListeners();
+
+    bool statusResponse = false;
+    try {
+      final response =
+          await ApiClient.post('/account/changePasswordParentChild', {
+            "name": name,
+            "newpassword": newPassword,
+            "childid": child.id,
+            "parentid": parent!.id,
+          });
+      //Map<String, dynamic> response = {'success': true,};
+
+      // ✅ Example: handle response
+      if (response['success'] == true) {
+        statusResponse = true;
+        parent?.children.firstWhere((element) => element.id == child.id).name =
+            name;
+        parent?.children
+                .firstWhere((element) => element.id == child.id)
+                .password =
+            newPassword;
+      } else {
+        errorMessage = SessionBase.translator.getText(
+          'ChangePwdChildToParentError',
+        );
+        statusResponse = false;
+      }
+    } catch (e) {
+      errorMessage = e.toString();
+    } finally {
+      isLoading = false;
+      notifyListeners();
+      return statusResponse;
+    }
   }
 
   ///////////////////////////////////////////////////////////////////
@@ -151,18 +352,30 @@ class SessionProvider extends ChangeNotifier {
     errorMessage = null;
     notifyListeners();
 
+    bool statusResponse = false;
     try {
-      // TODO: Replace with your API call
-      await Future.delayed(const Duration(seconds: 2));
+      final response = await ApiClient.post('/createParent', {
+        "firstName": firstName,
+        "lastName": lastName,
+        "login": login,
+        "password": password,
+        "email": email,
+      });
+      //Map<String, dynamic> response = {'success': true,};
 
-      // Example success
-      return true;
+      // ✅ Example: handle response
+      if (response['success'] == true) {
+        statusResponse = true;
+      } else {
+        errorMessage = SessionBase.translator.getText('CreateParentError');
+        statusResponse = false;
+      }
     } catch (e) {
-      errorMessage = "Failed to create account";
-      return false;
+      errorMessage = e.toString();
     } finally {
       isLoading = false;
       notifyListeners();
+      return statusResponse;
     }
   }
 
@@ -175,54 +388,93 @@ class SessionProvider extends ChangeNotifier {
     errorMessage = null;
     notifyListeners();
 
+    bool statusResponse = false;
     try {
-      // TODO: Replace with your API call
-      await Future.delayed(const Duration(seconds: 2));
+      final response = await ApiClient.post('/account/activateParent', {
+        "email": email,
+        "code": code,
+      });
+      //Map<String, dynamic> response = {'success': true,};
 
-      return true;
+      // ✅ Example: handle response
+      if (response['success'] == true) {
+        statusResponse = true;
+      } else {
+        errorMessage = SessionBase.translator.getText(
+          'ActivateParentAccountError',
+        );
+        statusResponse = false;
+      }
     } catch (e) {
-      errorMessage = "Invalid activation code";
-      return false;
+      errorMessage = e.toString();
     } finally {
       isLoading = false;
       notifyListeners();
+      return statusResponse;
     }
   }
 
   /// RESEND ACTIVATION CODE ACCOUNT
   Future<bool> resendActivationCode({required String email}) async {
-    isActivationCodeSending = true;
+    isLoading = true;
     errorMessage = null;
     notifyListeners();
 
+    bool statusResponse = false;
     try {
-      // TODO: Replace with your API call
-      await Future.delayed(const Duration(seconds: 2));
+      final response = await ApiClient.post(
+        '/account/sendActivationCodeParent',
+        {"email": email},
+      );
+      //Map<String, dynamic> response = {'success': true,};
 
-      return true;
+      // ✅ Example: handle response
+      if (response['success'] == true) {
+        statusResponse = true;
+      } else {
+        errorMessage = SessionBase.translator.getText(
+          'SendActivationCodeParentError',
+        );
+        statusResponse = false;
+      }
     } catch (e) {
-      errorMessage = "Invalid activation code";
-      return false;
+      errorMessage = e.toString();
     } finally {
-      isActivationCodeSending = false;
+      isLoading = false;
       notifyListeners();
+      return statusResponse;
     }
   }
 
   /// SEND RESET CODE
   Future<bool> sendResetCode({required String email}) async {
-    _start();
+    isLoading = true;
+    errorMessage = null;
+    notifyListeners();
 
+    bool statusResponse = false;
     try {
-      // TODO: API call
-      await Future.delayed(const Duration(seconds: 2));
+      final response = await ApiClient.post(
+        '/account/sendActivationCodeParent',
+        {"email": email},
+      );
+      //Map<String, dynamic> response = {'success': true,};
 
-      return true;
+      // ✅ Example: handle response
+      if (response['success'] == true) {
+        statusResponse = true;
+      } else {
+        errorMessage = SessionBase.translator.getText(
+          'SendActivationCodeParentError',
+        );
+        statusResponse = false;
+      }
     } catch (e) {
-      errorMessage = "Failed to send reset code";
-      return false;
+      errorMessage = e.toString();
     } finally {
-      _end();
+      isLoading = false;
+      notifyListeners();
+      return statusResponse;
     }
   }
 
@@ -238,23 +490,37 @@ class SessionProvider extends ChangeNotifier {
   }
 
   /// RESET PASSWORD
-  Future<bool> setParentAsReponsibleOfChild(
-      {required bool isResponsible, required Child child}) async {
-    _start();
+  Future<bool> setParentAsReponsibleOfChild({
+    required bool isResponsible,
+    required Child child,
+  }) async {
+    isLoading = true;
+    errorMessage = null;
+    notifyListeners();
 
+    bool statusResponse = false;
     try {
-      // TODO: API call
-      await Future.delayed(const Duration(seconds: 2));
-      parent?.children
-          .firstWhere((element) => element.id == child.id)
-          .parentResponsible = isResponsible;
-      notifyListeners();
-      return true;
+      final response = await ApiClient.post(
+        '/account/setParentAsResponsibleOfChild',
+        {"parentid": parent!.id, "childid": child.id},
+      );
+      //Map<String, dynamic> response = {'success': true,};
+
+      // ✅ Example: handle response
+      if (response['success'] == true) {
+        statusResponse = true;
+      } else {
+        errorMessage = SessionBase.translator.getText(
+          'SetParentAsResponsibleOfChildError',
+        );
+        statusResponse = false;
+      }
     } catch (e) {
-      errorMessage = "Invalid code or password";
-      return false;
+      errorMessage = e.toString();
     } finally {
-      _end();
+      isLoading = false;
+      notifyListeners();
+      return statusResponse;
     }
   }
 
@@ -264,25 +530,103 @@ class SessionProvider extends ChangeNotifier {
     required String code,
     required String newPassword,
   }) async {
-    _start();
+    isLoading = true;
+    errorMessage = null;
+    notifyListeners();
 
+    bool statusResponse = false;
     try {
-      // TODO: API call
-      await Future.delayed(const Duration(seconds: 2));
+      final response = await ApiClient.post('/account/resetParentPassword', {
+        "parentid": parent!.id,
+        "email": email,
+        "code": code,
+      });
+      //Map<String, dynamic> response = {'success': true,};
 
-      return true;
+      // ✅ Example: handle response
+      if (response['success'] == true) {
+        statusResponse = true;
+      } else {
+        errorMessage = SessionBase.translator.getText(
+          'ResetParentPasswordError',
+        );
+        statusResponse = false;
+      }
     } catch (e) {
-      errorMessage = "Invalid code or password";
-      return false;
+      errorMessage = e.toString();
     } finally {
-      _end();
+      isLoading = false;
+      notifyListeners();
+      return statusResponse;
     }
   }
 
   ///////////////////////////////////////////////////////////////////
+  Future<void> loadChildren() async {
+    /*isLoadingChildren = true;
+    await Future.delayed(const Duration(seconds: 2));
+    children = parent?.children ?? [];
+
+    isLoadingChildren = false;
+    notifyListeners();*/
+    isLoading = true;
+    errorMessage = null;
+    notifyListeners();
+
+    bool statusResponse = false;
+    try {
+      final response = await ApiClient.post('/account/parentLoadChildren', {
+        "parentid": parent!.id,
+      });
+      //Map<String, dynamic> response = {'success': true,};
+
+      // ✅ Example: handle response
+      if (response['success'] == true) {
+        statusResponse = true;
+      } else {
+        errorMessage = SessionBase.translator.getText(
+          'ParentLoadChildrenError',
+        );
+        statusResponse = false;
+      }
+    } catch (e) {
+      errorMessage = e.toString();
+    } finally {
+      isLoading = false;
+      notifyListeners();
+      return;
+    }
+  }
+
   Future<void> getLatestNews() async {
     // fetch from API
-    latestNews = [
+    isLoading = true;
+    errorMessage = null;
+    notifyListeners();
+
+    bool statusResponse = false;
+    try {
+      final response = await ApiClient.post('/account/getLatestNews', {
+        "parentid": parent!.id,
+      });
+      //Map<String, dynamic> response = {'success': true,};
+
+      // ✅ Example: handle response
+      if (response['success'] == true) {
+        statusResponse = true;
+      } else {
+        errorMessage = SessionBase.translator.getText('GetLatestNewsError');
+        statusResponse = false;
+      }
+    } catch (e) {
+      errorMessage = e.toString();
+    } finally {
+      isLoading = false;
+      notifyListeners();
+      return;
+    }
+
+    /*latestNews = [
       News(
         title: "New Math Course Available",
         description:
@@ -313,7 +657,7 @@ class SessionProvider extends ChangeNotifier {
         date: DateTime(2026, 2, 5),
       ),
     ];
-    notifyListeners();
+    notifyListeners();*/
   }
 
   Future<void> sendEmail({
@@ -325,7 +669,32 @@ class SessionProvider extends ChangeNotifier {
   }
 
   Future<void> loadPayments() async {
-    isLoadingPayments = true;
+    isLoading = true;
+    errorMessage = null;
+    notifyListeners();
+
+    bool statusResponse = false;
+    try {
+      final response = await ApiClient.post('/account/loadPayment', {
+        "parentid": parent!.id,
+      });
+      //Map<String, dynamic> response = {'success': true,};
+
+      // ✅ Example: handle response
+      if (response['success'] == true) {
+        statusResponse = true;
+      } else {
+        errorMessage = SessionBase.translator.getText('LoadPaymentError');
+        statusResponse = false;
+      }
+    } catch (e) {
+      errorMessage = e.toString();
+    } finally {
+      isLoading = false;
+      notifyListeners();
+      return;
+    }
+    /*isLoadingPayments = true;
     notifyListeners();
 
     // simulate API
@@ -449,6 +818,6 @@ class SessionProvider extends ChangeNotifier {
     ];
 
     isLoadingPayments = false;
-    notifyListeners();
+    notifyListeners();*/
   }
 }

@@ -22,5 +22,14 @@ class Fr {
   "recordSaveAndUpload": "Enregistrer & Téléverser",
 
   "UploadFailed": "Sauvegarde échouée",
+
+  /*==================================*/
+  "ChildLoginError": "Erreur connexion, voir avec vos parents pour vos accés",
+  "ParentLoginError": "Erreur connexion, vos accés erronés",
+  "AddChildToParentError": "Erreur pendant l'ajout de l'enfant, peut être le login existe deja, le changer",
+  "DeleteChildToParentError": "Erreur pendant suppression de l'enfant. Reessayez plus tard.",
+  "ChangePwdChildToParentError": "Erreur pendant le changement de mot de passe. Reessayez plus tard.",
+  "CreateParentError": "Erreur pendant la création de votre compte parent. Changer de login ou de mot de passe et reessayer.",
+  
 };
 }

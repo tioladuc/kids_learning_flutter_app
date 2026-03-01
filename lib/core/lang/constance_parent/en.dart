@@ -18,7 +18,8 @@ class En {
   "labelChildSaveButton": "Save",
 
   "labelTitleParentPwdChange": "Change Name & Password",
-  "labelNameParentPwdChange": "Parent Name",
+  "labelFirstNameParentPwdChange": "Parent First Name",
+  "labelLastNameParentPwdChange": "Parent Last Name",
   "labelPwdParentPwdChange": "Password",
 
   "labelCancelButtonParentPwdChange": "Cancel",
