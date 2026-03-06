@@ -53,7 +53,7 @@ class CourseProvider extends SessionBase {
     
   }
   Future<bool> loadChildAvailableCourses(String childId) async {
-    if(hasChargedAvailable) return true;
+    //if(hasChargedAvailable) return true;
     isLoadingAvailable = true;
     errorMessage = null;
     notifyListeners();

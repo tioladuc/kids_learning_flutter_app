@@ -61,6 +61,8 @@ class SessionProvider extends SessionBase {
 
   void setCurrentChildAsParent(Child? child) {
     parent!.currentChild = child;
+    SessionProvider.child = child;
+    CourseProvider.hasChargedAvailable = false;
     notifyListeners();
   }
 
