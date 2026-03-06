@@ -47,7 +47,7 @@ class _ChildPickCourseState extends State<ChildPickCourse> {
       return const Center(child: CircularProgressIndicator());
     }
 
-    if (provider.pickCourses.isEmpty) {
+    if (provider.pickCourses!.isEmpty) {
       return Center(
         child: Text(translator.getText('PickCourseNoCourseAvailable')),
       );
@@ -64,9 +64,9 @@ class _ChildPickCourseState extends State<ChildPickCourse> {
         Expanded(
           child: ListView.builder(
             padding: const EdgeInsets.all(12),
-            itemCount: provider.pickCourses.length,
+            itemCount: provider.pickCourses!.length,
             itemBuilder: (context, index) {
-              final course = provider.pickCourses[index];
+              final course = provider.pickCourses![index];
               return _courseCard(course, notifyData);
             },
           ),

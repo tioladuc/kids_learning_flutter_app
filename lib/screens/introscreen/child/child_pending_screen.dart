@@ -42,7 +42,7 @@ class _ChildPendingScreenState extends State<ChildPendingScreen> {
       return const Center(child: CircularProgressIndicator());
     }
 
-    if (provider.pendingCourses.isEmpty) {
+    if (provider.pendingCourses!.isEmpty) {
       return Center(
           child: Text(translator.getText('NoPendingCourseMsg')));
     }
@@ -59,9 +59,9 @@ class _ChildPendingScreenState extends State<ChildPendingScreen> {
           // <-- Use Expanded
           child: ListView.builder(
             padding: const EdgeInsets.all(12),
-            itemCount: provider.pendingCourses.length,
+            itemCount: provider.pendingCourses!.length,
             itemBuilder: (context, index) {
-              final course = provider.pendingCourses[index];
+              final course = provider.pendingCourses![index];
               return _courseCard(course, provider, notifyData);
             },
           ),

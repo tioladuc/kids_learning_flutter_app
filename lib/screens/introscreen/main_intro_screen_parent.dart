@@ -32,7 +32,7 @@ class _MainIntroScreenParent extends State<MainIntroScreenParent> {
     SessionProvider session = context.watch<SessionProvider>();
     final notifyData = context.watch<NotifyData>();
     translator = Translator(status: StatusLangue.CONSTANCE_PARENT, lang: notifyData.currentLanguage);
-
+    
     return AppScaffold(
       body: Padding(
         padding: const EdgeInsets.all(16),

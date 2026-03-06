@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:kids_learning_flutter_app/core/constances.dart';
+import 'package:kids_learning_flutter_app/providers/course_provider.dart';
 import 'package:kids_learning_flutter_app/providers/session_provider.dart';
 import 'package:kids_learning_flutter_app/screens/introscreen/main_intro_screen_parent.dart';
 import 'package:provider/provider.dart';
 import '../../core/core_translator.dart';
 import '../../core/notify_data.dart';
+import '../../models/course.dart';
 import '../../widgets/app_scaffold.dart';
 import '../audio/audio_list_screen.dart';
 import 'logout_screen.dart';
@@ -22,6 +24,7 @@ class MainIntroScreenChild extends StatefulWidget {
 class _MainIntroScreenChild extends State<MainIntroScreenChild> {
   List<Map<String, dynamic>> menuItems = [];
   Translator translator = Translator();
+  List<Course> courses = [] ;
 
   List<Map<String, dynamic>> produceMenuItems(
     String langue,
@@ -34,11 +37,12 @@ class _MainIntroScreenChild extends State<MainIntroScreenChild> {
     } else {
       logoutDisplay = translator.getText('menuLogout');
     }
+    
     return [
-      {
+      if(courses.any((elt)=> elt.code=='C000')){
         "title": translator.getText('menuDictation'),
         "icon": Icons.mic,
-        "key": 'Dictation',
+        "key": 'C000',
       },
       {
         "title": translator.getText('menuPickCourse'),
@@ -60,7 +64,7 @@ class _MainIntroScreenChild extends State<MainIntroScreenChild> {
   }
 
   void _navigateTo(Map<String, dynamic> item, SessionProvider session) {
-    if (item['key'] == 'Dictation') {
+    if (item['key'] == 'C000') {
       Navigator.push(
         context,
         MaterialPageRoute(builder: (_) => const AudioListScreen()),
@@ -106,12 +110,19 @@ class _MainIntroScreenChild extends State<MainIntroScreenChild> {
   }
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final notifyData = context.watch<NotifyData>();
     final session = context.watch<SessionProvider>();
     translator = Translator(status: StatusLangue.CONSTANCE_CHILD, lang: notifyData.currentLanguage);
     menuItems = produceMenuItems(notifyData.currentLanguage, session);
-    
+    CourseProvider courseProvider = context.watch<CourseProvider>();
+    courseProvider.loadChildAvailableCourses(SessionProvider.child!.id);
+    courses = courseProvider.availableCourses!;
 
     return AppScaffold(
       body: ListView.builder(

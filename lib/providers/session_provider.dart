@@ -1,3 +1,5 @@
+import 'package:kids_learning_flutter_app/providers/course_provider.dart';
+
 import '../core/api_client.dart';
 import '../core/notify_data.dart';
 import '../models/child.dart';
@@ -24,6 +26,7 @@ class SessionProvider extends SessionBase {
 
   static Child? child;
   static Parent? parent;
+  static String? token = null;
 
   bool isLoading = false;
   bool isActivationCodeSending = false;
@@ -31,7 +34,7 @@ class SessionProvider extends SessionBase {
   bool isLoginLoading = false;
 
   SessionProvider() {
-    child = Child(
+    /*child = Child(
       id: 'child01',
       name: 'Child Main Principale',
       login: '01',
@@ -53,7 +56,7 @@ class SessionProvider extends SessionBase {
     );
 
     tmpParent = Parent.copy(parent!);
-    tmpChild = Child.copy(child!);
+    tmpChild = Child.copy(child!);*/
   }
 
   void setCurrentChildAsParent(Child? child) {
@@ -93,6 +96,9 @@ class SessionProvider extends SessionBase {
       if (response['success'] == true) {
         statusResponse = true;
         role = null;
+        SessionProvider.token = null;
+        SessionProvider.child = null;
+        SessionProvider.parent = null;
       } else {
         errorMessage = SessionBase.translator.getText('LogoutError');
         statusResponse = false;
@@ -131,7 +137,18 @@ class SessionProvider extends SessionBase {
       if (response['success'] == true) {
         role = selectedRole;
         statusResponse = true;
+        if (selectedRole == NotifyData.ChoiceParent) {
+          initializeLoginParent(response['data']);
+        } else {
+          initializeLoginChild(response['data']);
+        }
+        /*print('=====================*******======================');
+        print('');
+        print(response['data']);
+        print('');
+        print('======================*******======================');*/
       } else {
+        print('login fail passed');
         errorMessage = SessionBase.translator.getText(
           selectedRole == NotifyData.ChoiceChild
               ? 'ChildLoginError'
@@ -146,6 +163,71 @@ class SessionProvider extends SessionBase {
       notifyListeners();
       return statusResponse;
     }
+  }
+
+  void initializeLoginParent(dynamic result) {
+    String token = result["token"];
+
+    // ==========================
+    // BUILD CHILDREN LIST
+    // ==========================
+
+    List<Child> childrenList = [];
+
+    for (var childJson in result["children"]) {
+      childrenList.add(
+        Child(
+          id: childJson["id"],
+          name: childJson["name"],
+          login: childJson["login"],
+          password: "", // password not returned from API
+        )..parentResponsible = childJson["parent_responsible"] == 1,
+      );
+    }
+
+    // ==========================
+    // BUILD PARENT
+    // ==========================
+
+    var parentJson = result["parent"];
+
+    Parent parent = Parent(
+      id: parentJson["id"],
+      name: "${parentJson["first_name"]} ${parentJson["last_name"]}",
+      login: parentJson["login"],
+      password: "", // not returned from API
+      children: childrenList,
+    );
+
+    // Extra fields
+    parent.firstName = parentJson["first_name"];
+    parent.lastName = parentJson["last_name"];
+    parent.email = parentJson["email"];
+
+    SessionProvider.child = null;
+    SessionProvider.parent = parent;
+    SessionProvider.token = token;
+  }
+
+  void initializeLoginChild(dynamic result) {
+    String token = result["token"];
+
+    var childJson = result["child"];
+
+    Child child = Child(
+      id: childJson["id"],
+      name: childJson["name"],
+      login: childJson["login"],
+      password: "", // not returned from API
+    );
+
+    // set optional values
+    child.parentResponsible = childJson["parent_responsible"] == 1;
+
+    SessionProvider.child = child;
+    SessionProvider.parent = null;
+    SessionProvider.token = token;
+    
   }
 
   Future<bool> addChild(String login, String name, String pwd) async {

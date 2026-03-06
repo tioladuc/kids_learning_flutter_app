@@ -45,11 +45,11 @@ class _ParentChildPendingScreenState extends State<ParentChildPendingScreen> {
   }
 
   Widget _buildBody(CourseProvider provider, NotifyData notifyData) {
-    if (provider.isLoading && provider.pendingCourses.isEmpty) {
+    if (provider.isLoading && provider.pendingCourses!.isEmpty) {
       return const Center(child: CircularProgressIndicator());
     }
 
-    if (provider.pendingCourses.isEmpty) {
+    if (provider.pendingCourses!.isEmpty) {
       return Center(
           child: Text(translator.getText('NoPendingCourseMsg')));
     }
@@ -65,9 +65,9 @@ class _ParentChildPendingScreenState extends State<ParentChildPendingScreen> {
         Expanded(
           child: ListView.builder(
             padding: const EdgeInsets.all(12),
-            itemCount: provider.pendingCourses.length,
+            itemCount: provider.pendingCourses!.length,
             itemBuilder: (context, index) {
-              final course = provider.pendingCourses[index];
+              final course = provider.pendingCourses![index];
               return _courseCard(course, provider, notifyData);
             },
           ),

@@ -16,6 +16,19 @@ class Course {
     required this.isRegistered,
     required this.description,
   });
+
+  factory Course.fromJson(Map<String, dynamic> json) {
+    return Course(
+      code: json["code"],
+      name: json["name"],
+      amount: double.parse(json["amount"].toString()),
+      validity: json["validity"],
+      description: json["description"],
+      expiryDate: null,
+      isRegistered: false,
+    );
+  }
+  
 }
 
 //////////////////////////////////////////////

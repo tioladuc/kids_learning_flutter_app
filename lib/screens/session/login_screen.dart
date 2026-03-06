@@ -4,6 +4,7 @@ import 'package:kids_learning_flutter_app/screens/introscreen/main_intro_screen_
 import 'package:provider/provider.dart';
 import '../../core/constances.dart';
 import '../../core/core_translator.dart';
+import '../../providers/course_provider.dart';
 import '../../providers/session_provider.dart';
 import '../../widgets/app_scaffold.dart';
 import '../introscreen/main_intro_screen_parent.dart';
@@ -111,14 +112,9 @@ class _LoginScreen extends State<LoginScreen> {
 
                   if (success) {
                     session.setRole(selectedProfile);
-                    if (session.role == NotifyData.ChoiceChild) {
-                      session.setParent(null);
-                      session.setChild(session.tmpChild);
-                    } else {
-                      session.setChild(null);
-                      session.setParent(session.tmpParent);
-                    }
-
+                    /*if(selectedProfile == NotifyData.ChoiceChild ){
+                      context.read<CourseProvider>().loadChildAvailableCourses(SessionProvider.child!.id);
+                    }*/
                     notifyData.setCurrentBottomPosition(1);
                     Navigator.pushReplacement(
                       context,
