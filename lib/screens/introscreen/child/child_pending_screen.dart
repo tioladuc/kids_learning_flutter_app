@@ -19,12 +19,13 @@ class ChildPendingScreen extends StatefulWidget {
 
 class _ChildPendingScreenState extends State<ChildPendingScreen> {
   Translator translator = Translator();
+   
   @override
   void initState() {
     super.initState();
 
-    Future.microtask(() {
-      context.read<CourseProvider>().loadChildPendingCourses(widget.child.id);
+    Future.microtask(() async{
+      await context.read<CourseProvider>().loadChildPendingCourses(widget.child.id);
     });
   }
 
@@ -38,11 +39,11 @@ class _ChildPendingScreenState extends State<ChildPendingScreen> {
   }
 
   Widget _buildBody(CourseProvider provider, NotifyData notifyData) {
-    if (provider.isLoading) {
+    if (provider.isLoadingPending) {
       return const Center(child: CircularProgressIndicator());
     }
 
-    if (provider.pendingCourses!.isEmpty) {
+    if (provider.pendingCourses.isEmpty) {
       return Center(
           child: Text(translator.getText('NoPendingCourseMsg')));
     }

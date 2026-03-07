@@ -26,8 +26,8 @@ class _ChildPickCourseState extends State<ChildPickCourse> {
   void initState() {
     super.initState();
 
-    Future.microtask(() {
-      context.read<CourseProvider>().loadChildPickCourses(widget.child.id);
+    Future.microtask(() async{
+      await context.read<CourseProvider>().loadChildPickCourses(widget.child.id);
     });
   }
 
@@ -43,11 +43,11 @@ class _ChildPickCourseState extends State<ChildPickCourse> {
   }
 
   Widget _buildBody(CourseProvider provider, NotifyData notifyData) {
-    if (provider.isLoading) {
+    if (provider.isLoadingPickCourse) {
       return const Center(child: CircularProgressIndicator());
     }
 
-    if (provider.pickCourses!.isEmpty) {
+    if (provider.pickCourses.isEmpty) {
       return Center(
         child: Text(translator.getText('PickCourseNoCourseAvailable')),
       );

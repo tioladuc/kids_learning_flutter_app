@@ -57,7 +57,7 @@ class CourseProvider extends SessionBase {
     isLoadingAvailable = true;
     errorMessage = null;
     notifyListeners();
-
+    
     bool statusResponse = false;
     try {
       final response = await ApiClient.post('/course/loadChildAvailableCourses', {

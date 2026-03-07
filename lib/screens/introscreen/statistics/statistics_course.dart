@@ -30,8 +30,8 @@ class _StatisticsCourseState extends State<StatisticsCourse> {
   void initState() {
     super.initState();
 
-    Future.microtask(() {
-      context.read<StatisticsProvider>().loadCourseStatistics(
+    Future.microtask(() async{
+      await context.read<StatisticsProvider>().loadCourseStatistics(
             widget.child,
             widget.course,
           );

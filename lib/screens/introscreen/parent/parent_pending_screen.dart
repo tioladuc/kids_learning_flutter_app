@@ -30,8 +30,8 @@ class _ParentChildPendingScreenState extends State<ParentChildPendingScreen> {
   void initState() {
     super.initState();
 
-    Future.microtask(() {
-      context.read<CourseProvider>().loadChildPendingCourses(widget.child.id);
+    Future.microtask(() async {
+      await context.read<CourseProvider>().loadChildPendingCourses(widget.child.id);
     });
   }
 
@@ -45,7 +45,7 @@ class _ParentChildPendingScreenState extends State<ParentChildPendingScreen> {
   }
 
   Widget _buildBody(CourseProvider provider, NotifyData notifyData) {
-    if (provider.isLoading && provider.pendingCourses!.isEmpty) {
+    if (provider.isLoadingPending) {
       return const Center(child: CircularProgressIndicator());
     }
 

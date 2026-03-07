@@ -24,7 +24,9 @@ class MainIntroScreenChild extends StatefulWidget {
 class _MainIntroScreenChild extends State<MainIntroScreenChild> {
   List<Map<String, dynamic>> menuItems = [];
   Translator translator = Translator();
-  List<Course> courses = [] ;
+  List<Course> courses = [];
+  CourseProvider courseProvider = CourseProvider();
+  bool isLoadingAvailable = false;
 
   List<Map<String, dynamic>> produceMenuItems(
     String langue,
@@ -37,13 +39,14 @@ class _MainIntroScreenChild extends State<MainIntroScreenChild> {
     } else {
       logoutDisplay = translator.getText('menuLogout');
     }
-    
+
     return [
-      if(courses.any((elt)=> elt.code=='C000')){
-        "title": translator.getText('menuDictation'),
-        "icon": Icons.mic,
-        "key": 'C000',
-      },
+      if (courses.any((elt) => elt.code == 'C000'))
+        {
+          "title": translator.getText('menuDictation'),
+          "icon": Icons.mic,
+          "key": 'C000',
+        },
       {
         "title": translator.getText('menuPickCourse'),
         "icon": Icons.menu_book,
@@ -74,21 +77,31 @@ class _MainIntroScreenChild extends State<MainIntroScreenChild> {
     if (item['key'] == 'PickACourse') {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (_) => ChildPickCourse(child: SessionProvider.child!)),
+        MaterialPageRoute(
+          builder: (_) => ChildPickCourse(child: SessionProvider.child!),
+        ),
       );
     }
 
     if (item['key'] == 'CourseValidationPending') {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (_) => ChildPendingScreen(child: SessionProvider.child!)),
+        MaterialPageRoute(
+          builder: (_) => ChildPendingScreen(child: SessionProvider.child!),
+        ),
       );
     }
 
     if (item['key'] == 'Statistics') {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (_) => IntroStatistics(child: SessionProvider.child!, isResponsible: false, isViewParent: false,)),
+        MaterialPageRoute(
+          builder: (_) => IntroStatistics(
+            child: SessionProvider.child!,
+            isResponsible: false,
+            isViewParent: false,
+          ),
+        ),
       );
     }
 
@@ -112,61 +125,78 @@ class _MainIntroScreenChild extends State<MainIntroScreenChild> {
   @override
   void initState() {
     super.initState();
+
+    Future.microtask(() async {
+      final courseProvider = context.read<CourseProvider>();
+      await courseProvider.loadChildAvailableCourses(SessionProvider.child!.id);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     final notifyData = context.watch<NotifyData>();
     final session = context.watch<SessionProvider>();
-    translator = Translator(status: StatusLangue.CONSTANCE_CHILD, lang: notifyData.currentLanguage);
+    final courseProvider = context.watch<CourseProvider>();
+
+    translator = Translator(
+      status: StatusLangue.CONSTANCE_CHILD,
+      lang: notifyData.currentLanguage,
+    );
+
+    courses = courseProvider.availableCourses;
     menuItems = produceMenuItems(notifyData.currentLanguage, session);
-    CourseProvider courseProvider = context.watch<CourseProvider>();
-    courseProvider.loadChildAvailableCourses(SessionProvider.child!.id);
-    courses = courseProvider.availableCourses!;
 
     return AppScaffold(
-      body: ListView.builder(
-        padding: const EdgeInsets.all(16),
-        itemCount: menuItems.length,
-        itemBuilder: (context, index) {
-          final item = menuItems[index];
+      body: courseProvider.isLoadingAvailable
+          ? const Center(child: CircularProgressIndicator())
+          : produceInterface(session),
+    );
+  }
 
-          return GestureDetector(
-            onTap: () => _navigateTo(item, session),
-            child: Container(
-              margin: const EdgeInsets.only(bottom: 12),
-              padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 16),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(16),
-                boxShadow: const [
-                  BoxShadow(
-                    color: Colors.black12,
-                    blurRadius: 6,
-                    offset: Offset(0, 3),
-                  ),
-                ],
-              ),
-              child: Row(
-                children: [
-                  Icon(item['icon'], color: Colors.blue),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: Text(
-                      item['title'],
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                      ),
+  Widget produceInterface(SessionProvider session) {
+    courses = courseProvider.availableCourses;
+    
+    return ListView.builder(
+      padding: const EdgeInsets.all(16),
+      itemCount: menuItems.length,
+      itemBuilder: (context, index) {
+        final item = menuItems[index];
+
+        return GestureDetector(
+          onTap: () => _navigateTo(item, session),
+          child: Container(
+            margin: const EdgeInsets.only(bottom: 12),
+            padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 16),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(16),
+              boxShadow: const [
+                BoxShadow(
+                  color: Colors.black12,
+                  blurRadius: 6,
+                  offset: Offset(0, 3),
+                ),
+              ],
+            ),
+            child: Row(
+              children: [
+                Icon(item['icon'], color: Colors.blue),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Text(
+                    item['title'],
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
-                  const Icon(Icons.arrow_forward_ios, size: 16),
-                ],
-              ),
+                ),
+                const Icon(Icons.arrow_forward_ios, size: 16),
+              ],
             ),
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 }
