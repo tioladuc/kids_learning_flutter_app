@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +14,7 @@ import '../../core/core_translator.dart';
 import '../../core/notify_data.dart';
 import '../../providers/audio_provider.dart';
 import '../../widgets/app_scaffold.dart';
+import 'package:http/http.dart' as http;
 
 class RecordAudioScreen extends StatefulWidget {
   const RecordAudioScreen({super.key});
@@ -98,8 +100,16 @@ class _RecordAudioScreenState extends State<RecordAudioScreen> {
       _filePath = path;
 
       if (kIsWeb) {
+        // WEB → download from URL (including blob URL)
+        final res = await http.get(Uri.parse(path));
+        _audioBytes = res.bodyBytes;
+        
         await _player.setUrl(path); // for blob URLs
       } else {
+        // MOBILE → read local file
+        final file = File(path);
+        _audioBytes = await file.readAsBytes();
+        
         await _player.setFilePath(path); // for mobile
       }
     }
@@ -140,14 +150,18 @@ class _RecordAudioScreenState extends State<RecordAudioScreen> {
       //ToDo
       String data = "Hello, world!";
       List<int> encodedData = utf8.encode(data);
-      Uint8List bytes = Uint8List.fromList(encodedData);
+      Uint8List bytes = _audioBytes!;//Uint8List.fromList(encodedData);
+      print('MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM');
+      print(bytes);
+      print('FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF');
 
       await Provider.of<AudioProvider>(context, listen: false).uploadBytesAudio(
         title: _titleController.text,
         description: _descriptionController.text,
         audioBytes: bytes,
       );
-
+      
+      await context.read<AudioProvider>().loadAudios();
       Navigator.pop(context);
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar( SnackBar(

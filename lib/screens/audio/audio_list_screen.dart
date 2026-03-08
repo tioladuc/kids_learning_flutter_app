@@ -26,6 +26,10 @@ class _AudioListScreenState extends State<AudioListScreen> {
     
   }
 
+  void updateListOfAudio() {
+    setState(() async {await context.read<AudioProvider>().loadAudios();});
+  }
+
   @override
   Widget build(BuildContext context) {
     final notifyData = context.watch<NotifyData>();
@@ -63,7 +67,7 @@ class _AudioListScreenState extends State<AudioListScreen> {
           Expanded(
             child: ListView.builder(
               itemCount: audios.length,
-              itemBuilder: (_, i) => AudioTile(audio: audios[i]),
+              itemBuilder: (_, i) => AudioTile(audio: audios[i], action:() { setState(() async {await context.read<AudioProvider>().loadAudios();}); }),
             ),
           ),
         ],

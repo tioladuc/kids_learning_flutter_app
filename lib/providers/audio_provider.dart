@@ -165,17 +165,20 @@ class AudioProvider extends SessionBase {
     notifyListeners();
 
     bool statusResponse = false;
+    print('BBBBBBBBBBBBBBBBBBBBBBBBB audio id =' + id + ' child_id = ' + SessionProvider.child!.id);
     try {
       final response = await ApiClient.post('/audio/deleteAudio', {
-        "childid": SessionProvider.child!.id,
-        "audioid": id,
+        "child_id": SessionProvider.child!.id,
+        "id": id,
       });
       //Map<String, dynamic> response = {'success': true,};
-
+      print(response);
       // ✅ Example: handle response
       if (response['success'] == true) {
+        print('we have passed');
         statusResponse = true;
       } else {
+        print('we failed the audio');
         errorMessage = SessionBase.translator.getText('DeleteAudioError');
         statusResponse = false;
       }

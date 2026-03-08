@@ -10,8 +10,9 @@ import '../screens/audio/audio_player_screen.dart';
 class AudioTile extends StatelessWidget {
   final AudioItem audio;
   Translator translator = Translator();
+  Function action;
 
-  AudioTile({super.key, required this.audio});
+  AudioTile({super.key, required this.audio, required this.action});
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +47,8 @@ class AudioTile extends StatelessWidget {
           );
 
           if (confirmed == true) {
-            context.read<AudioProvider>().deleteAudio(audio.id);
+            await context.read<AudioProvider>().deleteAudio(audio.id);
+            action();
           }
         },
       ),
