@@ -33,9 +33,9 @@ class AudioProvider extends SessionBase {
         audios = (response["data"] as List)
             .map((json) => AudioItem.fromJson(json))
             .toList();
-            print('666666666666666666');
-            print(audios[0].audioUrl);
-            print('222222222222222222222222222');
+        print('666666666666666666');
+        print(audios[0].audioUrl);
+        print('222222222222222222222222222');
         statusResponse = true;
       } else {
         print('error in response');
@@ -165,20 +165,18 @@ class AudioProvider extends SessionBase {
     notifyListeners();
 
     bool statusResponse = false;
-    print('BBBBBBBBBBBBBBBBBBBBBBBBB audio id =' + id + ' child_id = ' + SessionProvider.child!.id);
+    
     try {
       final response = await ApiClient.post('/audio/deleteAudio', {
         "child_id": SessionProvider.child!.id,
         "id": id,
       });
       //Map<String, dynamic> response = {'success': true,};
-      print(response);
+      
       // ✅ Example: handle response
       if (response['success'] == true) {
-        print('we have passed');
         statusResponse = true;
       } else {
-        print('we failed the audio');
         errorMessage = SessionBase.translator.getText('DeleteAudioError');
         statusResponse = false;
       }
@@ -204,13 +202,7 @@ class AudioProvider extends SessionBase {
     notifyListeners();
 
     bool statusResponse = false;
-    try {
-      /*final response = await ApiClient.post('/audio/addAudio', {
-        "child_id": SessionProvider.child!.id,
-        "title": title,
-        "description": description,
-        "audioBytes": audioBytes,
-      });*/
+    try {      
 
       final response = await ApiClient.postMultipart(
         '/audio/addAudio',
@@ -239,34 +231,7 @@ class AudioProvider extends SessionBase {
       notifyListeners();
       return statusResponse;
     }
-    /*AudioItem audio = AudioItem(
-      id: DateTime.now().toString(),
-      title: title,
-      audioUrl: '',
-      description: description,
-    );
-    audios.add(audio);
-    notifyListeners();
-    return;
-
-    String baseUrl = '';
-    final request = http.MultipartRequest(
-      'POST',
-      Uri.parse('$baseUrl/selfdictation'),
-    );
-
-    request.fields['title'] = title;
-    request.fields['description'] = description;
-
-    request.files.add(
-      http.MultipartFile.fromBytes('file', audioBytes, filename: 'audio.aac'),
-    );
-
-    final response = await request.send();
-
-    if (response.statusCode != 200 && response.statusCode != 201) {
-      throw Exception('Upload failed');
-    }*/
+    
   }
 
   final List<Map<String, dynamic>> sampleAudioJson = [

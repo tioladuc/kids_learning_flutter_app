@@ -50,19 +50,20 @@ class CourseProvider extends SessionBase {
       notifyListeners();
       return statusResponse;
     }
-    
   }
+
   Future<bool> loadChildAvailableCourses(String childId) async {
     //if(hasChargedAvailable) return true;
     isLoadingAvailable = true;
     errorMessage = null;
     notifyListeners();
-    
+
     bool statusResponse = false;
     try {
-      final response = await ApiClient.post('/course/loadChildAvailableCourses', {
-        "child_id": childId,
-      });
+      final response = await ApiClient.post(
+        '/course/loadChildAvailableCourses',
+        {"child_id": childId},
+      );
       //Map<String, dynamic> response = {'success': true,};
 
       // ✅ Example: handle response
@@ -76,7 +77,9 @@ class CourseProvider extends SessionBase {
         statusResponse = true;
       } else {
         errorMessage = SessionBase.translator.getText(
-          'LoadChildPendingCoursesError', ///Duclair change the constant
+          'LoadChildPendingCoursesError',
+
+          ///Duclair change the constant
         );
         statusResponse = false;
       }
@@ -87,7 +90,6 @@ class CourseProvider extends SessionBase {
       notifyListeners();
       return statusResponse;
     }
-    
   }
 
   Future<bool> loadChildPickCourses(String childId) async {
@@ -122,7 +124,6 @@ class CourseProvider extends SessionBase {
       notifyListeners();
       return statusResponse;
     }
-    
   }
 
   Future<bool> payCourse({
@@ -156,7 +157,6 @@ class CourseProvider extends SessionBase {
       notifyListeners();
       return statusResponse;
     }
-    
   }
 
   Future<bool> removeCourse({
@@ -192,14 +192,13 @@ class CourseProvider extends SessionBase {
       notifyListeners();
       return statusResponse;
     }
-    
   }
 
   Future<bool> pickCourse(String childId, String courseCode) async {
     isLoadingPickCourseAction = true;
     errorMessage = null;
     notifyListeners();
-    
+
     bool statusResponse = false;
     try {
       final response = await ApiClient.post('/course/pickCourse', {
@@ -226,8 +225,6 @@ class CourseProvider extends SessionBase {
       notifyListeners();
       return statusResponse;
     }
-    /*// Call API to register course
-    // Remove course locally or reload list
-    pickCourses.removeWhere((elt) => elt.code == courseCode);*/
+    
   }
 }

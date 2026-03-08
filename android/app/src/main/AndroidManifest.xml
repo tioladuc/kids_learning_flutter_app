@@ -2,7 +2,7 @@
 
 
     <application
-        android:label="kids_learning_flutter_app"
+        android:label="Learn4Kids"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

@@ -31,7 +31,9 @@ class _ParentChildPendingScreenState extends State<ParentChildPendingScreen> {
     super.initState();
 
     Future.microtask(() async {
-      await context.read<CourseProvider>().loadChildPendingCourses(widget.child.id);
+      await context.read<CourseProvider>().loadChildPendingCourses(
+        widget.child.id,
+      );
     });
   }
 
@@ -39,7 +41,10 @@ class _ParentChildPendingScreenState extends State<ParentChildPendingScreen> {
   Widget build(BuildContext context) {
     final provider = context.watch<CourseProvider>();
     final notifyData = context.watch<NotifyData>();
-    translator = Translator(status: StatusLangue.CONSTANCE_COURSE, lang: notifyData.currentLanguage);
+    translator = Translator(
+      status: StatusLangue.CONSTANCE_COURSE,
+      lang: notifyData.currentLanguage,
+    );
 
     return AppScaffold(body: _buildBody(provider, notifyData));
   }
@@ -49,9 +54,8 @@ class _ParentChildPendingScreenState extends State<ParentChildPendingScreen> {
       return const Center(child: CircularProgressIndicator());
     }
 
-    if (provider.pendingCourses!.isEmpty) {
-      return Center(
-          child: Text(translator.getText('NoPendingCourseMsg')));
+    if (provider.pendingCourses.isEmpty) {
+      return Center(child: Text(translator.getText('NoPendingCourseMsg')));
     }
 
     return Column(
@@ -59,15 +63,17 @@ class _ParentChildPendingScreenState extends State<ParentChildPendingScreen> {
         ElevatedButton(
           onPressed: () {},
           style: Constant.getTitle1ButtonStyle(),
-          child: Text("${widget.child.name} - " +
-              translator.getText('PendingCourseTitle')),
+          child: Text(
+            "${widget.child.name} - " +
+                translator.getText('PendingCourseTitle'),
+          ),
         ),
         Expanded(
           child: ListView.builder(
             padding: const EdgeInsets.all(12),
-            itemCount: provider.pendingCourses!.length,
+            itemCount: provider.pendingCourses.length,
             itemBuilder: (context, index) {
-              final course = provider.pendingCourses![index];
+              final course = provider.pendingCourses[index];
               return _courseCard(course, provider, notifyData);
             },
           ),
@@ -77,8 +83,12 @@ class _ParentChildPendingScreenState extends State<ParentChildPendingScreen> {
   }
 
   Widget _courseCard(
-      Course course, CourseProvider provider, NotifyData notifyData) {
-    final isExpiringSoon = course.expiryDate != null &&
+    Course course,
+    CourseProvider provider,
+    NotifyData notifyData,
+  ) {
+    final isExpiringSoon =
+        course.expiryDate != null &&
         course.expiryDate!.isBefore(
           DateTime.now().add(const Duration(days: 7)),
         );
@@ -94,18 +104,19 @@ class _ParentChildPendingScreenState extends State<ParentChildPendingScreen> {
           children: [
             _header(course, notifyData),
             const SizedBox(height: 10),
+            _infoRow(translator.getText('PendingCourseCode'), course.code),
             _infoRow(
-                translator.getText('PendingCourseCode'),
-                course.code),
+              translator.getText('PendingCourseDescription'),
+              course.description,
+            ),
             _infoRow(
-                translator.getText('PendingCourseDescription'),
-                course.description),
+              translator.getText('PendingCourseAmount'),
+              "\$${course.amount.toStringAsFixed(2)}",
+            ),
             _infoRow(
-                translator.getText('PendingCourseAmount'),
-                "\$${course.amount.toStringAsFixed(2)}"),
-            _infoRow(
-                translator.getText('PendingCourseValidity'),
-                course.validity),
+              translator.getText('PendingCourseValidity'),
+              course.validity,
+            ),
             if (course.isRegistered && course.expiryDate != null)
               _infoRow(
                 translator.getText('PendingCourseExpire'),
@@ -122,7 +133,10 @@ class _ParentChildPendingScreenState extends State<ParentChildPendingScreen> {
   }
 
   Widget _paymentButton(
-      Course course, CourseProvider provider, NotifyData notifyData) {
+    Course course,
+    CourseProvider provider,
+    NotifyData notifyData,
+  ) {
     final isRenew = course.isRegistered;
 
     return Padding(
@@ -145,16 +159,21 @@ class _ParentChildPendingScreenState extends State<ParentChildPendingScreen> {
                     color: Colors.white,
                   ),
                 )
-              : Text(isRenew
-                  ? translator.getText('PendingCourseRenew')
-                  : translator.getText('PendingCoursePurchase')),
+              : Text(
+                  isRenew
+                      ? translator.getText('PendingCourseRenew')
+                      : translator.getText('PendingCoursePurchase'),
+                ),
         ),
       ),
     );
   }
 
   Widget _removeCourseButton(
-      Course course, CourseProvider provider, NotifyData notifyData) {
+    Course course,
+    CourseProvider provider,
+    NotifyData notifyData,
+  ) {
     return Padding(
       padding: const EdgeInsets.only(top: 12),
       child: SizedBox(
@@ -180,7 +199,10 @@ class _ParentChildPendingScreenState extends State<ParentChildPendingScreen> {
   }
 
   Future<void> _handlePayment(
-      Course course, CourseProvider provider, NotifyData notifyData) async {
+    Course course,
+    CourseProvider provider,
+    NotifyData notifyData,
+  ) async {
     final confirm = await _showConfirmationDialog(course, notifyData);
 
     if (confirm != true) return;
@@ -195,14 +217,22 @@ class _ParentChildPendingScreenState extends State<ParentChildPendingScreen> {
     if (success) {
       _showSuccessDialog(notifyData);
     } else {
-      _showError(provider.errorMessage ??
-          translator.getText('PendingCoursePaymentFailed'));
+      _showError(
+        provider.errorMessage ??
+            translator.getText('PendingCoursePaymentFailed'),
+      );
     }
   }
 
   Future<void> _handleRemoveCourse(
-      Course course, CourseProvider provider, NotifyData notifyData) async {
-    final confirm = await _showConfirmationCourseRemovalDialog(course, notifyData);
+    Course course,
+    CourseProvider provider,
+    NotifyData notifyData,
+  ) async {
+    final confirm = await _showConfirmationCourseRemovalDialog(
+      course,
+      notifyData,
+    );
 
     if (confirm != true) return;
 
@@ -216,8 +246,10 @@ class _ParentChildPendingScreenState extends State<ParentChildPendingScreen> {
     if (success) {
       _showSuccessCourseRemovalDialog(notifyData);
     } else {
-      _showError(provider.errorMessage ??
-          translator.getText('PendingCourseCourseRemovalFailed'));
+      _showError(
+        provider.errorMessage ??
+            translator.getText('PendingCourseCourseRemovalFailed'),
+      );
     }
   }
 
@@ -227,7 +259,8 @@ class _ParentChildPendingScreenState extends State<ParentChildPendingScreen> {
       builder: (_) => AlertDialog(
         title: Text(translator.getText('PendingCourseConfirmPaymentTitle')),
         content: Text(
-          translator.getText('PendingCourseConfirmPaymentMsg')
+          translator
+              .getText('PendingCourseConfirmPaymentMsg')
               .replaceAll('{0}', course.amount.toStringAsFixed(2))
               .replaceAll('{1}', course.name),
         ),
@@ -246,13 +279,18 @@ class _ParentChildPendingScreenState extends State<ParentChildPendingScreen> {
   }
 
   Future<bool?> _showConfirmationCourseRemovalDialog(
-      Course course, NotifyData notifyData) {
+    Course course,
+    NotifyData notifyData,
+  ) {
     return showDialog<bool>(
       context: context,
       builder: (_) => AlertDialog(
         title: Text(translator.getText('PendingCourseRemovalTitle')),
-        content: Text(translator.getText('PendingCourseRemovalMsg')
-            .replaceAll('{0}', course.name)),
+        content: Text(
+          translator
+              .getText('PendingCourseRemovalMsg')
+              .replaceAll('{0}', course.name),
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
@@ -304,7 +342,8 @@ class _ParentChildPendingScreenState extends State<ParentChildPendingScreen> {
   }
 
   Widget _header(Course course, NotifyData notifyData) {
-    final isExpiringSoon = course.expiryDate != null &&
+    final isExpiringSoon =
+        course.expiryDate != null &&
         course.expiryDate!.isBefore(
           DateTime.now().add(const Duration(days: 7)),
         );
@@ -323,7 +362,11 @@ class _ParentChildPendingScreenState extends State<ParentChildPendingScreen> {
     );
   }
 
-  Widget _statusBadge(Course course, bool isExpiringSoon, NotifyData notifyData) {
+  Widget _statusBadge(
+    Course course,
+    bool isExpiringSoon,
+    NotifyData notifyData,
+  ) {
     String text;
     Color color;
 

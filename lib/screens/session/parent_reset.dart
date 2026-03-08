@@ -24,17 +24,16 @@ class _ParentResetState extends State<ParentReset> {
 
     final session = context.read<SessionProvider>();
 
-    final success = await session.sendResetCode(
-      email: emailCtrl.text,
-    );
+    final success = await session.sendResetCode(email: emailCtrl.text);
 
     if (!mounted) return;
 
     if (success) {
       _showSuccess(notifyData);
     } else {
-      _showError(session.errorMessage ??
-          translator.getText('ParentResetErrorMsg'));
+      _showError(
+        session.errorMessage ?? translator.getText('ParentResetErrorMsg'),
+      );
     }
   }
 
@@ -43,8 +42,7 @@ class _ParentResetState extends State<ParentReset> {
       context: context,
       builder: (_) => AlertDialog(
         title: Text(translator.getText('ParentResetEmailSent')),
-        content: Text(translator.getText('ParentResetEmailSentMsg'),
-        ),
+        content: Text(translator.getText('ParentResetEmailSentMsg')),
         actions: [
           TextButton(
             onPressed: () {
@@ -53,23 +51,19 @@ class _ParentResetState extends State<ParentReset> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (_) => ParentResetPassword(
-                    email: emailCtrl.text,
-                  ),
+                  builder: (_) => ParentResetPassword(email: emailCtrl.text),
                 ),
               );
             },
             child: Text(translator.getText('ParentResetContinue')),
-          )
+          ),
         ],
       ),
     );
   }
 
   void _showError(String msg) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(msg)),
-    );
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
   }
 
   @override
@@ -82,7 +76,10 @@ class _ParentResetState extends State<ParentReset> {
   Widget build(BuildContext context) {
     final session = context.watch<SessionProvider>();
     final notifyData = context.watch<NotifyData>();
-    translator = Translator(status: StatusLangue.CONSTANCE_SESSION, lang: notifyData.currentLanguage);
+    translator = Translator(
+      status: StatusLangue.CONSTANCE_SESSION,
+      lang: notifyData.currentLanguage,
+    );
 
     return AppScaffold(
       //appBar: AppBar(title: const Text("Reset Password")),
@@ -96,10 +93,15 @@ class _ParentResetState extends State<ParentReset> {
                 onPressed:
                     () {}, //context.read<SessionProvider>().login('child'),
                 style: Constant.getTitle1ButtonStyle(),
-                child: Text(translator.getText('ParentResetResetPasswordReceivedResetCode')),
+                child: Text(
+                  translator.getText(
+                    'ParentResetResetPasswordReceivedResetCode',
+                  ),
+                ),
               ),
               const SizedBox(height: 24),
-              Text(translator.getText('ParentResetEnterYourEmail'),
+              Text(
+                translator.getText('ParentResetEnterYourEmail'),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 20),

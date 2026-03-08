@@ -16,8 +16,7 @@ class IntroStatisticsForParent extends StatefulWidget {
       _IntroStatisticsForParentState();
 }
 
-class _IntroStatisticsForParentState
-    extends State<IntroStatisticsForParent> {
+class _IntroStatisticsForParentState extends State<IntroStatisticsForParent> {
   Translator translator = Translator();
 
   @override
@@ -48,9 +47,7 @@ class _IntroStatisticsForParentState
             ElevatedButton(
               onPressed: () {},
               style: Constant.getTitle1ButtonStyle(),
-              child: Text(
-                translator.getText('ChildrenAccountsStatistics'),
-              ),
+              child: Text(translator.getText('ChildrenAccountsStatistics')),
             ),
 
             /// 🔥 Main Content
@@ -66,16 +63,12 @@ class _IntroStatisticsForParentState
     print(session.isLoadingChildren);
     print(session.children.length.toString());
     if (session.isLoadingChildren) {
-      return const Center(
-        child: CircularProgressIndicator(),
-      );
+      return const Center(child: CircularProgressIndicator());
     }
 
     /// ✅ NO DATA
     if (session.children.isEmpty) {
-      return Center(
-        child: Text(translator.getText('NoChildrenRegistered')),
-      );
+      return Center(child: Text(translator.getText('NoChildrenRegistered')));
     }
 
     /// ✅ DATA READY

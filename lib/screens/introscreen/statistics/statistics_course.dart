@@ -25,16 +25,16 @@ class StatisticsCourse extends StatefulWidget {
 
 class _StatisticsCourseState extends State<StatisticsCourse> {
   Translator translator = Translator();
-  
+
   @override
   void initState() {
     super.initState();
 
-    Future.microtask(() async{
+    Future.microtask(() async {
       await context.read<StatisticsProvider>().loadCourseStatistics(
-            widget.child,
-            widget.course,
-          );
+        widget.child,
+        widget.course,
+      );
     });
   }
 
@@ -42,7 +42,10 @@ class _StatisticsCourseState extends State<StatisticsCourse> {
   Widget build(BuildContext context) {
     final provider = context.watch<StatisticsProvider>();
     final notifyData = context.watch<NotifyData>();
-    translator = Translator(status: StatusLangue.CONSTANCE_STATISTICS, lang: notifyData.currentLanguage);
+    translator = Translator(
+      status: StatusLangue.CONSTANCE_STATISTICS,
+      lang: notifyData.currentLanguage,
+    );
 
     return AppScaffold(
       body: provider.isLoading
@@ -83,8 +86,11 @@ class _StatisticsCourseState extends State<StatisticsCourse> {
       child: ListTile(
         leading: const Icon(Icons.bar_chart, size: 40),
         title: Text(widget.course.name),
-        subtitle: Text(translator.getText('CourseStatChild')
-            .replaceAll('{0}', widget.child.name)),
+        subtitle: Text(
+          translator
+              .getText('CourseStatChild')
+              .replaceAll('{0}', widget.child.name),
+        ),
       ),
     );
   }
@@ -94,9 +100,7 @@ class _StatisticsCourseState extends State<StatisticsCourse> {
     return Card(
       elevation: 3,
       margin: const EdgeInsets.only(bottom: 12),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: Padding(
         padding: const EdgeInsets.all(12),
         child: Column(
@@ -105,19 +109,21 @@ class _StatisticsCourseState extends State<StatisticsCourse> {
             _dateHeader(stat),
             const SizedBox(height: 8),
             _infoRow(
-                translator.getText('CourseStatStart'),
-                _formatDate(stat.startDate)),
+              translator.getText('CourseStatStart'),
+              _formatDate(stat.startDate),
+            ),
             _infoRow(
-                translator.getText('CourseStatEnd'),
-                _formatDate(stat.endDate)),
+              translator.getText('CourseStatEnd'),
+              _formatDate(stat.endDate),
+            ),
             _infoRow(
-                translator.getText('CourseStatDuration'),
-                translator.getText('CourseStatMinute')
-                    .replaceAll('{0}', stat.duration.toString())),
+              translator.getText('CourseStatDuration'),
+              translator
+                  .getText('CourseStatMinute')
+                  .replaceAll('{0}', stat.duration.toString()),
+            ),
             const Divider(),
-            _infoRow(
-                translator.getText('CourseStatDetail'),
-                stat.detail),
+            _infoRow(translator.getText('CourseStatDetail'), stat.detail),
             const SizedBox(height: 8),
             _appreciationBadge(stat.appreciation, notifyData),
           ],
@@ -133,10 +139,7 @@ class _StatisticsCourseState extends State<StatisticsCourse> {
       children: [
         Text(
           _formatDate(stat.startDate),
-          style: const TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 16,
-          ),
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
         ),
         const Icon(Icons.history, size: 18),
       ],
@@ -146,22 +149,19 @@ class _StatisticsCourseState extends State<StatisticsCourse> {
   /// APPRECIATION BADGE
   Widget _appreciationBadge(String appreciation, NotifyData notifyData) {
     Color color;
-    if ('CourseStatExcellent'.toLowerCase() ==
-            appreciation.toLowerCase()) {
+    if ('CourseStatExcellent'.toLowerCase() == appreciation.toLowerCase()) {
       color = Colors.green;
-    } else if ('CourseStatGood'.toLowerCase() ==
-            appreciation.toLowerCase()) {
+    } else if ('CourseStatGood'.toLowerCase() == appreciation.toLowerCase()) {
       color = Colors.blue;
     } else if ('CourseStatAverage'.toLowerCase() ==
-            appreciation.toLowerCase()) {
+        appreciation.toLowerCase()) {
       color = Colors.orange;
-    } else if ('CourseStatPoor'.toLowerCase() ==
-            appreciation.toLowerCase()) {
+    } else if ('CourseStatPoor'.toLowerCase() == appreciation.toLowerCase()) {
       color = Colors.red;
     } else {
       color = Colors.grey;
     }
-    
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
       decoration: BoxDecoration(
@@ -170,10 +170,7 @@ class _StatisticsCourseState extends State<StatisticsCourse> {
       ),
       child: Text(
         translator.getText(appreciation),
-        style: TextStyle(
-          color: color,
-          fontWeight: FontWeight.bold,
-        ),
+        style: TextStyle(color: color, fontWeight: FontWeight.bold),
       ),
     );
   }
@@ -185,10 +182,7 @@ class _StatisticsCourseState extends State<StatisticsCourse> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            "$label: ",
-            style: const TextStyle(fontWeight: FontWeight.w600),
-          ),
+          Text("$label: ", style: const TextStyle(fontWeight: FontWeight.w600)),
           Expanded(child: Text(value)),
         ],
       ),

@@ -9,18 +9,6 @@ import 'core/notify_data.dart';
 import 'providers/session_provider.dart';
 import 'providers/audio_provider.dart';
 
-/*void main() {
-  runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => SessionProvider()),
-        ChangeNotifierProvider(create: (_) => AudioProvider()),
-      ],
-      child: const KidsLearningApp(),
-    ),
-  );
-}*/
-
 
 void main() {
   ApiClient.getBetta();

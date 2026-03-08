@@ -16,7 +16,7 @@ class Payment extends StatefulWidget {
 
 class _PaymentState extends State<Payment> {
   Translator translator = Translator();
-  
+
   @override
   void initState() {
     super.initState();
@@ -30,10 +30,12 @@ class _PaymentState extends State<Payment> {
   Widget build(BuildContext context) {
     final session = context.watch<SessionProvider>();
     final NotifyData notifyData = context.watch<NotifyData>();
-    translator = Translator(status: StatusLangue.CONSTANCE_PAYMENT, lang: notifyData.currentLanguage);
+    translator = Translator(
+      status: StatusLangue.CONSTANCE_PAYMENT,
+      lang: notifyData.currentLanguage,
+    );
 
     return AppScaffold(
-      
       body: Padding(
         padding: const EdgeInsets.all(12),
         child: _buildContent(session, notifyData),
@@ -62,7 +64,8 @@ class _PaymentState extends State<Payment> {
           /// ============================
           /// PAID PAYMENTS
           /// ============================
-          Text(translator.getText('PaidPaymentsTitle'),
+          Text(
+            translator.getText('PaidPaymentsTitle'),
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
 
@@ -78,7 +81,8 @@ class _PaymentState extends State<Payment> {
           /// ============================
           /// UPCOMING PAYMENTS
           /// ============================
-          Text(translator.getText('UpcomingPaymentsTitle'),
+          Text(
+            translator.getText('UpcomingPaymentsTitle'),
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
 
@@ -87,15 +91,21 @@ class _PaymentState extends State<Payment> {
           if (session.upcomingPayments.isEmpty)
             Text(translator.getText('NoUpcomingPayments'))
           else
-            _buildPaymentList(session.upcomingPayments, notifyData,
-                isPaid: false),
+            _buildPaymentList(
+              session.upcomingPayments,
+              notifyData,
+              isPaid: false,
+            ),
         ],
       ),
     );
   }
 
-  Widget _buildPaymentList(List<PaymentModel> payments, NotifyData notifyData,
-      {required bool isPaid}) {
+  Widget _buildPaymentList(
+    List<PaymentModel> payments,
+    NotifyData notifyData, {
+    required bool isPaid,
+  }) {
     return ListView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
@@ -109,7 +119,10 @@ class _PaymentState extends State<Payment> {
   }
 
   Widget _buildPaymentCard(
-      PaymentModel payment, bool isPaid, NotifyData notifyData) {
+    PaymentModel payment,
+    bool isPaid,
+    NotifyData notifyData,
+  ) {
     return Card(
       elevation: 3,
       margin: const EdgeInsets.symmetric(vertical: 8),
@@ -151,8 +164,9 @@ class _PaymentState extends State<Payment> {
               children: [
                 const Icon(Icons.book, size: 18),
                 const SizedBox(width: 8),
-                Text(translator.getText('CourseTitle') +
-                    " ${payment.courseName}"),
+                Text(
+                  translator.getText('CourseTitle') + " ${payment.courseName}",
+                ),
               ],
             ),
 
@@ -163,8 +177,9 @@ class _PaymentState extends State<Payment> {
               children: [
                 const Icon(Icons.person, size: 18),
                 const SizedBox(width: 8),
-                Text(translator.getText('ChildTitle') +
-                    " ${payment.childName}"),
+                Text(
+                  translator.getText('ChildTitle') + " ${payment.childName}",
+                ),
               ],
             ),
 

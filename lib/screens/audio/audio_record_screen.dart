@@ -103,13 +103,13 @@ class _RecordAudioScreenState extends State<RecordAudioScreen> {
         // WEB → download from URL (including blob URL)
         final res = await http.get(Uri.parse(path));
         _audioBytes = res.bodyBytes;
-        
+
         await _player.setUrl(path); // for blob URLs
       } else {
         // MOBILE → read local file
         final file = File(path);
         _audioBytes = await file.readAsBytes();
-        
+
         await _player.setFilePath(path); // for mobile
       }
     }
@@ -147,25 +147,20 @@ class _RecordAudioScreenState extends State<RecordAudioScreen> {
     setState(() => _isUploading = true);
 
     try {
-      //ToDo
-      String data = "Hello, world!";
-      List<int> encodedData = utf8.encode(data);
-      Uint8List bytes = _audioBytes!;//Uint8List.fromList(encodedData);
-      print('MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM');
-      print(bytes);
-      print('FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF');
+      Uint8List bytes = _audioBytes!; //Uint8List.fromList(encodedData);
 
       await Provider.of<AudioProvider>(context, listen: false).uploadBytesAudio(
         title: _titleController.text,
         description: _descriptionController.text,
         audioBytes: bytes,
       );
-      
+
       await context.read<AudioProvider>().loadAudios();
       Navigator.pop(context);
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar( SnackBar(
-          content: Text(translator.getText('UploadFailed'))));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(translator.getText('UploadFailed'))),
+      );
     } finally {
       setState(() => _isUploading = false);
     }
@@ -192,7 +187,10 @@ class _RecordAudioScreenState extends State<RecordAudioScreen> {
   @override
   Widget build(BuildContext context) {
     final notifyData = context.watch<NotifyData>();
-    translator = Translator(status: StatusLangue.CONSTANCE_CONSTANCE, lang: notifyData.currentLanguage);
+    translator = Translator(
+      status: StatusLangue.CONSTANCE_CONSTANCE,
+      lang: notifyData.currentLanguage,
+    );
 
     return AppScaffold(
       //appBar: AppBar(title: const Text('Record Audio')),
@@ -274,8 +272,7 @@ class _RecordAudioScreenState extends State<RecordAudioScreen> {
               },
               child: _isUploading
                   ? const CircularProgressIndicator()
-                  : Text(translator.getText('recordSaveAndUpload'),
-                    ),
+                  : Text(translator.getText('recordSaveAndUpload')),
             ),
           ],
         ),

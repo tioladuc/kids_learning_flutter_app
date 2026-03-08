@@ -33,17 +33,17 @@ class _IntroStatisticsState extends State<IntroStatistics> {
     super.initState();
 
     Future.microtask(() async {
-      child = await context
-          .read<StatisticsProvider>()
-          .getBasicInformation(widget.child);
+      child = await context.read<StatisticsProvider>().getBasicInformation(
+        widget.child,
+      );
 
       await context.read<StatisticsProvider>().loadVisitedCourses(widget.child);
-      await context
-          .read<StatisticsProvider>()
-          .loadCompletedCourses(widget.child);
-      await context
-          .read<StatisticsProvider>()
-          .loadNeverDoneCourses(widget.child);
+      await context.read<StatisticsProvider>().loadCompletedCourses(
+        widget.child,
+      );
+      await context.read<StatisticsProvider>().loadNeverDoneCourses(
+        widget.child,
+      );
     });
   }
 
@@ -51,7 +51,10 @@ class _IntroStatisticsState extends State<IntroStatistics> {
   Widget build(BuildContext context) {
     final provider = context.watch<StatisticsProvider>();
     final notifyData = context.watch<NotifyData>();
-    translator = Translator(status: StatusLangue.CONSTANCE_STATISTICS, lang: notifyData.currentLanguage);
+    translator = Translator(
+      status: StatusLangue.CONSTANCE_STATISTICS,
+      lang: notifyData.currentLanguage,
+    );
 
     return AppScaffold(
       body: provider.isLoading
@@ -101,12 +104,14 @@ class _IntroStatisticsState extends State<IntroStatistics> {
       elevation: 4,
       child: ListTile(
         leading: CircleAvatar(
-          child:
-              Text(widget.child.name.isNotEmpty ? widget.child.name[0] : "?"),
+          child: Text(
+            widget.child.name.isNotEmpty ? widget.child.name[0] : "?",
+          ),
         ),
         title: Text(widget.child.name),
-        subtitle: Text(translator.getText('IntroStatLogin')
-            .replaceAll('{0}', child!.login)),
+        subtitle: Text(
+          translator.getText('IntroStatLogin').replaceAll('{0}', child!.login),
+        ),
         trailing: widget.isResponsible
             ? const Icon(Icons.star, color: Colors.orange)
             : null,
@@ -122,23 +127,29 @@ class _IntroStatisticsState extends State<IntroStatistics> {
         child: Column(
           children: [
             _infoRow(
-                translator.getText('IntroStatAge'),
-                "${child!.age ?? '-'}"),
+              translator.getText('IntroStatAge'),
+              "${child!.age ?? '-'}",
+            ),
             _infoRow(
-                translator.getText('IntroStatCompletedTasks'),
-                "${child!.completedTasks ?? 0}"),
+              translator.getText('IntroStatCompletedTasks'),
+              "${child!.completedTasks ?? 0}",
+            ),
             _infoRow(
-                translator.getText('IntroStatTotalTasks'),
-                "${child!.totalTasks ?? 0}"),
+              translator.getText('IntroStatTotalTasks'),
+              "${child!.totalTasks ?? 0}",
+            ),
             _infoRow(
-                translator.getText('IntroStatTotalTime'),
-                translator.getText('IntroStatMinute')
-                    .replaceAll(
-                        '{0}', (child!.totalTimeMinutes ?? 0).toString())),
+              translator.getText('IntroStatTotalTime'),
+              translator
+                  .getText('IntroStatMinute')
+                  .replaceAll('{0}', (child!.totalTimeMinutes ?? 0).toString()),
+            ),
             _infoRow(
-                translator.getText('IntroStatStreakDays'),
-                translator.getText('IntroStatDays')
-                    .replaceAll('{0}', (child!.streakDays ?? 0).toString())),
+              translator.getText('IntroStatStreakDays'),
+              translator
+                  .getText('IntroStatDays')
+                  .replaceAll('{0}', (child!.streakDays ?? 0).toString()),
+            ),
           ],
         ),
       ),
@@ -152,11 +163,14 @@ class _IntroStatisticsState extends State<IntroStatistics> {
         padding: const EdgeInsets.all(12),
         child: Column(
           children: [
-            _infoRow(translator.getText('IntroStatLastConnection'),
-                provider.lastConnectionTime ?? "-"),
             _infoRow(
-                translator.getText('IntroStatDuration'),
-                provider.lastConnectionDuration ?? "-"),
+              translator.getText('IntroStatLastConnection'),
+              provider.lastConnectionTime ?? "-",
+            ),
+            _infoRow(
+              translator.getText('IntroStatDuration'),
+              provider.lastConnectionDuration ?? "-",
+            ),
           ],
         ),
       ),
@@ -178,19 +192,21 @@ class _IntroStatisticsState extends State<IntroStatistics> {
         return Card(
           child: ListTile(
             title: Text(course.name),
-            subtitle: Text(translator.getText('IntroStatTimeSpent')
-                .replaceAll('{0}', duration.toString())
-                .replaceAll('{1}', _formatDate(lastDateConnection))),
+            subtitle: Text(
+              translator
+                  .getText('IntroStatTimeSpent')
+                  .replaceAll('{0}', duration.toString())
+                  .replaceAll('{1}', _formatDate(lastDateConnection)),
+            ),
             leading: const Icon(Icons.visibility),
             onTap: () {
               setState(() {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (_) => StatisticsCourse(
-                            child: child!,
-                            course: item.course,
-                          )),
+                    builder: (_) =>
+                        StatisticsCourse(child: child!, course: item.course),
+                  ),
                 );
               });
             },
@@ -217,10 +233,8 @@ class _IntroStatisticsState extends State<IntroStatistics> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (_) => StatisticsCourse(
-                    child: widget.child,
-                    course: course,
-                  ),
+                  builder: (_) =>
+                      StatisticsCourse(child: widget.child, course: course),
                 ),
               );
             },
@@ -244,8 +258,11 @@ class _IntroStatisticsState extends State<IntroStatistics> {
         return Card(
           child: ListTile(
             title: Text(course.name),
-            subtitle: Text(translator.getText('IntroStatPickedOn')
-                .replaceAll('{0}', _formatDate(date))),
+            subtitle: Text(
+              translator
+                  .getText('IntroStatPickedOn')
+                  .replaceAll('{0}', _formatDate(date)),
+            ),
             leading: const Icon(Icons.schedule, color: Colors.orange),
           ),
         );
@@ -277,7 +294,10 @@ class _IntroStatisticsState extends State<IntroStatistics> {
       child: Text(
         title,
         style: const TextStyle(
-            fontSize: 18, fontWeight: FontWeight.bold, color: Colors.blue),
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+          color: Colors.blue,
+        ),
       ),
     );
   }

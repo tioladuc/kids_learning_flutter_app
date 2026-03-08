@@ -40,7 +40,7 @@ class AudioTile extends StatelessWidget {
                 ),
                 TextButton(
                   onPressed: () => Navigator.pop(context, true),
-                  child:Text(translator.getText('delete')),
+                  child: Text(translator.getText('delete')),
                 ),
               ],
             ),

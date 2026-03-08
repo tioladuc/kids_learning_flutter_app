@@ -34,29 +34,7 @@ class SessionProvider extends SessionBase {
   bool isLoginLoading = false;
 
   SessionProvider() {
-    /*child = Child(
-      id: 'child01',
-      name: 'Child Main Principale',
-      login: '01',
-      password: '',
-    );
-    parent = Parent(
-      id: 'parent',
-      name: 'Parent Main Principale',
-      login: '11',
-      password: '',
-      children: [
-        Child(id: 'child01', name: 'Child Other 01', login: '01', password: ''),
-        Child(id: 'child02', name: 'Child Other 02', login: '02', password: ''),
-        Child(id: 'child03', name: 'Child Other 03', login: '03', password: ''),
-        Child(id: 'child04', name: 'Child Other 04', login: '04', password: ''),
-        Child(id: 'child05', name: 'Child Other 05', login: '05', password: ''),
-        Child(id: 'child06', name: 'Child Other 06', login: '06', password: ''),
-      ],
-    );
-
-    tmpParent = Parent.copy(parent!);
-    tmpChild = Child.copy(child!);*/
+    
   }
 
   void setCurrentChildAsParent(Child? child) {
@@ -112,15 +90,10 @@ class SessionProvider extends SessionBase {
       notifyListeners();
       return statusResponse;
     }
-    /*role = null;
-    notifyListeners();*/
+    
   }
 
-  //await Future.delayed(const Duration(seconds: 2));
-  //errorMessage = SessionBase.translator.getText( selectedRole == NotifyData.ChoiceChild ? 'ChildLoginError' : 'ParentLoginError');
-  //isLoginLoading = false;
-  //notifyListeners();
-  //return false;
+  
   Future<bool> login(String selectedRole, String login, String pwd) async {
     isLoginLoading = true;
     errorMessage = null;
@@ -144,11 +117,7 @@ class SessionProvider extends SessionBase {
         } else {
           initializeLoginChild(response['data']);
         }
-        /*print('=====================*******======================');
-        print('');
-        print(response['data']);
-        print('');
-        print('======================*******======================');*/
+        
       } else {
         print('login fail passed');
         errorMessage = SessionBase.translator.getText(
@@ -647,12 +616,7 @@ class SessionProvider extends SessionBase {
 
   ///////////////////////////////////////////////////////////////////
   Future<void> loadChildren() async {
-    /*isLoadingChildren = true;
-    await Future.delayed(const Duration(seconds: 2));
-    children = parent?.children ?? [];
-
-    isLoadingChildren = false;
-    notifyListeners();*/
+    
     isLoading = true;
     errorMessage = null;
     notifyListeners();
@@ -709,39 +673,7 @@ class SessionProvider extends SessionBase {
       notifyListeners();
       return;
     }
-
-    /*latestNews = [
-      News(
-        title: "New Math Course Available",
-        description:
-            "We have added a new interactive math course for children aged 6-8.",
-        date: DateTime(2026, 2, 20),
-      ),
-      News(
-        title: "Platform Update",
-        description:
-            "A new design has been released to improve user experience.",
-        date: DateTime(2026, 2, 18),
-      ),
-      News(
-        title: "Parent Dashboard Improved",
-        description:
-            "Parents can now track their children's progress more easily.",
-        date: DateTime(2026, 2, 15),
-      ),
-      News(
-        title: "New Games Added",
-        description:
-            "Educational games have been added to make learning more fun.",
-        date: DateTime(2026, 2, 10),
-      ),
-      News(
-        title: "Bug Fixes",
-        description: "We fixed several bugs to improve app stability.",
-        date: DateTime(2026, 2, 5),
-      ),
-    ];
-    notifyListeners();*/
+    
   }
 
   Future<void> sendEmail({
@@ -778,130 +710,6 @@ class SessionProvider extends SessionBase {
       notifyListeners();
       return;
     }
-    /*isLoadingPayments = true;
-    notifyListeners();
-
-    // simulate API
-    await Future.delayed(const Duration(seconds: 1));
-    paidPayments = [
-      PaymentModel(
-        amount: 50,
-        courseName: "Mathematics Level 1",
-        childName: "Alice",
-        date: DateTime(2026, 2, 10),
-        isPaid: true,
-      ),
-      PaymentModel(
-        amount: 40,
-        courseName: "Reading Basics",
-        childName: "Alice",
-        date: DateTime(2026, 2, 5),
-        isPaid: true,
-      ),
-      PaymentModel(
-        amount: 60,
-        courseName: "Science Discovery",
-        childName: "Bob",
-        date: DateTime(2026, 1, 28),
-        isPaid: true,
-      ),
-      PaymentModel(
-        amount: 30,
-        courseName: "Drawing for Kids",
-        childName: "Emma",
-        date: DateTime(2026, 1, 20),
-        isPaid: true,
-      ),
-      PaymentModel(
-        amount: 45,
-        courseName: "English Level 1",
-        childName: "Noah",
-        date: DateTime(2026, 1, 15),
-        isPaid: true,
-      ),
-      PaymentModel(
-        amount: 55,
-        courseName: "Mathematics Level 2",
-        childName: "Alice",
-        date: DateTime(2026, 1, 10),
-        isPaid: true,
-      ),
-      PaymentModel(
-        amount: 35,
-        courseName: "Basic Coding",
-        childName: "Lucas",
-        date: DateTime(2026, 1, 5),
-        isPaid: true,
-      ),
-      PaymentModel(
-        amount: 25,
-        courseName: "Music Fundamentals",
-        childName: "Emma",
-        date: DateTime(2025, 12, 20),
-        isPaid: true,
-      ),
-    ];
-
-    upcomingPayments = [
-      PaymentModel(
-        amount: 75,
-        courseName: "English Level 2",
-        childName: "Bob",
-        date: DateTime(2026, 3, 1),
-        isPaid: false,
-      ),
-      PaymentModel(
-        amount: 50,
-        courseName: "Mathematics Level 2",
-        childName: "Alice",
-        date: DateTime(2026, 3, 5),
-        isPaid: false,
-      ),
-      PaymentModel(
-        amount: 40,
-        courseName: "Reading Advanced",
-        childName: "Emma",
-        date: DateTime(2026, 3, 8),
-        isPaid: false,
-      ),
-      PaymentModel(
-        amount: 65,
-        courseName: "Science Experiments",
-        childName: "Lucas",
-        date: DateTime(2026, 3, 12),
-        isPaid: false,
-      ),
-      PaymentModel(
-        amount: 30,
-        courseName: "Art & Creativity",
-        childName: "Noah",
-        date: DateTime(2026, 3, 15),
-        isPaid: false,
-      ),
-      PaymentModel(
-        amount: 55,
-        courseName: "Coding for Kids",
-        childName: "Lucas",
-        date: DateTime(2026, 3, 18),
-        isPaid: false,
-      ),
-      PaymentModel(
-        amount: 45,
-        courseName: "English Conversation",
-        childName: "Alice",
-        date: DateTime(2026, 3, 20),
-        isPaid: false,
-      ),
-      PaymentModel(
-        amount: 35,
-        courseName: "Music Practice",
-        childName: "Emma",
-        date: DateTime(2026, 3, 25),
-        isPaid: false,
-      ),
-    ];
-
-    isLoadingPayments = false;
-    notifyListeners();*/
+    
   }
 }

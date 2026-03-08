@@ -15,91 +15,95 @@ import '../screens/introscreen/child/child_pick_course.dart';
 import '../screens/introscreen/main_intro_screen_child.dart';
 import '../screens/session/login_screen.dart';
 
-
 class AppFooter extends StatefulWidget {
-  
   const AppFooter({super.key});
 
   @override
   State<AppFooter> createState() => _AppFooter();
-
 }
 
-class _AppFooter  extends State<AppFooter>  {//class AppFooter extends StatelessWidget {
+class _AppFooter extends State<AppFooter> {
   int _currentIndex = 0;
   Translator translator = Translator();
-  final List<Widget> _pages = [
-                  LoginScreen(),
-                  MainIntroScreenChild(),
-                  AudioListScreen(),
-                  ChildPickCourse( child:Child(  id: 's', login: 'login', name: 'name', password: 'pwd')),
-                ];
+
   void goTo(Widget widget) {
     Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(builder: (_) => widget),
-                  (Route<dynamic> route) => false,
-                );
+      context,
+      MaterialPageRoute(builder: (_) => widget),
+      (Route<dynamic> route) => false,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     final notifyData = context.watch<NotifyData>();
-    translator = Translator(status: StatusLangue.CONSTANCE_SESSION, lang: notifyData.currentLanguage);
+    translator = Translator(
+      status: StatusLangue.CONSTANCE_SESSION,
+      lang: notifyData.currentLanguage,
+    );
     final session = context.watch<SessionProvider>();
     _currentIndex = notifyData.currentBottomPosition;
 
     return BottomNavigationBar(
       currentIndex: _currentIndex,
-            onTap: (index) => setState(() {
-              _currentIndex = index; 
-              notifyData.setCurrentBottomPosition(index); 
-              if(!session.isLoggedIn) {
-                goTo(LoginScreen());
-              }
-              else {
-                if(index==0) {
-                  goTo(Presentation());
-                }
-                else if(index==1) {
-                  if(SessionProvider.parent != null) {
-                    goTo(MainIntroScreenParent());
-                  }
-                  else {
-                    goTo(MainIntroScreenChild());
-                  }
-                }
-                else if(index==2){
-                  if(SessionProvider.parent != null) {
-                    goTo(IntroStatisticsForParent());
-                  }
-                  else {
-                    goTo(IntroStatistics(child: SessionProvider.child!, isResponsible: false, isViewParent: false,));
-                  }
-                }
-                else if(index==3) {
-                  goTo(Payment());
-                }
-              }
-              
-              }),
+      onTap: (index) => setState(() {
+        _currentIndex = index;
+        notifyData.setCurrentBottomPosition(index);
+        if (!session.isLoggedIn) {
+          goTo(LoginScreen());
+        } else {
+          if (index == 0) {
+            goTo(Presentation());
+          } else if (index == 1) {
+            if (SessionProvider.parent != null) {
+              goTo(MainIntroScreenParent());
+            } else {
+              goTo(MainIntroScreenChild());
+            }
+          } else if (index == 2) {
+            if (SessionProvider.parent != null) {
+              goTo(IntroStatisticsForParent());
+            } else {
+              goTo(
+                IntroStatistics(
+                  child: SessionProvider.child!,
+                  isResponsible: false,
+                  isViewParent: false,
+                ),
+              );
+            }
+          } else if (index == 3) {
+            goTo(Payment());
+          }
+        }
+      }),
 
-            type: BottomNavigationBarType.fixed,
-            backgroundColor: Colors.transparent, // IMPORTANT
-            elevation: 0,
+      type: BottomNavigationBarType.fixed,
+      backgroundColor: Colors.transparent, // IMPORTANT
+      elevation: 0,
 
-            selectedItemColor: Colors.white,
-            unselectedItemColor: Colors.black,
+      selectedItemColor: Colors.white,
+      unselectedItemColor: Colors.black,
 
-            
-
-            selectedFontSize: 12,
-            unselectedFontSize: 11,
-      items:  [
-        BottomNavigationBarItem(icon: Icon(Icons.home),  label: translator.getText('BottomHome')),
-        BottomNavigationBarItem(icon: Icon(Icons.workspaces), label: translator.getText('BottomOperation')),
-        BottomNavigationBarItem(icon: Icon(Icons.bar_chart), label: translator.getText('BottomStatistics')),
-        BottomNavigationBarItem(icon: Icon(Icons.monetization_on_outlined), label: translator.getText('BottomPayment')),
+      selectedFontSize: 12,
+      unselectedFontSize: 11,
+      items: [
+        BottomNavigationBarItem(
+          icon: Icon(Icons.home),
+          label: translator.getText('BottomHome'),
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.workspaces),
+          label: translator.getText('BottomOperation'),
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.bar_chart),
+          label: translator.getText('BottomStatistics'),
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.monetization_on_outlined),
+          label: translator.getText('BottomPayment'),
+        ),
       ],
     );
   }

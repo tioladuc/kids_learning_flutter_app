@@ -16,15 +16,6 @@ class KidsLearningApp extends StatefulWidget {
 }
 
 class _KidsLearningApp extends State<KidsLearningApp> {
-  //class KidsLearningApp extends StatelessWidget {
-  // const KidsLearningApp({super.key});
-  final List<Widget> _pages = [
-    LoginScreen(),
-    MainIntroScreenChild(),
-    AudioListScreen(),
-    ChildPickCourse( child:Child(  id: 's', login: 'login', name: 'name', password: 'pwd')),
-  ];
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -32,13 +23,12 @@ class _KidsLearningApp extends State<KidsLearningApp> {
       theme: appTheme,
       home: Consumer2<SessionProvider, NotifyData>(
         builder: (context, session, notifyData, _) {
-          
-
           if (session.isLoggedIn) {
-            return session.role == NotifyData.ChoiceChild ? const MainIntroScreenChild(): const AudioListScreen();
+            return session.role == NotifyData.ChoiceChild
+                ? const MainIntroScreenChild()
+                : const AudioListScreen();
           }
           return const LoginScreen();
-        
         },
       ),
     );

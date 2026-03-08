@@ -112,9 +112,7 @@ class _LoginScreen extends State<LoginScreen> {
 
                   if (success) {
                     session.setRole(selectedProfile);
-                    /*if(selectedProfile == NotifyData.ChoiceChild ){
-                      context.read<CourseProvider>().loadChildAvailableCourses(SessionProvider.child!.id);
-                    }*/
+
                     notifyData.setCurrentBottomPosition(1);
                     Navigator.pushReplacement(
                       context,
@@ -129,45 +127,12 @@ class _LoginScreen extends State<LoginScreen> {
                       SnackBar(content: Text(session.errorMessage ?? "Error")),
                     );
                   }
-
-                  /*session.login(
-                    selectedProfile,
-                    controllerLogin.text,
-                    controllerPwd.text,
-                  );
-                  if (!session.isLoginLoading && session.errorMessage == null) {
-                    session.setRole(selectedProfile);
-                    if (session.role == NotifyData.ChoiceChild) {
-                      session.setParent(null);
-                      session.setChild(session.tmpChild);
-                    } else {
-                      session.setChild(null);
-                      session.setParent(session.tmpParent);
-                    }
-
-                    notifyData.setCurrentBottomPosition(1);
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => session.role == NotifyData.ChoiceChild
-                            ? const MainIntroScreenChild()
-                            : const MainIntroScreenParent(),
-                      ),
-                    );
-                  }*/
                 },
                 child: session.isLoginLoading
                     ? const CircularProgressIndicator(color: Colors.white)
                     : Text(translator.getText('LoginButton')),
               ),
-            /*if (session.errorMessage != null)
-              Text(
-                session.errorMessage!,
-                style: TextStyle(
-                  color: Colors.red,
-                  fontStyle: FontStyle.italic,
-                ),
-              ),*/
+
             if (selectedProfile == '' ||
                 selectedProfile == NotifyData.ChoiceParent)
               FractionallySizedBox(

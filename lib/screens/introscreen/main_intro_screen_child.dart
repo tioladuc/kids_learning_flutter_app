@@ -155,7 +155,7 @@ class _MainIntroScreenChild extends State<MainIntroScreenChild> {
 
   Widget produceInterface(SessionProvider session) {
     courses = courseProvider.availableCourses;
-    
+
     return ListView.builder(
       padding: const EdgeInsets.all(16),
       itemCount: menuItems.length,

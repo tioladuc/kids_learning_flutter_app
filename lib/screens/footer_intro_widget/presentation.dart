@@ -20,11 +20,11 @@ class _PresentationState extends State<Presentation> {
   final TextEditingController _subjectController = TextEditingController();
   final TextEditingController _contentController = TextEditingController();
 
-  String _selectedCategory  = '';
+  String _selectedCategory = '';
 
-  void changeCategoryInialise(NotifyData notifyData) {    
-      final _categoriesTmp = NotifyData.CategoryEmailTables;    
-      _selectedCategory = _categoriesTmp[0];    
+  void changeCategoryInialise(NotifyData notifyData) {
+    final _categoriesTmp = NotifyData.CategoryEmailTables;
+    _selectedCategory = _categoriesTmp[0];
   }
 
   @override
@@ -56,23 +56,22 @@ class _PresentationState extends State<Presentation> {
       content: _contentController.text,
     );
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-          content: Text(translator.getText('EmailSent'))),
-    );
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(translator.getText('EmailSent'))));
 
     _subjectController.clear();
     _contentController.clear();
-    /*setState(() {
-      _selectedCategory = translator.getText('CategoryRequestInformation');
-    });*/
   }
 
   @override
   Widget build(BuildContext context) {
     final session = context.watch<SessionProvider>();
     final notifyData = context.watch<NotifyData>();
-    translator = Translator(status: StatusLangue.CONSTANCE_PRESENTATION, lang: notifyData.currentLanguage);
+    translator = Translator(
+      status: StatusLangue.CONSTANCE_PRESENTATION,
+      lang: notifyData.currentLanguage,
+    );
     final newsList = session.latestNews;
     changeCategoryInialise(notifyData);
 
@@ -97,13 +96,15 @@ class _PresentationState extends State<Presentation> {
             Text(
               translator.getText('Welcome2Learn4Kids'),
               style: TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.blue),
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+                color: Colors.blue,
+              ),
             ),
             const SizedBox(height: 10),
 
-            Text(translator.getText('WelcomeMessage'),
+            Text(
+              translator.getText('WelcomeMessage'),
               style: TextStyle(fontSize: 16),
             ),
 
@@ -112,17 +113,21 @@ class _PresentationState extends State<Presentation> {
             /// ===============================
             /// 2. LATEST NEWS
             /// ===============================
-            Text(translator.getText('LatestNews'),
+            Text(
+              translator.getText('LatestNews'),
               style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.blue),
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Colors.blue,
+              ),
             ),
             const SizedBox(height: 10),
 
             if (newsList.isEmpty)
-              Text(translator.getText('NoNewsAvailable'),
-                  style: TextStyle(color: Colors.blue))
+              Text(
+                translator.getText('NoNewsAvailable'),
+                style: TextStyle(color: Colors.blue),
+              )
             else
               ListView.builder(
                 shrinkWrap: true,
@@ -145,9 +150,10 @@ class _PresentationState extends State<Presentation> {
                           Text(
                             news.date.toString(),
                             style: const TextStyle(
-                                fontSize: 12,
-                                fontStyle: FontStyle.italic,
-                                fontWeight: FontWeight.bold),
+                              fontSize: 12,
+                              fontStyle: FontStyle.italic,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ],
                       ),
@@ -161,11 +167,13 @@ class _PresentationState extends State<Presentation> {
             /// ===============================
             /// 3. CONTACT / REQUEST FORM
             /// ===============================
-            Text(translator.getText('ContactUs'),
+            Text(
+              translator.getText('ContactUs'),
               style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.blue),
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Colors.blue,
+              ),
             ),
             const SizedBox(height: 10),
 
@@ -176,9 +184,8 @@ class _PresentationState extends State<Presentation> {
                   /// Subject
                   TextFormField(
                     controller: _subjectController,
-                    decoration:  InputDecoration(
-                      labelText:
-                          translator.getText('Subject'),
+                    decoration: InputDecoration(
+                      labelText: translator.getText('Subject'),
                       border: OutlineInputBorder(),
                     ),
                     validator: (value) => value!.isEmpty
@@ -192,7 +199,7 @@ class _PresentationState extends State<Presentation> {
                   DropdownButtonFormField<String>(
                     value: _selectedCategory,
                     decoration: InputDecoration(
-                      labelText:translator.getText('Category'),
+                      labelText: translator.getText('Category'),
                       border: OutlineInputBorder(),
                     ),
                     items: NotifyData.CategoryEmailTables.map((c) {
@@ -215,7 +222,7 @@ class _PresentationState extends State<Presentation> {
                     controller: _contentController,
                     maxLines: 5,
                     decoration: InputDecoration(
-                      labelText:translator.getText('Content'),
+                      labelText: translator.getText('Content'),
                       border: OutlineInputBorder(),
                     ),
                     validator: (value) => value!.isEmpty

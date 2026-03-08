@@ -69,8 +69,7 @@ class _ParentChildScreenState extends State<ParentChildScreen> {
     );
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(translator.getText('detailedChildPageChildUpdate'),
-        ),
+        content: Text(translator.getText('detailedChildPageChildUpdate')),
       ),
     );
   }
@@ -83,15 +82,12 @@ class _ParentChildScreenState extends State<ParentChildScreen> {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        title: Text(translator.getText('childDeleteTitle'),
-        ),
-        content: Text(translator.getText('childDeleteContain'),
-        ),
+        title: Text(translator.getText('childDeleteTitle')),
+        content: Text(translator.getText('childDeleteContain')),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text(translator.getText('childDeleteCancelButton'),
-            ),
+            child: Text(translator.getText('childDeleteCancelButton')),
           ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
@@ -103,13 +99,11 @@ class _ParentChildScreenState extends State<ParentChildScreen> {
 
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Text(translator.getText('childDeleteAlertMessage'),
-                  ),
+                  content: Text(translator.getText('childDeleteAlertMessage')),
                 ),
               );
             },
-            child: Text(translator.getText('childDeleteDeleteButton'),
-            ),
+            child: Text(translator.getText('childDeleteDeleteButton')),
           ),
         ],
       ),
@@ -124,11 +118,12 @@ class _ParentChildScreenState extends State<ParentChildScreen> {
     Navigator.push(
       context,
       MaterialPageRoute(
-          builder: (_) => IntroStatistics(
-                child: widget.child,
-                isViewParent: true,
-                isResponsible: widget.child.parentResponsible!,
-              )),
+        builder: (_) => IntroStatistics(
+          child: widget.child,
+          isViewParent: true,
+          isResponsible: widget.child.parentResponsible!,
+        ),
+      ),
     );
   }
 
@@ -140,10 +135,11 @@ class _ParentChildScreenState extends State<ParentChildScreen> {
     Navigator.push(
       context,
       MaterialPageRoute(
-          builder: (_) => ParentChildPendingScreen(
-                child: widget.child,
-                isResponsible: widget.child.parentResponsible!,
-              )),
+        builder: (_) => ParentChildPendingScreen(
+          child: widget.child,
+          isResponsible: widget.child.parentResponsible!,
+        ),
+      ),
     );
   }
 
@@ -152,7 +148,9 @@ class _ParentChildScreenState extends State<ParentChildScreen> {
   // -------------------------
   void setParentAsResponsible(SessionProvider session) {
     session.setParentAsReponsibleOfChild(
-        isResponsible: !widget.child.parentResponsible!, child: widget.child);
+      isResponsible: !widget.child.parentResponsible!,
+      child: widget.child,
+    );
   }
 
   // -------------------------
@@ -171,10 +169,7 @@ class _ParentChildScreenState extends State<ParentChildScreen> {
     );
 
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(translator.getText('childParentWorkAsChild'),
-        ),
-      ),
+      SnackBar(content: Text(translator.getText('childParentWorkAsChild'))),
     );
   }
 
@@ -182,7 +177,10 @@ class _ParentChildScreenState extends State<ParentChildScreen> {
   Widget build(BuildContext context) {
     final notifyData = context.watch<NotifyData>();
     final session = context.watch<SessionProvider>();
-    translator = Translator(status: StatusLangue.CONSTANCE_PARENT, lang: notifyData.currentLanguage);
+    translator = Translator(
+      status: StatusLangue.CONSTANCE_PARENT,
+      lang: notifyData.currentLanguage,
+    );
 
     return AppScaffold(
       body: SingleChildScrollView(
@@ -192,8 +190,7 @@ class _ParentChildScreenState extends State<ParentChildScreen> {
             ElevatedButton(
               onPressed: () {},
               style: Constant.getTitle1ButtonStyle(),
-              child: Text(translator.getText('labelTitleChildIdDetail'),
-              ),
+              child: Text(translator.getText('labelTitleChildIdDetail')),
             ),
             // -------------------------
             // CHILD INFO CARD
@@ -210,7 +207,8 @@ class _ParentChildScreenState extends State<ParentChildScreen> {
                     const Icon(Icons.child_care, size: 60, color: Colors.blue),
                     const SizedBox(height: 10),
 
-                    Text(translator.getText('labelChildId') +
+                    Text(
+                      translator.getText('labelChildId') +
                           ": ${widget.child.id}",
                       style: const TextStyle(color: Colors.grey),
                     ),
@@ -221,7 +219,7 @@ class _ParentChildScreenState extends State<ParentChildScreen> {
                     TextField(
                       controller: _nameController,
                       decoration: InputDecoration(
-                        labelText:translator.getText('labelChildNameDetailEN'),
+                        labelText: translator.getText('labelChildNameDetailEN'),
                         border: const OutlineInputBorder(),
                       ),
                     ),
@@ -235,7 +233,7 @@ class _ParentChildScreenState extends State<ParentChildScreen> {
                       ),
                       readOnly: true,
                       decoration: InputDecoration(
-                        labelText:translator.getText('labelChildLoginDetail'),
+                        labelText: translator.getText('labelChildLoginDetail'),
                         border: OutlineInputBorder(),
                       ),
                     ),
@@ -247,7 +245,9 @@ class _ParentChildScreenState extends State<ParentChildScreen> {
                       controller: _passwordController,
                       obscureText: true,
                       decoration: InputDecoration(
-                        labelText:translator.getText('labelChildPasswordDetail'),
+                        labelText: translator.getText(
+                          'labelChildPasswordDetail',
+                        ),
                         border: OutlineInputBorder(),
                       ),
                     ),
@@ -256,13 +256,15 @@ class _ParentChildScreenState extends State<ParentChildScreen> {
 
                     // Save button
                     ElevatedButton.icon(
-                        onPressed: () {
-                          _saveChanges(notifyData);
-                        },
-                        icon: const Icon(Icons.save),
-                        label: Text(translator.getText('labelChildSaveChangesDetail'),
-                        ),
-                        style: Constant.getTitle3ButtonStyle()),
+                      onPressed: () {
+                        _saveChanges(notifyData);
+                      },
+                      icon: const Icon(Icons.save),
+                      label: Text(
+                        translator.getText('labelChildSaveChangesDetail'),
+                      ),
+                      style: Constant.getTitle3ButtonStyle(),
+                    ),
                   ],
                 ),
               ),
@@ -278,35 +280,51 @@ class _ParentChildScreenState extends State<ParentChildScreen> {
                 children: [
                   ListTile(
                     leading: const Icon(Icons.timer),
-                    title: Text(translator.getText('labelChildPendingCourseDetail')),
+                    title: Text(
+                      translator.getText('labelChildPendingCourseDetail'),
+                    ),
                     onTap: _viewPendingCourses,
                   ),
                   if (widget.child.parentResponsible!)
                     ListTile(
                       leading: const Icon(Icons.money_off_csred_outlined),
-                      title: Text(translator.getText('labelChildRemoveFinancialAuthority')),
+                      title: Text(
+                        translator.getText(
+                          'labelChildRemoveFinancialAuthority',
+                        ),
+                      ),
                       onTap: () {
                         setState(() {
                           session.setParentAsReponsibleOfChild(
-                              isResponsible: false, child: widget.child);
+                            isResponsible: false,
+                            child: widget.child,
+                          );
                         });
                       },
                     ),
                   if (!widget.child.parentResponsible!)
                     ListTile(
                       leading: const Icon(Icons.monetization_on_outlined),
-                      title: Text(translator.getText('labelChildAcquisitionFinancialAuthority')),
+                      title: Text(
+                        translator.getText(
+                          'labelChildAcquisitionFinancialAuthority',
+                        ),
+                      ),
                       onTap: () {
                         setState(() {
                           session.setParentAsReponsibleOfChild(
-                              isResponsible: false, child: widget.child);
+                            isResponsible: false,
+                            child: widget.child,
+                          );
                         });
                       },
                     ),
                   const Divider(height: 1),
                   ListTile(
                     leading: const Icon(Icons.bar_chart),
-                    title: Text(translator.getText('labelChildViewStatsDetail')),
+                    title: Text(
+                      translator.getText('labelChildViewStatsDetail'),
+                    ),
                     onTap: _viewStatistics,
                   ),
                   const Divider(height: 1),
@@ -320,7 +338,8 @@ class _ParentChildScreenState extends State<ParentChildScreen> {
                   const Divider(height: 1),
                   ListTile(
                     leading: const Icon(Icons.delete, color: Colors.red),
-                    title: Text(translator.getText('labelChildDeleteChildDetail'),
+                    title: Text(
+                      translator.getText('labelChildDeleteChildDetail'),
                     ),
                     onTap: () {
                       _deleteChild(notifyData);

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:kids_learning_flutter_app/providers/session_provider.dart';
 import 'package:kids_learning_flutter_app/screens/session/login_screen.dart';
 import 'package:provider/provider.dart';
-//import '../../core/constances.dart';
 import '../../core/constances.dart';
 import '../../core/core_translator.dart';
 import '../../core/notify_data.dart';
@@ -11,13 +10,16 @@ import '../../widgets/app_scaffold.dart';
 
 class LogoutScreen extends StatelessWidget {
   LogoutScreen({super.key});
-  
+
   Translator translator = Translator();
 
   @override
   Widget build(BuildContext context) {
     final notifyData = context.watch<NotifyData>();
-    translator = Translator(status: StatusLangue.CONSTANCE_SESSION, lang: notifyData.currentLanguage);
+    translator = Translator(
+      status: StatusLangue.CONSTANCE_SESSION,
+      lang: notifyData.currentLanguage,
+    );
     final sessionProvider = context.watch<SessionProvider>();
 
     return AppScaffold(
@@ -29,13 +31,10 @@ class LogoutScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const SizedBox(height: 20),
-              PageTitle(
-                text: translator.getText('LogoutTitle'),
-              ),
+              PageTitle(text: translator.getText('LogoutTitle')),
 
               const SizedBox(height: 20),
-              Text(translator.getText('LogoutMessage'),
-              ),
+              Text(translator.getText('LogoutMessage')),
 
               const SizedBox(height: 20),
               ElevatedButton(
@@ -49,7 +48,7 @@ class LogoutScreen extends StatelessWidget {
                     MaterialPageRoute(builder: (_) => LoginScreen()),
                   );
                 },
-                child: Text(translator.getText('LogoutButton'))
+                child: Text(translator.getText('LogoutButton')),
               ),
             ],
           ),

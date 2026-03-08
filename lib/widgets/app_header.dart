@@ -24,7 +24,10 @@ class _AppHeader extends State<AppHeader> with ChangeNotifier {
   Widget build(BuildContext context) {
     final session = context.watch<SessionProvider>();
     final notifyData = context.watch<NotifyData>();
-    translator = Translator(status: StatusLangue.CONSTANCE_CONSTANCE, lang: notifyData.currentLanguage);
+    translator = Translator(
+      status: StatusLangue.CONSTANCE_CONSTANCE,
+      lang: notifyData.currentLanguage,
+    );
 
     return AppBar(
       centerTitle: true,
@@ -41,7 +44,8 @@ class _AppHeader extends State<AppHeader> with ChangeNotifier {
           ),
         ),
       ),
-      title: Text(translator.getText('AppName'),
+      title: Text(
+        translator.getText('AppName'),
         style: TextStyle(fontWeight: FontWeight.bold),
       ),
       actions: [
@@ -52,10 +56,10 @@ class _AppHeader extends State<AppHeader> with ChangeNotifier {
             setState(() {
               currentLanguage = currentLanguage == NotifyData.languageEN
                   ? NotifyData.languageFR
-                  : NotifyData.languageEN;;
+                  : NotifyData.languageEN;
+              ;
               Constant.currentLanguage = currentLanguage;
               notifyData.changeLanguage(currentLanguage);
-              
             }),
           },
         ),
@@ -65,12 +69,10 @@ class _AppHeader extends State<AppHeader> with ChangeNotifier {
           onPressed: () {
             if (session.isLoggedIn) {
               session.setRole(null);
-               Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) =>const LoginScreen(),
-                    ),
-                  );
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (_) => const LoginScreen()),
+              );
             }
           },
         ),

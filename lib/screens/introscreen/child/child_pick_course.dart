@@ -11,10 +11,7 @@ import '../../../widgets/app_scaffold.dart';
 class ChildPickCourse extends StatefulWidget {
   final Child child;
 
-  const ChildPickCourse({
-    super.key,
-    required this.child,
-  });
+  const ChildPickCourse({super.key, required this.child});
 
   @override
   State<ChildPickCourse> createState() => _ChildPickCourseState();
@@ -26,8 +23,10 @@ class _ChildPickCourseState extends State<ChildPickCourse> {
   void initState() {
     super.initState();
 
-    Future.microtask(() async{
-      await context.read<CourseProvider>().loadChildPickCourses(widget.child.id);
+    Future.microtask(() async {
+      await context.read<CourseProvider>().loadChildPickCourses(
+        widget.child.id,
+      );
     });
   }
 
@@ -35,11 +34,12 @@ class _ChildPickCourseState extends State<ChildPickCourse> {
   Widget build(BuildContext context) {
     final provider = context.watch<CourseProvider>();
     final notifyData = context.watch<NotifyData>();
-    translator = Translator(status: StatusLangue.CONSTANCE_COURSE, lang: notifyData.currentLanguage);
-
-    return AppScaffold(
-      body: _buildBody(provider, notifyData),
+    translator = Translator(
+      status: StatusLangue.CONSTANCE_COURSE,
+      lang: notifyData.currentLanguage,
     );
+
+    return AppScaffold(body: _buildBody(provider, notifyData));
   }
 
   Widget _buildBody(CourseProvider provider, NotifyData notifyData) {
@@ -58,15 +58,17 @@ class _ChildPickCourseState extends State<ChildPickCourse> {
         ElevatedButton(
           onPressed: () {},
           style: Constant.getTitle1ButtonStyle(),
-          child: Text("${widget.child.name} - " + (
-              translator.getText('PickCoursePickACourse'))),
+          child: Text(
+            "${widget.child.name} - " +
+                (translator.getText('PickCoursePickACourse')),
+          ),
         ),
         Expanded(
           child: ListView.builder(
             padding: const EdgeInsets.all(12),
-            itemCount: provider.pickCourses!.length,
+            itemCount: provider.pickCourses.length,
             itemBuilder: (context, index) {
-              final course = provider.pickCourses![index];
+              final course = provider.pickCourses[index];
               return _courseCard(course, notifyData);
             },
           ),
@@ -79,9 +81,7 @@ class _ChildPickCourseState extends State<ChildPickCourse> {
     return Card(
       elevation: 4,
       margin: const EdgeInsets.only(bottom: 12),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -89,26 +89,25 @@ class _ChildPickCourseState extends State<ChildPickCourse> {
           children: [
             _header(course),
             const SizedBox(height: 10),
+            _infoRow(translator.getText('PendingCourseCode'), course.code),
             _infoRow(
-                translator.getText('PendingCourseCode'),
-                course.code),
+              translator.getText('PendingCourseDescription'),
+              course.description,
+            ),
             _infoRow(
-                translator.getText('PendingCourseDescription'),
-                course.description),
+              translator.getText('PendingCourseAmount'),
+              "\$${course.amount.toStringAsFixed(2)}",
+            ),
             _infoRow(
-                translator.getText('PendingCourseAmount'),
-                "\$${course.amount.toStringAsFixed(2)}"),
-            _infoRow(
-                translator.getText('PendingCourseValidity'),
-                course.validity),
+              translator.getText('PendingCourseValidity'),
+              course.validity,
+            ),
             const SizedBox(height: 12),
             Align(
               alignment: Alignment.centerRight,
               child: ElevatedButton(
                 onPressed: () => _confirmPick(course, notifyData),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue,
-                ),
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
                 child: Text(translator.getText('PickCoursePickACourse')),
               ),
             ),
@@ -125,10 +124,7 @@ class _ChildPickCourseState extends State<ChildPickCourse> {
         Expanded(
           child: Text(
             course.name,
-            style: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
         ),
         _statusBadge(),
@@ -138,20 +134,14 @@ class _ChildPickCourseState extends State<ChildPickCourse> {
 
   Widget _statusBadge() {
     return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 10,
-        vertical: 5,
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       decoration: BoxDecoration(
         color: Colors.orange.withOpacity(0.15),
         borderRadius: BorderRadius.circular(20),
       ),
       child: const Text(
         "Available",
-        style: TextStyle(
-          color: Colors.orange,
-          fontWeight: FontWeight.bold,
-        ),
+        style: TextStyle(color: Colors.orange, fontWeight: FontWeight.bold),
       ),
     );
   }
@@ -161,15 +151,8 @@ class _ChildPickCourseState extends State<ChildPickCourse> {
       padding: const EdgeInsets.only(top: 6),
       child: Row(
         children: [
-          Text(
-            "$label: ",
-            style: const TextStyle(
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-          Expanded(
-            child: Text(value),
-          ),
+          Text("$label: ", style: const TextStyle(fontWeight: FontWeight.w600)),
+          Expanded(child: Text(value)),
         ],
       ),
     );
@@ -219,8 +202,7 @@ class _ChildPickCourseState extends State<ChildPickCourse> {
           actions: [
             ElevatedButton(
               onPressed: () => Navigator.pop(context),
-              child: Text(
-                  translator.getText('PickCoursePickConfirmSuccessOK')),
+              child: Text(translator.getText('PickCoursePickConfirmSuccessOK')),
             ),
           ],
         ),
@@ -239,8 +221,7 @@ class _ChildPickCourseState extends State<ChildPickCourse> {
           actions: [
             ElevatedButton(
               onPressed: () => Navigator.pop(context),
-              child: Text(
-                  translator.getText('PickCoursePickConfirmSuccessOK')),
+              child: Text(translator.getText('PickCoursePickConfirmSuccessOK')),
             ),
           ],
         ),

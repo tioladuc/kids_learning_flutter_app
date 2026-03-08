@@ -9,10 +9,7 @@ import '../../widgets/app_scaffold.dart';
 class ActivateParentAccount extends StatefulWidget {
   final String email;
 
-  const ActivateParentAccount({
-    super.key,
-    required this.email,
-  });
+  const ActivateParentAccount({super.key, required this.email});
 
   @override
   State<ActivateParentAccount> createState() => _ActivateParentAccountState();
@@ -46,11 +43,13 @@ class _ActivateParentAccountState extends State<ActivateParentAccount> {
     if (success) {
       _showSuccess(
         notifyData,
-          message:
-              translator.getText('ActivationSuccessMessage'),
-          returnLogin: true);
+        message: translator.getText('ActivationSuccessMessage'),
+        returnLogin: true,
+      );
     } else {
-      _showError(session.errorMessage ?? translator.getText('ActivationErrorMessage'));
+      _showError(
+        session.errorMessage ?? translator.getText('ActivationErrorMessage'),
+      );
     }
   }
 
@@ -59,23 +58,29 @@ class _ActivateParentAccountState extends State<ActivateParentAccount> {
 
     final session = context.read<SessionProvider>();
 
-    final success = await session.resendActivationCode(
-      email: emailCtrl.text,
-    );
+    final success = await session.resendActivationCode(email: emailCtrl.text);
 
     if (!mounted) return;
 
     if (success) {
       _showSuccess(
         notifyData,
-          message: translator.getText('ResendActivationCode'),
-          returnLogin: false);
+        message: translator.getText('ResendActivationCode'),
+        returnLogin: false,
+      );
     } else {
-      _showError(session.errorMessage ?? translator.getText('ResendActivationErrorMessage'));
+      _showError(
+        session.errorMessage ??
+            translator.getText('ResendActivationErrorMessage'),
+      );
     }
   }
 
-  void _showSuccess(NotifyData notifyData, {String message = '', bool returnLogin = true}) {
+  void _showSuccess(
+    NotifyData notifyData, {
+    String message = '',
+    bool returnLogin = true,
+  }) {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
@@ -95,16 +100,14 @@ class _ActivateParentAccountState extends State<ActivateParentAccount> {
               }
             },
             child: Text(translator.getText('ContinueMessage')),
-          )
+          ),
         ],
       ),
     );
   }
 
   void _showError(String msg) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(msg)),
-    );
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
   }
 
   @override
@@ -118,10 +121,12 @@ class _ActivateParentAccountState extends State<ActivateParentAccount> {
   Widget build(BuildContext context) {
     final session = context.watch<SessionProvider>();
     final NotifyData notifyData = context.watch<NotifyData>();
-    translator = Translator(status: StatusLangue.CONSTANCE_SESSION, lang: notifyData.currentLanguage);
+    translator = Translator(
+      status: StatusLangue.CONSTANCE_SESSION,
+      lang: notifyData.currentLanguage,
+    );
 
     return AppScaffold(
-      
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Form(
@@ -129,30 +134,37 @@ class _ActivateParentAccountState extends State<ActivateParentAccount> {
           child: Column(
             children: [
               ElevatedButton(
-                onPressed:
-                    () {}, 
+                onPressed: () {},
                 style: Constant.getTitle1ButtonStyle(),
                 child: Text(translator.getText('ActivateAccount')),
               ),
               const SizedBox(height: 24),
-              Text(translator.getText('EnterActivationCode'),
+              Text(
+                translator.getText('EnterActivationCode'),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 20),
               _field(
-                  notifyData,
-                  emailCtrl,
-                  "Email",
-                  keyboardType: TextInputType.emailAddress
-                  ),
-              _field(notifyData, codeCtrl, translator.getText('ActivationCode'),
-                  keyboardType: TextInputType.text, addValidator: false),
+                notifyData,
+                emailCtrl,
+                "Email",
+                keyboardType: TextInputType.emailAddress,
+              ),
+              _field(
+                notifyData,
+                codeCtrl,
+                translator.getText('ActivationCode'),
+                keyboardType: TextInputType.text,
+                addValidator: false,
+              ),
               const SizedBox(height: 20),
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
                   style: Constant.getTitle3ButtonStyle(),
-                  onPressed: (){session.isLoading ? null : _activate(notifyData);},
+                  onPressed: () {
+                    session.isLoading ? null : _activate(notifyData);
+                  },
                   child: session.isLoading
                       ? const CircularProgressIndicator()
                       : Text(translator.getText('ActivateAccountBeta')),
@@ -192,13 +204,12 @@ class _ActivateParentAccountState extends State<ActivateParentAccount> {
       child: TextFormField(
         controller: ctrl,
         keyboardType: keyboardType,
-        validator: (v) =>
-            addValidator ? (v == null || v.isEmpty ? translator.getText('Required') : null) : null,
+        validator: (v) => addValidator
+            ? (v == null || v.isEmpty ? translator.getText('Required') : null)
+            : null,
         decoration: InputDecoration(
           labelText: label,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
         ),
       ),
     );

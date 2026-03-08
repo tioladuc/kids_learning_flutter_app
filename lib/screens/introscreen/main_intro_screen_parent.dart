@@ -19,7 +19,7 @@ class MainIntroScreenParent extends StatefulWidget {
 
 class _MainIntroScreenParent extends State<MainIntroScreenParent> {
   Translator translator = Translator();
-  
+
   void _navigateTo(Child? item) {
     Navigator.push(
       context,
@@ -31,8 +31,11 @@ class _MainIntroScreenParent extends State<MainIntroScreenParent> {
   Widget build(BuildContext context) {
     SessionProvider session = context.watch<SessionProvider>();
     final notifyData = context.watch<NotifyData>();
-    translator = Translator(status: StatusLangue.CONSTANCE_PARENT, lang: notifyData.currentLanguage);
-    
+    translator = Translator(
+      status: StatusLangue.CONSTANCE_PARENT,
+      lang: notifyData.currentLanguage,
+    );
+
     return AppScaffold(
       body: Padding(
         padding: const EdgeInsets.all(16),
@@ -54,8 +57,7 @@ class _MainIntroScreenParent extends State<MainIntroScreenParent> {
             Expanded(
               child: SessionProvider.parent!.children.isEmpty
                   ? Center(
-                      child: Text(translator.getText('menuNoChildRegister'),
-                      ),
+                      child: Text(translator.getText('menuNoChildRegister')),
                     )
                   : ListView.builder(
                       padding: const EdgeInsets.all(16),
@@ -101,11 +103,14 @@ class _MainIntroScreenParent extends State<MainIntroScreenParent> {
                                 const SizedBox(width: 16),
                                 Container(
                                   decoration: BoxDecoration(
-                                    color: (SessionProvider.parent?.currentChild !=
+                                    color:
+                                        (SessionProvider.parent?.currentChild !=
                                                 null &&
                                             item.id ==
                                                 SessionProvider
-                                                    .parent?.currentChild?.id)
+                                                    .parent
+                                                    ?.currentChild
+                                                    ?.id)
                                         ? Colors.blue
                                         : Colors.grey, // The background color
                                     shape: BoxShape
@@ -116,12 +121,15 @@ class _MainIntroScreenParent extends State<MainIntroScreenParent> {
                                       Icons.bluetooth_audio_outlined,
                                     ),
                                     color:
-                                        (SessionProvider.parent?.currentChild != null &&
-                                                item.id ==
-                                                    SessionProvider.parent?.currentChild
-                                                        ?.id)
-                                            ? Colors.white
-                                            : Colors.black,
+                                        (SessionProvider.parent?.currentChild !=
+                                                null &&
+                                            item.id ==
+                                                SessionProvider
+                                                    .parent
+                                                    ?.currentChild
+                                                    ?.id)
+                                        ? Colors.white
+                                        : Colors.black,
                                     onPressed: () {
                                       // Handle button press
                                       session.setCurrentChildAsParent(item);
@@ -153,8 +161,7 @@ class _MainIntroScreenParent extends State<MainIntroScreenParent> {
               child: ElevatedButton.icon(
                 onPressed: () => _showAddChildDialog(context, notifyData),
                 icon: const Icon(Icons.person_add),
-                label: Text(translator.getText('menuAddChild'),
-                ),
+                label: Text(translator.getText('menuAddChild')),
                 style: Constant.getTitle3ButtonStyle(),
               ),
             ),
@@ -164,9 +171,7 @@ class _MainIntroScreenParent extends State<MainIntroScreenParent> {
                 onPressed: () =>
                     _showChangePasswordDialog(context, session, notifyData),
                 icon: const Icon(Icons.lock),
-                label: Text(
-                  translator.getText('menuChangeNameAndPwd'),
-                ),
+                label: Text(translator.getText('menuChangeNameAndPwd')),
                 style: Constant.getTitle3ButtonRedStyle(),
               ),
             ),
@@ -187,8 +192,7 @@ class _MainIntroScreenParent extends State<MainIntroScreenParent> {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        title: Text(translator.getText('titleAddChild'),
-        ),
+        title: Text(translator.getText('titleAddChild')),
         content: Column(
           children: [
             TextField(
@@ -216,8 +220,7 @@ class _MainIntroScreenParent extends State<MainIntroScreenParent> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text(translator.getText('labelChildCancelButton'),
-            ),
+            child: Text(translator.getText('labelChildCancelButton')),
           ),
           ElevatedButton(
             onPressed: () {
@@ -225,15 +228,14 @@ class _MainIntroScreenParent extends State<MainIntroScreenParent> {
                   controllerName.text.isNotEmpty &&
                   controllerPassword.text.isNotEmpty) {
                 context.read<SessionProvider>().addChild(
-                      controllerLogin.text,
-                      controllerName.text,
-                      controllerPassword.text,
-                    );
+                  controllerLogin.text,
+                  controllerName.text,
+                  controllerPassword.text,
+                );
                 Navigator.pop(context);
               }
             },
-            child: Text(translator.getText('labelChildSaveButton'),
-            ),
+            child: Text(translator.getText('labelChildSaveButton')),
           ),
         ],
       ),
@@ -251,14 +253,13 @@ class _MainIntroScreenParent extends State<MainIntroScreenParent> {
     final controllerFirstName = TextEditingController();
     final controllerLastName = TextEditingController();
     final controllerPassword = TextEditingController();
-    controllerFirstName.text = SessionProvider.parent!.firstName??'';
-    controllerLastName.text = SessionProvider.parent!.lastName??'';
+    controllerFirstName.text = SessionProvider.parent!.firstName ?? '';
+    controllerLastName.text = SessionProvider.parent!.lastName ?? '';
 
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        title: Text(translator.getText('labelTitleParentPwdChange'),
-        ),
+        title: Text(translator.getText('labelTitleParentPwdChange')),
         content: Column(
           children: [
             TextField(
@@ -287,23 +288,22 @@ class _MainIntroScreenParent extends State<MainIntroScreenParent> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text(translator.getText('labelCancelButtonParentPwdChange'),
-            ),
+            child: Text(translator.getText('labelCancelButtonParentPwdChange')),
           ),
           ElevatedButton(
             onPressed: () {
-              if (controllerFirstName.text.isNotEmpty && controllerLastName.text.isNotEmpty &&
+              if (controllerFirstName.text.isNotEmpty &&
+                  controllerLastName.text.isNotEmpty &&
                   controllerPassword.text.isNotEmpty) {
                 context.read<SessionProvider>().changeParentPassword(
-                      controllerFirstName.text,
-                      controllerLastName.text,
-                      controllerPassword.text,
-                    );
+                  controllerFirstName.text,
+                  controllerLastName.text,
+                  controllerPassword.text,
+                );
                 Navigator.pop(context);
               }
             },
-            child: Text(translator.getText('labelSaveButtonParentPwdChange'),
-            ),
+            child: Text(translator.getText('labelSaveButtonParentPwdChange')),
           ),
         ],
       ),

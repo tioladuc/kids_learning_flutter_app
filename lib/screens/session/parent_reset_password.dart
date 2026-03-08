@@ -9,10 +9,7 @@ import '../../widgets/app_scaffold.dart';
 class ParentResetPassword extends StatefulWidget {
   final String email;
 
-  const ParentResetPassword({
-    super.key,
-    required this.email,
-  });
+  const ParentResetPassword({super.key, required this.email});
 
   @override
   State<ParentResetPassword> createState() => _ParentResetPasswordState();
@@ -54,8 +51,9 @@ class _ParentResetPasswordState extends State<ParentResetPassword> {
     if (success) {
       _showSuccess(notifyData);
     } else {
-      _showError(session.errorMessage ??
-          translator.getText('ParentResetPasswordError'));
+      _showError(
+        session.errorMessage ?? translator.getText('ParentResetPasswordError'),
+      );
     }
   }
 
@@ -64,7 +62,9 @@ class _ParentResetPasswordState extends State<ParentResetPassword> {
       context: context,
       builder: (_) => AlertDialog(
         title: Text(translator.getText('ParentResetPasswordSuccess')),
-        content: Text(translator.getText('ParentResetPasswordPasswordResetSuccessfully')),
+        content: Text(
+          translator.getText('ParentResetPasswordPasswordResetSuccessfully'),
+        ),
         actions: [
           TextButton(
             onPressed: () {
@@ -75,16 +75,14 @@ class _ParentResetPasswordState extends State<ParentResetPassword> {
               Navigator.pop(context);
             },
             child: Text(translator.getText('ParentResetPasswordContinue')),
-          )
+          ),
         ],
       ),
     );
   }
 
   void _showError(String msg) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(msg)),
-    );
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
   }
 
   @override
@@ -100,7 +98,10 @@ class _ParentResetPasswordState extends State<ParentResetPassword> {
   Widget build(BuildContext context) {
     final session = context.watch<SessionProvider>();
     final notifyData = context.watch<NotifyData>();
-    translator = Translator(status: StatusLangue.CONSTANCE_SESSION, lang: notifyData.currentLanguage);
+    translator = Translator(
+      status: StatusLangue.CONSTANCE_SESSION,
+      lang: notifyData.currentLanguage,
+    );
 
     return AppScaffold(
       //appBar: AppBar(title: const Text("Reset Password")),
@@ -114,24 +115,39 @@ class _ParentResetPasswordState extends State<ParentResetPassword> {
                 onPressed:
                     () {}, //context.read<SessionProvider>().login('child'),
                 style: Constant.getTitle1ButtonStyle(),
-                child: Text(translator.getText('ParentResetPasswordResetPassword')),
+                child: Text(
+                  translator.getText('ParentResetPasswordResetPassword'),
+                ),
               ),
               const SizedBox(height: 24),
-              Text(translator.getText('ParentResetPasswordEnterYourEmail'),
+              Text(
+                translator.getText('ParentResetPasswordEnterYourEmail'),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 20),
-              _field(notifyData,
-                  emailCtrl, translator.getText('ParentResetPasswordEmail'),
-                  keyboardType: TextInputType.emailAddress),
-              _field(notifyData,
-                  codeCtrl, translator.getText('ParentResetPasswordResetCode')),
-              _field(notifyData,
-                  passwordCtrl, translator.getText('ParentResetPasswordNewPassword'),
-                  obscure: true),
-              _field(notifyData,
-                  confirmCtrl, translator.getText('ParentResetPasswordConfirmPassword'),
-                  obscure: true),
+              _field(
+                notifyData,
+                emailCtrl,
+                translator.getText('ParentResetPasswordEmail'),
+                keyboardType: TextInputType.emailAddress,
+              ),
+              _field(
+                notifyData,
+                codeCtrl,
+                translator.getText('ParentResetPasswordResetCode'),
+              ),
+              _field(
+                notifyData,
+                passwordCtrl,
+                translator.getText('ParentResetPasswordNewPassword'),
+                obscure: true,
+              ),
+              _field(
+                notifyData,
+                confirmCtrl,
+                translator.getText('ParentResetPasswordConfirmPassword'),
+                obscure: true,
+              ),
               const SizedBox(height: 20),
               SizedBox(
                 width: double.infinity,
@@ -142,7 +158,11 @@ class _ParentResetPasswordState extends State<ParentResetPassword> {
                   },
                   child: session.isLoading
                       ? const CircularProgressIndicator()
-                      : Text(translator.getText('ParentResetPasswordResetPasswordBtn')),
+                      : Text(
+                          translator.getText(
+                            'ParentResetPasswordResetPasswordBtn',
+                          ),
+                        ),
                 ),
               ),
             ],
@@ -170,9 +190,7 @@ class _ParentResetPasswordState extends State<ParentResetPassword> {
             : null,
         decoration: InputDecoration(
           labelText: label,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
         ),
       ),
     );
