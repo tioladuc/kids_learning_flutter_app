@@ -22,14 +22,23 @@ class AudioProvider extends SessionBase {
     bool statusResponse = false;
     try {
       final response = await ApiClient.post('/audio/loadAudios', {
-        "childid": SessionProvider.child!.id,
+        "child_id": SessionProvider.child!.id,
       });
       //Map<String, dynamic> response = {'success': true,};
-
+      print(response['success']);
       // ✅ Example: handle response
       if (response['success'] == true) {
+        print('success in response');
+        print(response);
+        audios = (response["data"] as List)
+            .map((json) => AudioItem.fromJson(json))
+            .toList();
+            print('666666666666666666');
+            print(audios[0].audioUrl);
+            print('222222222222222222222222222');
         statusResponse = true;
       } else {
+        print('error in response');
         errorMessage = SessionBase.translator.getText('LoadAudiosError');
         statusResponse = false;
       }
@@ -193,12 +202,24 @@ class AudioProvider extends SessionBase {
 
     bool statusResponse = false;
     try {
-      final response = await ApiClient.post('/audio/uploadBytesAudio', {
-        "childid": SessionProvider.child!.id,
+      /*final response = await ApiClient.post('/audio/addAudio', {
+        "child_id": SessionProvider.child!.id,
         "title": title,
         "description": description,
         "audioBytes": audioBytes,
-      });
+      });*/
+
+      final response = await ApiClient.postMultipart(
+        '/audio/addAudio',
+        {
+          "child_id": SessionProvider.child!.id,
+          "title": title,
+          "description": description,
+        },
+        audioBytes,
+        "recording.wav",
+      );
+
       //Map<String, dynamic> response = {'success': true,};
 
       // ✅ Example: handle response

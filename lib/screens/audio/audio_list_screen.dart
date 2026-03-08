@@ -20,17 +20,21 @@ class _AudioListScreenState extends State<AudioListScreen> {
   @override
   void initState() {
     super.initState();
-    context.read<AudioProvider>().loadAudios();
+    Future.microtask(() async{
+      await context.read<AudioProvider>().loadAudios();
+    });
+    
   }
 
   @override
   Widget build(BuildContext context) {
     final notifyData = context.watch<NotifyData>();
     translator = Translator(status: StatusLangue.CONSTANCE_CONSTANCE, lang: notifyData.currentLanguage);
-    final audios = context.watch<AudioProvider>().audios;
+    final audioProvider = context.watch<AudioProvider>();
+    final audios = audioProvider.audios;
 
     return AppScaffold(
-      body: Column(
+      body: audioProvider.isLoading ? const Center(child: CircularProgressIndicator()) : Column(
         children: [
           const SizedBox(height: 24),
           Row(

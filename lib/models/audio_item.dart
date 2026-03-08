@@ -13,10 +13,27 @@ class AudioItem {
 
   factory AudioItem.fromJson(Map<String, dynamic> json) {
     return AudioItem(
+      id: json['id'].toString(),
+      title: json['title'] ?? '',
+      audioUrl: (json['base_url'] ?? '') + (json['audio_url'] ?? ''),
+      description: json['description'] ?? '',
+    );
+  }
+  /*factory AudioItem.fromJson(Map<String, dynamic> json) {
+    return AudioItem(
       id: json['id'],
       title: json['title'],
       audioUrl: json['audio_url'],
       description: json['description'],
     );
   }
+
+  factory AudioItem.fromJson(Map<String, dynamic> json) {
+    return AudioItem(
+      id: json['id'].toString(),
+      title: json['title'] ?? '',
+      audioUrl: json['audio_path'] ?? '',
+      description: json['description'] ?? '',
+    );
+  }*/
 }
