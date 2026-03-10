@@ -159,6 +159,39 @@ class AudioProvider extends SessionBase {
     }*/
   }
 
+  Future<bool> getOne(String id) async {
+    //isLoading = true;
+    errorMessage = null;
+    notifyListeners();
+
+    bool statusResponse = false;
+    
+    try {
+      final response = await ApiClient.post('/audio/getOne', {
+        "child_id": SessionProvider.child!.id,
+        "item_course_id": id,
+      });
+      //Map<String, dynamic> response = {'success': true,};
+      
+      // ✅ Example: handle response
+      if (response['success'] == true) {
+        statusResponse = true;
+      } else {
+        errorMessage = SessionBase.translator.getText('LoadAudiosError');
+        statusResponse = false;
+      }
+    } catch (e) {
+      errorMessage = e.toString();
+    } finally {
+      //isLoading = false;
+      notifyListeners();
+      return statusResponse;
+    }
+    /*//await ApiClient.delete('/selfdictation/$id');
+    audios.removeWhere((a) => a.id == id);
+    notifyListeners();*/
+  }
+
   Future<bool> deleteAudio(String id) async {
     isLoading = true;
     errorMessage = null;
