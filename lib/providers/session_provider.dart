@@ -408,8 +408,8 @@ class SessionProvider extends SessionBase {
     bool statusResponse = false;
     try {
       final response = await ApiClient.post('/createParent', {
-        "firstName": firstName,
-        "lastName": lastName,
+        "first_name": firstName,
+        "last_name": lastName,
         "login": login,
         "password": password,
         "email": email,
@@ -420,11 +420,13 @@ class SessionProvider extends SessionBase {
       if (response['success'] == true) {
         statusResponse = true;
       } else {
+        print(response);
         errorMessage = SessionBase.translator.getText('CreateParentError');
         statusResponse = false;
       }
     } catch (e) {
       errorMessage = e.toString();
+      print(e);
     } finally {
       isLoading = false;
       notifyListeners();
@@ -555,7 +557,7 @@ class SessionProvider extends SessionBase {
     try {
       final response = await ApiClient.post(
         '/account/setParentAsResponsibleOfChild',
-        {"parentid": parent!.id, "childid": child.id},
+        {"parent_id": parent!.id, "child_id": child.id},
       );
       //Map<String, dynamic> response = {'success': true,};
 
@@ -590,7 +592,7 @@ class SessionProvider extends SessionBase {
     bool statusResponse = false;
     try {
       final response = await ApiClient.post('/account/resetParentPassword', {
-        "parentid": parent!.id,
+        "parent_id": parent!.id,
         "email": email,
         "code": code,
       });
