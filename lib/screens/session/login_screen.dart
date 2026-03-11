@@ -165,8 +165,9 @@ class _LoginScreen extends State<LoginScreen> {
             if (selectedProfile == '' ||
                 selectedProfile == NotifyData.ChoiceParent)
               const SizedBox(height: 24),
-            if (selectedProfile == '' ||
-                selectedProfile == NotifyData.ChoiceParent)
+            /*if (selectedProfile == '' ||
+                selectedProfile == NotifyData.ChoiceParent)*/
+                if(false)//==duclair==
               ElevatedButton(
                 onPressed: () => {
                   Navigator.push(

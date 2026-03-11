@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kids_learning_flutter_app/screens/session/login_screen.dart';
 import 'package:provider/provider.dart';
 import '../../core/constances.dart';
 import '../../core/core_translator.dart';
@@ -40,7 +41,14 @@ class _CreateParentAccountState extends State<CreateParentAccount> {
     if (!mounted) return;
 
     if (success) {
-      _showSuccessDialog(notifyData);
+      Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => LoginScreen(),
+                ), 
+                (Route<dynamic> route) => false,
+              );//==duclair==
+      //==duclair==_showSuccessDialog(notifyData);
     } else {
       _showError(
         session.errorMessage ??
@@ -59,7 +67,7 @@ class _CreateParentAccountState extends State<CreateParentAccount> {
           TextButton(
             onPressed: () {
               Navigator.pop(context);
-
+              
               Navigator.push(
                 context,
                 MaterialPageRoute(
