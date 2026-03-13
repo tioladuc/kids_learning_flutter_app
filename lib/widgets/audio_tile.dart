@@ -53,6 +53,7 @@ class AudioTile extends StatelessWidget {
         },
       ),
       onTap: () {
+        context.read<AudioProvider>().getOne(audio.id);
         Navigator.push(
           context,
           MaterialPageRoute(builder: (_) => AudioPlayerScreen(audio: audio)),

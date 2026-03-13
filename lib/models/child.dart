@@ -12,17 +12,31 @@ class Child {
 
   bool? parentResponsible = false;
 
-  Child(
-      {required this.id,
-      required this.name,
-      required this.login,
-      required this.password});
+  Child({
+    required this.id,
+    required this.name,
+    required this.login,
+    required this.password,
+    this.parentResponsible,
+  });
+
+  factory Child.fromJson(Map<String, dynamic> json) {
+    return Child(
+      id: json["id"],
+      name: json["name"],
+      login: json["login"],
+      password: json["password"],
+      parentResponsible: json["parent_responsible"] == 1,
+    );
+  }
 
   static Child copy(Child child) {
     return Child(
-        id: child.id,
-        name: child.name,
-        login: child.login,
-        password: child.password);
+      id: child.id,
+      name: child.name,
+      login: child.login,
+      password: child.password,
+      parentResponsible: child.parentResponsible,
+    );
   }
 }

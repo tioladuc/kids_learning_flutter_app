@@ -141,7 +141,7 @@ class _IntroStatisticsForParentState extends State<IntroStatisticsForParent> {
                     const Icon(Icons.lock, size: 18),
                     const SizedBox(width: 8),
                     Text(
-                      "${translator.getText('StatisticPassword')}: ${child.password}",
+                      "${translator.getText('StatisticPassword')}: --//--",
                     ),
                   ],
                 ),

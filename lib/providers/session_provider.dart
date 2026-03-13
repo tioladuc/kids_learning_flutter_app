@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:kids_learning_flutter_app/providers/course_provider.dart';
 
 import '../core/api_client.dart';
@@ -33,9 +35,7 @@ class SessionProvider extends SessionBase {
   String? errorMessage;
   bool isLoginLoading = false;
 
-  SessionProvider() {
-    
-  }
+  SessionProvider() {}
 
   void setCurrentChildAsParent(Child? child) {
     parent!.currentChild = child;
@@ -67,8 +67,8 @@ class SessionProvider extends SessionBase {
     bool statusResponse = false;
     try {
       final response = await ApiClient.post('/account/logout', {
-        "childid": child?.id,
-        "parentid": parent?.id,
+        "child_id": child?.id,
+        "parent_id": parent?.id,
       });
       //Map<String, dynamic> response = {'success': true,};
 
@@ -90,10 +90,8 @@ class SessionProvider extends SessionBase {
       notifyListeners();
       return statusResponse;
     }
-    
   }
 
-  
   Future<bool> login(String selectedRole, String login, String pwd) async {
     isLoginLoading = true;
     errorMessage = null;
@@ -117,7 +115,6 @@ class SessionProvider extends SessionBase {
         } else {
           initializeLoginChild(response['data']);
         }
-        
       } else {
         print('login fail passed');
         errorMessage = SessionBase.translator.getText(
@@ -198,7 +195,6 @@ class SessionProvider extends SessionBase {
     SessionProvider.child = child;
     SessionProvider.parent = null;
     SessionProvider.token = token;
-    
   }
 
   Future<bool> addChild(String login, String name, String pwd) async {
@@ -212,7 +208,7 @@ class SessionProvider extends SessionBase {
         "name": name,
         "login": login,
         "password": pwd,
-        "parentid": parent!.id,
+        "parent_id": parent!.id,
       });
       //Map<String, dynamic> response = {'success': true,};
 
@@ -248,8 +244,8 @@ class SessionProvider extends SessionBase {
     bool statusResponse = false;
     try {
       final response = await ApiClient.post('/account/deleteChild', {
-        "childid": id,
-        "parentid": parent!.id,
+        "child_id": id,
+        "parent_id": parent!.id,
       });
       //Map<String, dynamic> response = {'success': true,};
 
@@ -284,10 +280,10 @@ class SessionProvider extends SessionBase {
     bool statusResponse = false;
     try {
       final response = await ApiClient.post('/account/changeParentPassword', {
-        "firstname": firstName,
-        "lastname": lastName,
-        "newpassword": newPassword,
-        "parentid": parent!.id,
+        "first_name": firstName,
+        "last_name": lastName,
+        "new_password": newPassword,
+        "parent_id": parent!.id,
       });
       //Map<String, dynamic> response = {'success': true,};
 
@@ -321,9 +317,9 @@ class SessionProvider extends SessionBase {
     try {
       final response = await ApiClient.post('/account/changeChildPassword', {
         "name": name,
-        "newpassword": newPassword,
-        "childid": child?.id,
-        "parentid": parent!.id,
+        "new_password": newPassword,
+        "child_id": child?.id,
+        "parent_id": parent!.id,
       });
       //Map<String, dynamic> response = {'success': true,};
 
@@ -361,9 +357,9 @@ class SessionProvider extends SessionBase {
       final response =
           await ApiClient.post('/account/changePasswordParentChild', {
             "name": name,
-            "newpassword": newPassword,
-            "childid": child.id,
-            "parentid": parent!.id,
+            "new_password": newPassword,
+            "child_id": child.id,
+            "parent_id": parent!.id,
           });
       //Map<String, dynamic> response = {'success': true,};
 
@@ -618,20 +614,26 @@ class SessionProvider extends SessionBase {
 
   ///////////////////////////////////////////////////////////////////
   Future<void> loadChildren() async {
-    
-    isLoading = true;
+    isLoadingChildren = true;
     errorMessage = null;
     notifyListeners();
 
     bool statusResponse = false;
     try {
       final response = await ApiClient.post('/account/parentLoadChildren', {
-        "parentid": parent!.id,
+        "parent_id": parent!.id,
       });
       //Map<String, dynamic> response = {'success': true,};
 
       // ✅ Example: handle response
       if (response['success'] == true) {
+        print('OK OK');
+        List<Child> childrenList = (response["data"] as List)
+            .map((e) => Child.fromJson(e))
+            .toList();
+
+        children = childrenList;
+        print('OK OK =­> ' +children.length.toString());
         statusResponse = true;
       } else {
         errorMessage = SessionBase.translator.getText(
@@ -642,7 +644,7 @@ class SessionProvider extends SessionBase {
     } catch (e) {
       errorMessage = e.toString();
     } finally {
-      isLoading = false;
+      isLoadingChildren = false;
       notifyListeners();
       return;
     }
@@ -675,7 +677,6 @@ class SessionProvider extends SessionBase {
       notifyListeners();
       return;
     }
-    
   }
 
   Future<void> sendEmail({
@@ -712,6 +713,5 @@ class SessionProvider extends SessionBase {
       notifyListeners();
       return;
     }
-    
   }
 }

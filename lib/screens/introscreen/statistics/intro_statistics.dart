@@ -33,17 +33,18 @@ class _IntroStatisticsState extends State<IntroStatistics> {
     super.initState();
 
     Future.microtask(() async {
-      child = await context.read<StatisticsProvider>().getBasicInformation(
+      child = widget.child;/*await context.read<StatisticsProvider>().getBasicInformation(
         widget.child,
-      );
+      );*/
 
-      await context.read<StatisticsProvider>().loadVisitedCourses(widget.child);
+      await context.read<StatisticsProvider>().loadStatistics(widget.child);
+      /*await context.read<StatisticsProvider>().loadVisitedCourses(widget.child);
       await context.read<StatisticsProvider>().loadCompletedCourses(
         widget.child,
       );
       await context.read<StatisticsProvider>().loadNeverDoneCourses(
         widget.child,
-      );
+      );*/
     });
   }
 
@@ -86,9 +87,9 @@ class _IntroStatisticsState extends State<IntroStatistics> {
           const SizedBox(height: 16),
           _sectionTitle(translator.getText('IntroStatTitleCoursesVisited')),
           _coursesVisited(provider, notifyData),
-          const SizedBox(height: 16),
+          /*const SizedBox(height: 16),
           _sectionTitle(translator.getText('IntroStatTitleCoursesCompleted')),
-          _coursesCompleted(provider, notifyData),
+          _coursesCompleted(provider, notifyData),*/
           const SizedBox(height: 16),
           _sectionTitle(translator.getText('IntroStatTitleCoursesNeverDone')),
           _coursesNeverDone(provider, notifyData),
@@ -126,10 +127,10 @@ class _IntroStatisticsState extends State<IntroStatistics> {
         padding: const EdgeInsets.all(12),
         child: Column(
           children: [
-            _infoRow(
+            /*_infoRow(
               translator.getText('IntroStatAge'),
               "${child!.age ?? '-'}",
-            ),
+            ),*/
             _infoRow(
               translator.getText('IntroStatCompletedTasks'),
               "${child!.completedTasks ?? 0}",
