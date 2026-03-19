@@ -86,7 +86,7 @@ class ApiClient {
       print('');
       print('====================================================');*/
       //print(SessionProvider.token);
-      //====print(res);
+      print(res.body);
       return jsonDecode(res.body);
     } catch (e) {
       print(e);

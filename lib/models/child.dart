@@ -3,6 +3,7 @@ class Child {
   String name;
   final String login;
   String password;
+  String passwordraw;
 
   int? completedTasks;
   int? totalTasks;
@@ -17,6 +18,7 @@ class Child {
     required this.name,
     required this.login,
     required this.password,
+    required this.passwordraw,
     this.parentResponsible,
   });
 
@@ -26,6 +28,7 @@ class Child {
       name: json["name"],
       login: json["login"],
       password: json["password"],
+      passwordraw: json["passwordraw"],
       parentResponsible: json["parent_responsible"] == 1,
     );
   }
@@ -36,6 +39,7 @@ class Child {
       name: child.name,
       login: child.login,
       password: child.password,
+      passwordraw: child.passwordraw,
       parentResponsible: child.parentResponsible,
     );
   }

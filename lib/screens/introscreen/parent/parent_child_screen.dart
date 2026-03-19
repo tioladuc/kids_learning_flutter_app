@@ -33,7 +33,7 @@ class _ParentChildScreenState extends State<ParentChildScreen> {
 
     // Create a copy to avoid modifying original directly
     _editableChild = Child.copy(widget.child);
-
+    print('***********************=='+ _editableChild.password +'==**********************');
     _nameController = TextEditingController(text: _editableChild.name);
     _passwordController = TextEditingController(text: _editableChild.password);
   }
@@ -243,7 +243,7 @@ class _ParentChildScreenState extends State<ParentChildScreen> {
                     // Password
                     TextField(
                       controller: _passwordController,
-                      obscureText: true,
+                      obscureText: false,
                       decoration: InputDecoration(
                         labelText: translator.getText(
                           'labelChildPasswordDetail',

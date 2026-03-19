@@ -110,11 +110,16 @@ class SessionProvider extends SessionBase {
       if (response['success'] == true) {
         role = selectedRole;
         statusResponse = true;
+        print('888888888888888888888888888888888888888888');
         if (selectedRole == NotifyData.ChoiceParent) {
           initializeLoginParent(response['data']);
+          for (var element in children) {
+            print('==========­>>> ' + element.passwordraw);
+          }
         } else {
           initializeLoginChild(response['data']);
         }
+
       } else {
         print('login fail passed');
         errorMessage = SessionBase.translator.getText(
@@ -148,7 +153,8 @@ class SessionProvider extends SessionBase {
           id: childJson["id"],
           name: childJson["name"],
           login: childJson["login"],
-          password: "", // password not returned from API
+          password: childJson["passwordraw"], 
+          passwordraw: childJson["passwordraw"],// password not returned from API
         )..parentResponsible = childJson["parent_responsible"] == 1,
       );
     }
@@ -163,7 +169,8 @@ class SessionProvider extends SessionBase {
       id: parentJson["id"],
       name: "${parentJson["first_name"]} ${parentJson["last_name"]}",
       login: parentJson["login"],
-      password: "", // not returned from API
+      password: "", 
+      passwordraw: '',// not returned from API
       children: childrenList,
     );
 
@@ -175,6 +182,10 @@ class SessionProvider extends SessionBase {
     SessionProvider.child = null;
     SessionProvider.parent = parent;
     SessionProvider.token = token;
+    for (var child in childrenList) {
+      print('=============>>>> ' + child.passwordraw);
+    }
+    print('77777777777777777777777777777777777777777');
   }
 
   void initializeLoginChild(dynamic result) {
@@ -186,7 +197,8 @@ class SessionProvider extends SessionBase {
       id: childJson["id"],
       name: childJson["name"],
       login: childJson["login"],
-      password: "", // not returned from API
+      passwordraw: childJson["passwordraw"] ?? '',
+      password: childJson["passwordraw"] ?? '', // not returned from API
     );
 
     // set optional values
@@ -221,6 +233,7 @@ class SessionProvider extends SessionBase {
             name: name,
             login: login,
             password: pwd,
+            passwordraw: pwd,
           ),
         );
       } else {
